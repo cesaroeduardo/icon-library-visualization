@@ -1,0 +1,156 @@
+html,
+body,
+div,
+a,
+b,
+p,
+u,
+i,
+span,
+h1,
+header,
+section,
+li,
+ul{
+    font-family: 'Roboto', sans-serif;
+    list-style: none;
+    padding-inline-start: 0px;
+    border: 0;
+    font: inherit;
+    font-size: 100%;
+    margin: 0;
+    padding: 0;
+    vertical-align: initial;
+}
+
+#searchInput {
+    height: 48px;
+    min-width: 24rem;
+    padding-left: 1rem;
+}
+
+body {
+    padding: 30px;
+}
+
+h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    margin: 2rem 0;
+    font-family: 'Roboto', sans-serif;
+}
+
+.library-module-grid {
+    display: grid;
+    flex-wrap: wrap;
+    grid-template-columns: repeat(5, 1fr);
+    width: 100%;
+    gap: .5rem;
+}
+
+.library-module-container {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.library-module-flex {
+    height: 100%;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+
+.library-module {
+    border: .0625rem solid;
+    border-color: rgb(118, 118, 118);
+    border-radius: 2px;
+    position: relative;
+    background-color: #fff;
+    height: 0;
+    padding-top: 100%;
+}
+
+.library-module:hover {
+    border: 1px solid -webkit-focus-ring-color;
+}
+
+.library-module-flex-container {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    height: 100%;
+}
+
+.library-module p {
+    font-family: 'Roboto', sans-serif;
+    color: #1e1e1e;
+    font-size: 16px;
+    font-weight: 400;
+    left: 1rem;
+    letter-spacing: .32px;
+    line-height: 1.33333;
+    max-width: calc(100% - 2rem);
+    position: absolute;
+    top: .75rem;
+    width: 100%;
+}
+
+.library-module-flex-container svg {
+    fill: #1e1e1e;
+    animation: SvgLibrary-module--fadeIn--3E8mB 70ms cubic-bezier(.2, 0, .38, .9);
+    stroke: #1E1E1E;
+}
+
+.action-list {
+    bottom: 0;
+    display: flex;
+    opacity: 1;
+    position: absolute;
+    right: 0;
+    transition: opacity 70ms cubic-bezier(.2, 0, .38, .9);
+    z-index: 1;
+    opacity: 0;
+}
+
+.library-module-container:hover>.action-list {
+    opacity: 1;
+}
+
+button {
+    align-items: center;
+    border: 0;
+    border-radius: 0;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: inline-flex;
+    flex-shrink: 0;
+    font-size: 100%;
+    justify-content: space-between;
+    letter-spacing: .16px;
+    line-height: 1.28572;
+    margin: 0;
+    max-width: 20rem;
+    min-height: 3rem;
+    outline: none;
+    padding: 1rem;
+    position: relative;
+    text-align: left;
+    text-decoration: none;
+    vertical-align: initial;
+    vertical-align: top;
+    background-color: #fff;
+}
+
+button:hover {
+    background-color: rgb(221, 221, 221);
+    transition: opacity 70ms cubic-bezier(.2, 0, .38, .9);
+    color: #1e1e1e(0, 0, 0);
+}
+
+.keywords {
+    display: none;
+}
