@@ -1,11 +1,11 @@
 <template>
-  <div class="hello">
-    <input type="text" id="searchInput" onkeyup="searchIcons()" placeholder="Search for an icon..">
-    <section>
+  <div>
+    <SearchBar/>
+      <section>
         <h1>Icons</h1>
         <ul class="library-module-grid" id="myUL">
-          <IconCard name="Add" keywords="Add, Plus, Adicionar" teste="M18.5 18.5V2H21.5V18.5H38V21.5H21.5V38H18.5V21.5H2V18.5H18.5Z"/>
-          <IconCard name="Close" keywords="Times, Fechar, Close" teste="M17.1717 20L2.61523 5.44354L5.44366 2.61511L20.0001 17.1716L34.5566 2.61511L37.3851 5.44354L22.8286 20L37.3851 34.5565L34.5566 37.3849L20.0001 22.8284L5.44366 37.3849L2.61523 34.5565L17.1717 20Z"/>
+          <IconCard name="Add" keywords="Add, Plus, Adicionar" icon='plus'/>
+          <IconCard name="Close" keywords="Times, Fechar, Close" icon='times'/>
         </ul>
     </section>
   </div>
@@ -13,23 +13,39 @@
 
 <script>
 import IconCard from './components/IconCard.vue'
+import SearchBar from './components/SearchBar.vue'
 
 export default {
   name: 'App',
   components: {
-    IconCard
+    IconCard,
+    SearchBar
   }
 }
+
+// // Search Function
+// function searchIcons() {
+//     // Declare variables
+//     var input, filter, ul, li, a, i, txtValue;
+//     input = document.getElementById('searchInput');
+//     filter = input.value.toUpperCase();
+//     ul = document.getElementById("myUL");
+//     li = ul.getElementsByTagName('li');
+
+//     // Loop through all list items, and hide those who don't match the search query
+//     for (i = 0; i < li.length; i++) {
+//         a = li[i].getElementsByTagName("span")[0];
+//         txtValue = a.textContent || a.innerText;
+//         if (txtValue.toUpperCase().indexOf(filter) > -1) {
+//             li[i].style.display = "";
+//         } else {
+//             li[i].style.display = "none";
+//         }
+//     }
+// }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #2c3e50;
-  margin-top: 60px;
-}
 html,
 body,
 div,
@@ -44,7 +60,9 @@ header,
 section,
 li,
 ul{
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Roboto', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     list-style: none;
     padding-inline-start: 0px;
     border: 0;
@@ -53,12 +71,6 @@ ul{
     margin: 0;
     padding: 0;
     vertical-align: initial;
-}
-
-#searchInput {
-    height: 48px;
-    min-width: 24rem;
-    padding-left: 1rem;
 }
 
 body {
