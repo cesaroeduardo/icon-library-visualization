@@ -1,52 +1,41 @@
-html,
-body,
-div,
-a,
-b,
-p,
-u,
-i,
-span,
-h1,
-header,
-section,
-li,
-ul{
-    font-family: 'Roboto', sans-serif;
-    list-style: none;
-    padding-inline-start: 0px;
-    border: 0;
-    font: inherit;
-    font-size: 100%;
-    margin: 0;
-    padding: 0;
-    vertical-align: initial;
-}
+<template>
+    <li class="library-module">
+        <div class="library-module-container">
+            <p class="name" id="name">{{ name }}</p>
+            <span class="keywords">{{ keywords }}</span>
+            <a title="add" class="library-module-flex-container" id="svg">
+                <svg viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" style="fill: rgb(0, 0, 0); width: 40px; height: 40px;"><path d="{{ teste }}"></path></svg>
+            </a>
+            <div class="action-list">
+                <button title="Download SVG" onclick="downloadSVG()">
+                    <svg focusable="false " preserveAspectRatio="xMidYMid meet " fill="currentColor " aria-label="Download SVG " aria-hidden="true " width="16 " height="16 " viewBox="0 0 16 16 " role="img" class="bx--btn__icon ">
+                        <path d="M13 7L12.3 6.3 8.5 10.1 8.5 1 7.5 1 7.5 10.1 3.7 6.3 3 7 8 12zM13 12v2H3v-2H2v2l0 0c0 .6.4 1 1 1h10c.6 0 1-.4 1-1l0 0v-2H13z "></path>
+                    </svg>
+                </button>
+                <button type="button " title="Copy code" onclick="copyCode()">
+                    <svg focusable="false " preserveAspectRatio="xMidYMid meet " fill="currentColor " aria-label="Copy Code" aria-hidden="true" width="16" height="16" viewBox="0 0 32 32" role="img" class="bx--btn__icon">
+                <path d="M31 16L24 23 22.59 21.59 28.17 16 22.59 10.41 24 9 31 16zM1 16L8 9 9.41 10.41 3.83 16 9.41 21.59 8 23 1 16z"></path>
+                <path d="M5.91 15H26.080000000000002V17H5.91z" transform="rotate(-75 15.996 16)"></path>
+                </svg>
+                </button>
+            </div>
+        </div>
+    </li>
+</template>
 
-#searchInput {
-    height: 48px;
-    min-width: 24rem;
-    padding-left: 1rem;
+<script>
+export default {
+  name: 'IconCard',
+  props: {
+    name: String,
+    keywords: String,
+    teste: String
+  }
 }
+</script>
 
-body {
-    padding: 30px;
-}
-
-h1 {
-    font-size: 2rem;
-    font-weight: 900;
-    margin: 2rem 0;
-    font-family: 'Roboto', sans-serif;
-}
-
-.library-module-grid {
-    display: grid;
-    flex-wrap: wrap;
-    grid-template-columns: repeat(5, 1fr);
-    width: 100%;
-    gap: .5rem;
-}
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
 
 .library-module-container {
     height: 100%;
@@ -154,3 +143,4 @@ button:hover {
 .keywords {
     display: none;
 }
+</style>
