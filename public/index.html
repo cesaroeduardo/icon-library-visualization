@@ -11,11 +11,7 @@
     <noscript>
       <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
     </noscript>
-<<<<<<< HEAD
     <script>
-=======
-    <!-- <script>
->>>>>>> main
       function copyCode() {
           const name = document.getElementsByClassName('name')[0];
           navigator.clipboard.writeText("<azn-icon name='" + name.innerText.toLowerCase() + "' />");
@@ -31,31 +27,7 @@
           element.click();
           element.remove();
       }
-<<<<<<< HEAD
   </script>
-=======
-  
-      function searchIcons() {
-          // Declare variables
-          var input, filter, ul, li, a, i, txtValue;
-          input = document.getElementById('searchInput');
-          filter = input.value.toUpperCase();
-          ul = document.getElementById("myUL");
-          li = ul.getElementsByTagName('li');
-  
-          // Loop through all list items, and hide those who don't match the search query
-          for (i = 0; i < li.length; i++) {
-              a = li[i].getElementsByTagName("span")[0];
-              txtValue = a.textContent || a.innerText;
-              if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                  li[i].style.display = "";
-              } else {
-                  li[i].style.display = "none";
-              }
-          }
-      }
-  </script> -->
->>>>>>> main
     <div id="app"></div>
     <!-- built files will be auto injected -->
   </body>
