@@ -6,7 +6,8 @@
         <ul class="library-module-grid" id="myUL">
           <IconCard name="Add" keywords="Add, Plus, Adicionar" icon='plus'/>
           <IconCard name="Close" keywords="Times, Fechar, Close" icon='times'/>
-        </ul>
+          <IconCard name="Minus" keywords="Minus, Menos" icon='minus'/>
+       </ul>
     </section>
   </div>
 </template>
@@ -20,8 +21,20 @@ export default {
   components: {
     IconCard,
     SearchBar
-  }
+  },
+      methods: {
+        async copyCode() {
+            let NAME = document.getElementsByName("name").length;
+            try {
+            await navigator.clipboard.writeText("<azn-icon name='" + NAME.innerText.toLowerCase() + "' />");
+            alert('Copied');
+            } catch($e) {
+            alert('Cannot copy');
+            }
+        }
+    }
 }
+
 
 // // Search Function
 // function searchIcons() {

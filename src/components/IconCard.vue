@@ -1,7 +1,7 @@
 <template>
     <li class="library-module">
         <div class="library-module-container">
-            <p class="name" id="name">{{ name }} {{ svgCode }}</p>
+            <div class="name">{{ name }}</div>
             <span class="keywords">{{ keywords }}</span>
             <a title="add" class="library-module-flex-container" id="svg">
                 <unicon name="plus"/>
@@ -13,11 +13,11 @@
                         <path d="M13 7L12.3 6.3 8.5 10.1 8.5 1 7.5 1 7.5 10.1 3.7 6.3 3 7 8 12zM13 12v2H3v-2H2v2l0 0c0 .6.4 1 1 1h10c.6 0 1-.4 1-1l0 0v-2H13z "></path>
                     </svg>
                 </button>
-                <button type="button " title="Copy code" onclick="copyCode()">
+                <button type="button " title="Copy code" @click="copyCode">
                     <svg focusable="false " preserveAspectRatio="xMidYMid meet " fill="currentColor " aria-label="Copy Code" aria-hidden="true" width="16" height="16" viewBox="0 0 32 32" role="img" class="bx--btn__icon">
-                <path d="M31 16L24 23 22.59 21.59 28.17 16 22.59 10.41 24 9 31 16zM1 16L8 9 9.41 10.41 3.83 16 9.41 21.59 8 23 1 16z"></path>
-                <path d="M5.91 15H26.080000000000002V17H5.91z" transform="rotate(-75 15.996 16)"></path>
-                </svg>
+                        <path d="M31 16L24 23 22.59 21.59 28.17 16 22.59 10.41 24 9 31 16zM1 16L8 9 9.41 10.41 3.83 16 9.41 21.59 8 23 1 16z"></path>
+                        <path d="M5.91 15H26.080000000000002V17H5.91z" transform="rotate(-75 15.996 16)"></path>
+                    </svg>
                 </button>
             </div>
         </div>
@@ -31,8 +31,20 @@ export default {
     name: String,
     keywords: String,
     icon: String
-  }
+  },
+    methods: {
+        async copyCode() {
+            const NAME = document.getElementsByClassName("name")[0];
+            try {
+            await navigator.clipboard.writeText("<azn-icon name='" + NAME.innerText.toLowerCase() + "' />");
+            alert('Copied');
+            } catch($e) {
+            alert('Cannot copy');
+            }
+        }
+    }
 }
+
 
 // // CopyCode Function
 // function copyCode() {
