@@ -45,13 +45,6 @@ export default {
     }
 }
 
-
-// // CopyCode Function
-// function copyCode() {
-//     const name = document.getElementsByClassName('name')[0];
-//     navigator.clipboard.writeText("<azn-icon name='" + name.innerText.toLowerCase() + "' />");
-// }
-
 // // Download SVG Function
 // function downloadSVG() {
 //     const svg = document.getElementById('svg').innerHTML;
