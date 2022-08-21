@@ -4,9 +4,15 @@
       <section>
         <h1>Icons</h1>
         <ul class="library-module-grid" id="myUL">
-          <IconCard name="Add" keywords="Add, Plus, Adicionar" icon='plus'/>
-          <IconCard name="Close" keywords="Times, Fechar, Close" icon='times'/>
-          <IconCard name="Minus" keywords="Minus, Menos" icon='minus'/>
+          <icon-card name="Add" keywords="Add, Plus, Adicionar">
+            <unicon name="times"/>
+          </icon-card>
+          <icon-card name="Close" keywords="Times, Fechar, Close" icon='times'>
+            <unicon name="times"/>
+          </icon-card>
+          <icon-card name="Minus" keywords="Minus, Menos" icon='minus'>
+            <unicon name="minus"/>
+          </icon-card>
        </ul>
     </section>
   </div>
