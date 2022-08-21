@@ -21,18 +21,7 @@ export default {
   components: {
     IconCard,
     SearchBar
-  },
-      methods: {
-        async copyCode() {
-            let NAME = document.getElementsByName("name").length;
-            try {
-            await navigator.clipboard.writeText("<azn-icon name='" + NAME.innerText.toLowerCase() + "' />");
-            alert('Copied');
-            } catch($e) {
-            alert('Cannot copy');
-            }
-        }
-    }
+  }
 }
 
 

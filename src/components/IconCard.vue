@@ -1,7 +1,9 @@
 <template>
     <li class="library-module">
         <div class="library-module-container">
-            <div class="name">{{ name }}</div>
+            <p class="name">
+               {{ name }}
+            </p>
             <span class="keywords">{{ keywords }}</span>
             <a title="add" class="library-module-flex-container" id="svg">
                 <unicon name="plus"/>
@@ -25,21 +27,31 @@
 </template>
 
 <script>
+
+
 export default {
   name: 'IconCard',
   props: {
-    name: String,
-    keywords: String,
-    icon: String
+    name: {
+        type: String, 
+        required: true, 
+        },
+    keywords: {
+        type: String,
+        required: false, 
+        },
+    icon: {
+        type: String,
+        required: true,
+        }
   },
     methods: {
         async copyCode() {
-            const NAME = document.getElementsByClassName("name")[0];
             try {
-            await navigator.clipboard.writeText("<azn-icon name='" + NAME.innerText.toLowerCase() + "' />");
-            alert('Copied');
+                await navigator.clipboard.writeText("<azn-icon name='" + this.name.toLowerCase() + "' />");
+                alert('Copied');
             } catch($e) {
-            alert('Cannot copy');
+                alert('Cannot copy');
             }
         }
     }
@@ -67,6 +79,10 @@ export default {
     position: absolute;
     top: 0;
     width: 100%;
+}
+
+.library-module:hover {
+    background: #fbfbfb;
 }
 
 .library-module-flex {
@@ -155,7 +171,7 @@ button {
     text-decoration: none;
     vertical-align: initial;
     vertical-align: top;
-    background-color: #fff;
+    background-color: #fbfbfb;
 }
 
 button:hover {
