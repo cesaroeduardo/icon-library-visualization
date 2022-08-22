@@ -29,7 +29,7 @@ function searchIcons() {
 <style scoped>
 #searchInput {
     height: 48px;
-    min-width: 24rem;
     padding-left: 1rem;
+    min-width: 260px;
 }
 </style>

@@ -64,18 +64,6 @@ export default {
         }
     }
 }
-
-// // Download SVG Function
-// function downloadSVG() {
-//     const svg = document.getElementById('svg').innerHTML;
-//     const blob = new Blob([svg.toString()]);
-//     const element = document.createElement("a");
-//     const name = document.getElementsByClassName('name')[0];
-//     element.download = name.innerText.toLowerCase() + ".svg";
-//     element.href = window.URL.createObjectURL(blob);
-//     element.click();
-//     element.remove();
-// }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -102,8 +90,8 @@ export default {
 }
 
 .library-module {
-    border: .0625rem solid;
-    border-color: rgb(118, 118, 118);
+    border: 0.5px solid;
+    border-color: #B2B2B2;
     border-radius: 2px;
     position: relative;
     background-color: #fff;
@@ -124,11 +112,11 @@ export default {
 
 .library-module p {
     font-family: 'Roboto', sans-serif;
-    color: #1e1e1e;
-    font-size: 16px;
+    color: #666666;
+    font-size: 14px;
     font-weight: 400;
     left: 1rem;
-    letter-spacing: .32px;
+    letter-spacing: auto;
     line-height: 1.33333;
     max-width: calc(100% - 2rem);
     position: absolute;
