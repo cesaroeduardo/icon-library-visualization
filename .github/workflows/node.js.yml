@@ -1,7 +1,7 @@
-name: Vue to Git Branch
+name: Vue to Github Pages
   # You may pin to the exact commit or the version.
-  # uses: LizAinslie/VueBuildToBranchAction@b1b6b10c9babea68424025ef92d0b0af3e871d67
-  uses: LizAinslie/VueBuildToBranchAction@1.0.2+1
+  # uses: xRealNeon/VuePagesAction@803b88b34a8c4177efad63425155f35419e3a9c6
+  uses: xRealNeon/VuePagesAction@1.0.1
   with:
     # Your username
     username: cesaroeduardo
@@ -15,7 +15,7 @@ name: Vue to Git Branch
     gitname: # optional, default is CI
     # Your git commit message
     gitmsg: # optional, default is deploy
-    # Your git branch name
-    gitbranch: # optional, default is gh-pages
+    # Your custom domain
+    cname: # optional, default is none
     # Use yarn to build
     useyarn: # optional
