@@ -1,6 +1,7 @@
 <template>
   <SearchBar class="input"/>
   <div class="customize-area no-desktop">
+    <br/>
     <select class="input" v-model="IconsSize">
       <option>12px</option>
       <option>16px</option>
@@ -106,12 +107,11 @@ body {
   display: flex;
   flex-direction: column;
   gap: 16px;
-  max-width: 100%;
+  width: 100%;
 }
 
 .input {
   height: 48px;
-  max-width: 100%;
   padding-left: 1rem;
 }
 
@@ -166,7 +166,7 @@ h1 {
     display: flex;
   }
   .input {
-      width: 100%;
+      width: auto;
   }
 }
 
