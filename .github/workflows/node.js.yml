@@ -1,6 +1,14 @@
-name: Vue to Github Pages
-uses: xRealNeon/VuePagesAction@1.0.1
-  with:
-    username: cesaroeduardo
-    reponame: icon-library-visualization
-    token: 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
+name: Build Vue
+on: [push]
+jobs:
+  build_vue:
+    runs-on: ubuntu-latest
+    name: Build Vue
+    steps:
+    - uses: actions/checkout@v2
+    - id: Build-Vue
+      uses: xRealNeon/VuePagesAction@1.0.1
+      with:
+        username: 'cesaroeduardo'
+        reponame: 'icon-library-visualization'
+        token: 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
