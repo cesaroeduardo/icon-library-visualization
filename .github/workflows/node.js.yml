@@ -1,0 +1,21 @@
+name: Vue to Git Branch
+  # You may pin to the exact commit or the version.
+  # uses: LizAinslie/VueBuildToBranchAction@b1b6b10c9babea68424025ef92d0b0af3e871d67
+  uses: LizAinslie/VueBuildToBranchAction@1.0.2+1
+  with:
+    # Your username
+    username: cesaroeduardo
+    # Your reponame
+    reponame: icon-library-visualization
+    # Your Github token
+    token: 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
+    # Your git commit email
+    gitemail: # optional, default is CI@example.com
+    # Your git commit name
+    gitname: # optional, default is CI
+    # Your git commit message
+    gitmsg: # optional, default is deploy
+    # Your git branch name
+    gitbranch: # optional, default is gh-pages
+    # Use yarn to build
+    useyarn: # optional
