@@ -90,8 +90,8 @@ export default {
 }
 
 .library-module {
-    border: 0.5px solid;
-    border-color: #B2B2B2;
+    border: 1px solid;
+    border-color: #1e1e1e62;
     border-radius: 2px;
     position: relative;
     background-color: #fff;
@@ -112,7 +112,7 @@ export default {
 
 .library-module p {
     font-family: 'Roboto', sans-serif;
-    color: #666666;
+    color: #1e1e1e;
     font-size: 14px;
     font-weight: 400;
     left: 1rem;
@@ -122,12 +122,6 @@ export default {
     position: absolute;
     top: .75rem;
     width: 100%;
-}
-
-.library-module-flex-container svg {
-    fill: #1e1e1e;
-    animation: SvgLibrary-module--fadeIn--3E8mB 70ms cubic-bezier(.2, 0, .38, .9);
-    stroke: #1E1E1E;
 }
 
 .action-list {
