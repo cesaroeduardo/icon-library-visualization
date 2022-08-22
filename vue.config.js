@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/YourRepoName/'
+  publicPath: '/icon-library-visualization/'
 }
