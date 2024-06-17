@@ -12,7 +12,7 @@
                 </button>
                 <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
                     <i v-if="!showCheckIcon" class="pi pi-copy"></i>
-                    <i v-if="showCheckIcon" class="pi pi-check"></i>
+                    <i v-if="showCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
                 </button>
             </div>
         </div>
@@ -27,13 +27,13 @@ export default {
             type: String,
             required: true,
         },
-        keywords: {
-            type: String,
-            required: false,
-        },
         icon: {
             type: String,
             required: true,
+        },
+        keywords: {
+            type: String,
+            required: false,
         }
     },
     data() {
@@ -53,7 +53,7 @@ export default {
         },
         async copyCode() {
             try {
-                await navigator.clipboard.writeText(`<i class='ai ai-${this.name.toLowerCase()}'></i>`);
+                await navigator.clipboard.writeText(`<i class='${this.icon.toLowerCase()}'></i>`);
                 this.showCheckIcon = true;
                 setTimeout(() => {
                     this.showCheckIcon = false;

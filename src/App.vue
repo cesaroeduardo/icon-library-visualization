@@ -41,7 +41,7 @@
             :icon="icon.icon"
           >
             <i
-              :class="'ai ai-' + icon.icon + ' ' + selectedFontSize"
+              :class="'' + icon.icon + ' ' + selectedFontSize"
               :style="{ color: IconsColor }"
             ></i>
           </icon-card>
@@ -63,7 +63,7 @@
 <script>
 import IconCard from './components/IconCard.vue'
 import SearchBar from './components/SearchBar.vue'
-import icons from './assets/icons.json'
+import icons from './icons.json'
 import { isDarkMode, getThemeIcon, toggleTheme } from './theme'; // Importa variáveis e funções de tema
 
 
