@@ -1,39 +1,41 @@
 <template>
-  <SearchBar class="input"/>
-  <div class="customize-area no-desktop">
-    <br/>
-    <select class="input" v-model="IconsSize">
-      <option v-for="size in iconSizes" :key="size">{{ size }}</option>
-    </select>
-    <input type="text" class="input" v-model="IconsColor" placeholder="Type a color or hex code" />
-  </div>
-  <section>
-    <h1>Icons</h1>
-    <div class="content">
-      <div class="card-content">
-        <ul class="library-module-grid" id="myUL">
-          <icon-card 
-            v-for="icon in icons" 
-            :key="icon.name" 
-            :name="icon.name" 
-            :keywords="icon.keywords" 
+  <div class="flex flex-col gap-8 p-8">
+    <SearchBar />
+    <div class="flex flex-col gap-4 md:hidden">
+      <select v-model="selectedFontSize">
+        <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
+          {{ fontSize.name }} ({{ fontSize.value }})
+        </option>
+      </select>
+      <input type="text" v-model="IconsColor" placeholder="Type a color or hex code" />
+    </div>
+    <section class="w-full flex flex-row gap-8">
+      <div class="w-full">
+        <ul class="grid grid-cols-5 gap-4" id="myUL">
+          <icon-card
+            v-for="icon in icons"
+            :key="icon.name"
+            :name="icon.name"
+            :keywords="icon.keywords"
             :icon="icon.icon"
           >
-            <i 
-              :class="`ai ai-${icon.icon}`" 
-              :style="{ color: IconsColor, fontSize: IconsSize }"
+            <i
+              :class="`ai ai-${icon.icon} ${selectedFontSize}`"
+              :style="{ color: IconsColor }"
             ></i>
           </icon-card>
         </ul>
       </div>
-      <div class="customize-area no-mobile">
-        <select class="input" v-model="IconsSize">
-          <option v-for="size in iconSizes" :key="size">{{ size }}</option>
+      <div class="flex-col gap-4 md:flex md:w-64 hidden">
+        <select v-model="selectedFontSize">
+          <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
+            {{ fontSize.name }} ({{ fontSize.value }})
+          </option>
         </select>
-        <input type="text" class="input" v-model="IconsColor" placeholder="Type a color or hex code" />
+        <input type="text" v-model="IconsColor" placeholder="Type a color or hex code" />
       </div>
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -50,10 +52,21 @@ export default {
   },
   data() {
     return {
-      IconsColor: '',
-      IconsSize: '24px',
+      IconsColor: '#F3652B',
+      selectedFontSize: 'text-base', // Inicialize com o tamanho de fonte base
       icons: icons,
-      iconSizes: ['12px', '16px', '20px', '24px', '28px', '32px', '40px', '48px', '56px', '64px']
+      fontSizes: [
+        { name: '12px', value: 'text-xs' },
+        { name: '16px', value: 'text-sm' },
+        { name: '20px', value: 'text-base' },
+        { name: '24px', value: 'text-lg' },
+        { name: '28px', value: 'text-xl' },
+        { name: '32px', value: 'text-2xl' },
+        { name: '40px', value: 'text-3xl' },
+        { name: '48px', value: 'text-4xl' },
+        { name: '56px', value: 'text-5xl' },
+        { name: '64px', value: 'text-6xl' },
+      ]
     }
   }
 }
