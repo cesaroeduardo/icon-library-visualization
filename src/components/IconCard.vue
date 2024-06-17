@@ -1,17 +1,17 @@
 <template>
-    <li class="border border-white/20 rounded-lg overflow-hidden bg-white/20 group">
-        <div class="relative bg-white-50/10 h-80">
-            <p class="absolute top-4 left-4 text-white text-sm">{{ name }}</p>
+    <li class="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden bg-white/80 dark:bg-neutral-800/80 group">
+        <div class="relative min-h-40">
+            <p class="absolute top-4 left-4 text-neutral-500 dark:text-neutral-300 text-ellipsis max-w-20 text-xs tracking-tight">{{ name }}</p>
             <span class="hidden">{{ keywords }}</span>
             <a class="absolute inset-0 flex items-center justify-center" id="svg" ref="mySlot">
                 <slot></slot>
             </a>
             <div class="absolute bottom-0 right-0 flex items-center opacity-0 group-hover:opacity-100 transition-all duration-200">
-                <button title="Download SVG" @click="downloadSVG" class="text-white flex items-center justify-center rounded-tl-md h-11 w-11 bg-white/10 hover:bg-white/20">
-                    <i class="ai ai-azion"></i>
+                <button title="Download SVG" @click="downloadSVG" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
+                    <i class="pi pi-download"></i>
                 </button>
-                <button title="Copy code" @click="copyCode" class="text-white flex items-center justify-center h-11 w-11 bg-white/10 hover:bg-white/20">
-                    <i class="ai ai-azion"></i>
+                <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
+                    <i class="pi pi-copy"></i>
                 </button>
             </div>
         </div>
@@ -49,7 +49,7 @@ export default {
         },
         async copyCode() {
             try {
-                await navigator.clipboard.writeText("<i class='ai ai-" + this.name.toLowerCase() + "' />");
+                await navigator.clipboard.writeText("<i class='ai ai-" + this.name.toLowerCase() + "'></i>");
                 alert('Copied');
             } catch($e) {
                 alert('Cannot copy');
