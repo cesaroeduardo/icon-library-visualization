@@ -1,8 +1,13 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import Unicon from 'vue-unicons'
-import { uniPlus, uniTimes, uniMinus } from 'vue-unicons/dist/icons'
+import { createApp } from 'vue';
+import './assets/main.css';
+import App from './App.vue';
+import Vue3ColorPicker from "vue3-colorpicker";
+import './assets/azionicons.scss';
+import "vue3-colorpicker/style.css";
+import { initializeTheme } from './theme';
 
-Unicon.add([uniPlus, uniTimes, uniMinus])
+initializeTheme();
 
-createApp(App).use(Unicon).mount('#app')
+createApp(App)
+  .use(Vue3ColorPicker)
+  .mount("#app");
