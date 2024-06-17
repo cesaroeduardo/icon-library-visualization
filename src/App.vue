@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-col gap-8 p-8">
+  <div class="flex flex-col gap-6 p-8">
     <!-- Circles Background -->
     <div class="w-full h-full fixed -z-10">
       <div class="flex flex-col gap-2">
@@ -21,7 +21,7 @@
     </div>
 
     <!-- Mobile Commands -->
-    <div class="flex flex-col gap-4 md:hidden">
+    <div class="flex flex-col md:hidden">
       <select v-model="selectedFontSize">
         <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
           {{ fontSize.name }} ({{ fontSize.value }})
@@ -32,7 +32,7 @@
     <!-- Icons List -->
     <section class="w-full flex flex-row gap-8">
       <div class="w-full">
-        <ul class="grid grid-cols-5 gap-4" id="myUL">
+        <ul class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 gap-4" id="myUL">
           <icon-card
             v-for="icon in icons"
             :key="icon.name"
