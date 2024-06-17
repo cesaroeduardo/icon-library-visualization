@@ -11,7 +11,8 @@
                     <i class="pi pi-download"></i>
                 </button>
                 <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
-                    <i class="pi pi-copy"></i>
+                    <i v-if="!showCheckIcon" class="pi pi-copy"></i>
+                    <i v-if="showCheckIcon" class="pi pi-check"></i>
                 </button>
             </div>
         </div>
@@ -19,24 +20,27 @@
 </template>
 
 <script>
-
-
 export default {
-  name: 'IconCard',
-  props: {
-    name: {
-        type: String, 
-        required: true, 
+    name: 'IconCard',
+    props: {
+        name: {
+            type: String,
+            required: true,
         },
-    keywords: {
-        type: String,
-        required: false, 
+        keywords: {
+            type: String,
+            required: false,
         },
-    icon: {
-        type: String,
-        required: true,
+        icon: {
+            type: String,
+            required: true,
         }
-  },
+    },
+    data() {
+        return {
+            showCheckIcon: false
+        };
+    },
     methods: {
         async downloadSVG() {
             const svg = this.$refs.mySlot.innerHTML;
@@ -49,12 +53,15 @@ export default {
         },
         async copyCode() {
             try {
-                await navigator.clipboard.writeText("<i class='ai ai-" + this.name.toLowerCase() + "'></i>");
-                alert('Copied');
-            } catch($e) {
-                alert('Cannot copy');
+                await navigator.clipboard.writeText(`<i class='ai ai-${this.name.toLowerCase()}'></i>`);
+                this.showCheckIcon = true;
+                setTimeout(() => {
+                    this.showCheckIcon = false;
+                }, 1200);
+            } catch (error) {
+                console.error('Failed to copy:', error);
             }
         }
     }
-}
+};
 </script>
