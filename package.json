@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.24.7",
     "core-js": "^3.8.3",
     "vue": "^3.2.13",
     "vue3-colorpicker": "^2.3.0"
