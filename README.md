@@ -30,7 +30,7 @@ Place your font (recommended .woff2 extension) in the `src > assets > icon-fonts
 ![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/2d83bd5b-9650-4a75-a881-0f450a8e96c4)
 
 ### Step 2
-Declare the import, font-callers, and glyphs in `src > assets > icons.scss`.
+Declare the import, font-callers, and glyphs in `src > assets > icons.scss`. You can open your icon font file in softwares like FontForge to discover what glyphs your icons using.
 
 ![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/7e4e4b01-837d-4274-9354-5bcdfed7d612)
 
@@ -40,7 +40,7 @@ Declare the icons you want to add to the catalog in `src > icons.json`. The keyw
 ![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/8716c287-a381-486c-853a-b39300a78169)
 
 ### Step 4 (Optional)
-To activate the downloads in SVG format, place the SVG of each icon in `src > assets > svg-raw`. The file name must match the name declared in `icons.scss`.
+To activate the downloads in SVG format, place the SVG of each icon in `src > assets > svg-raw`. The file name must match the name declared in `icons.scss`. Again, you can use softwares like FontForge to transform font glyphs into SVG files.
 
 ![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/8423b77f-503c-4218-b776-65ff61693cbd)
 
