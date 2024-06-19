@@ -23,7 +23,7 @@ input {
   @apply pl-9
 }
 button {
-  @apply bg-neutral-100/60 dark:bg-neutral-800/60 rounded-lg border dark:border-neutral-700 hover:bg-white/80 hover:dark:bg-neutral-900/80 h-12 w-12 text-neutral-800 dark:text-gray-200
+  @apply bg-neutral-100/60 dark:bg-neutral-800/60 rounded-lg border dark:border-neutral-700 hover:bg-white/70 hover:dark:bg-neutral-900/80 h-12 w-12 text-neutral-800 dark:text-gray-200
 }
 
 .select-container {

@@ -23,7 +23,7 @@
     <!-- Icons List -->
     <section class="w-full flex gap-8 md:flex-row flex-col-reverse">
       <div class="w-full flex flex-col gap-8">
-        <ul :class="{ 'hidden': icons.length === 1 }" class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 gap-4" id="myUL">
+        <ul class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 gap-4" id="myUL">
           <icon-card
             v-for="icon in icons"
             :key="icon.name"
@@ -34,7 +34,7 @@
             <i :class="'' + icon.icon + ' ' + selectedFontSize" :style="{ color: IconsColor }"></i>
           </icon-card>
         </ul>
-        <div v-if="icons.length === 0" class="text-neutral-600 gap-2 w-full text-center justify-center items-center min-h-28 border border-neutral-200 dark:border-neutral-700 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-md dark:text-neutral-400 text-xs flex px-4 py-8 ">
+        <div class="text-neutral-700 dark:text-neutral-200 opacity-40 gap-2 w-full text-center justify-center items-center min-h-28 border border-neutral-200 dark:border-neutral-700 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-md text-xs flex px-4 py-8 ">
           <p>Not found your icon? Try another keyword.</p>
           <i class="pi pi-face-smile"></i>
         </div>
