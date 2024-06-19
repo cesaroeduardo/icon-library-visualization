@@ -44,6 +44,8 @@ To activate the downloads in SVG format, place the SVG of each icon in `src > as
 
 ![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/8423b77f-503c-4218-b776-65ff61693cbd)
 
+---
 
-### Hope you enjoy the project. o/
+Hope you enjoy the project. o/
 
+---
