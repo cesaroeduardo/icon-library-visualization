@@ -1,7 +1,7 @@
 <template>
-    <li class="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden bg-white/80 dark:bg-neutral-800/80 group">
+    <li class="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden bg-white/60 dark:bg-neutral-800/60 group">
         <div class="relative min-h-40">
-            <p class="absolute top-4 left-4 text-neutral-500 dark:text-neutral-300 text-ellipsis max-w-20 text-xs tracking-tight">{{ name }}</p>
+            <p class="absolute z-20 top-4 left-4 text-neutral-500 dark:text-neutral-400 text-ellipsis max-w-20 text-xs tracking-tight">{{ name }}</p>
             <span class="hidden">{{ keywords }}</span>
             <a class="absolute inset-0 flex items-center justify-center" id="svg" ref="mySlot">
                 <slot></slot>

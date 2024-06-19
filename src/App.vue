@@ -20,19 +20,10 @@
       </button>
     </div>
 
-    <!-- Mobile Commands -->
-    <div class="flex flex-col md:hidden">
-      <select v-model="selectedFontSize">
-        <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
-          {{ fontSize.name }} ({{ fontSize.value }})
-        </option>
-      </select>
-    </div>
-
     <!-- Icons List -->
-    <section class="w-full flex flex-row gap-8">
-      <div class="w-full">
-        <ul class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 gap-4" id="myUL">
+    <section class="w-full flex gap-8 md:flex-row flex-col-reverse">
+      <div class="w-full flex flex-col gap-8">
+        <ul :class="{ 'hidden': icons.length === 1 }" class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 gap-4" id="myUL">
           <icon-card
             v-for="icon in icons"
             :key="icon.name"
@@ -40,27 +31,29 @@
             :keywords="icon.keywords"
             :icon="icon.icon"
           >
-            <i
-              :class="'' + icon.icon + ' ' + selectedFontSize"
-              :style="{ color: IconsColor }"
-            ></i>
+            <i :class="'' + icon.icon + ' ' + selectedFontSize" :style="{ color: IconsColor }"></i>
           </icon-card>
         </ul>
+        <div v-if="icons.length === 0" class="text-neutral-600 gap-2 w-full text-center justify-center items-center min-h-28 border border-neutral-200 dark:border-neutral-700 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-md dark:text-neutral-400 text-xs flex px-4 py-8 ">
+          <p>Not found your icon? Try another keyword.</p>
+          <i class="pi pi-face-smile"></i>
+        </div>
       </div>
       <!-- Commands -->
-      <div class="flex-col gap-4 md:flex md:w-64 hidden">
-          <div class="select-container w-full">
-            <i class="pi pi-arrows-h mr-8"></i>
-            <select v-model="selectedFontSize" class="w-full">
-              <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
-                {{ fontSize.name }} ({{ fontSize.value }})
-              </option>
-            </select>
-            <i class="pi pi-chevron-down select-icon"></i>
-          </div>
-          <div class="flex bg-neutral-100 border border-neutral-200 rounded-lg p-2.5 dark:bg-neutral-800 dark:border-neutral-700">
-            <color-picker v-model:pureColor="pureColor" class="rounded-md w-full flex"/>
-          </div>
+      <div class="flex flex-col gap-3 w-full md:flex-col md:w-64">
+        <div class="select-container w-full">
+          <i class="pi pi-arrows-h mr-8"></i>
+          <select v-model="selectedFontSize" class="w-full">
+            <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
+              {{ fontSize.name }} ({{ fontSize.value }})
+            </option>
+          </select>
+          <i class="pi pi-chevron-down select-icon"></i>
+        </div>
+        <div class="flex items-start gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+          <i class="pi pi-palette text-xs ml-1 mt-1.5 text-neutral-700 dark:text-neutral-400"></i>
+          <color-picker v-model:pureColor="pureColor"/>
+        </div>
       </div>
     </section>
   </div>
@@ -70,8 +63,7 @@
 import IconCard from './components/IconCard.vue'
 import SearchBar from './components/SearchBar.vue'
 import icons from './icons.json'
-import { isDarkMode, getThemeIcon, toggleTheme } from './theme'; // Importa variáveis e funções de tema
-
+import { isDarkMode, getThemeIcon, toggleTheme } from './theme';
 
 export default {
   name: 'App',
@@ -104,13 +96,13 @@ export default {
         { name: '56px', value: 'text-5xl' },
         { name: '64px', value: 'text-6xl' },
       ],
-      pureColor: 'rgb(243, 101, 43)',
+      pureColor: 'rgb(243, 101, 43)'
     }
   },
   watch: {
     pureColor(newVal) {
-      this.IconsColor = newVal; // Atualiza a cor dos ícones com o novo valor RGB
-      this.circleColors = [newVal, newVal, newVal]; // Atualiza as cores dos círculos de fundo
+      this.IconsColor = newVal;
+      this.circleColors = [newVal, newVal, newVal];
     }
   },
   methods: {

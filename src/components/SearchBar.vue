@@ -1,31 +1,37 @@
 <template>
     <div class="input-container">
         <i class="pi pi-search"></i>
-        <input class="w-full" type="text" v-on:keyup="searchIcons()" id="searchInput" v-model="input" placeholder="Search icons..." />
+        <input class="w-full" type="text" v-on:keyup="searchIcons()" id="searchInput" v-model="input" :placeholder="`Search by keywords in ${icons.length} icons...`"/>
     </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
-let input = ref("");
-function searchIcons() {
-    // Declare variables
-    var input, filter, ul, li, a, i, txtValue;
-    input = document.getElementById('searchInput');
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("myUL");
-    li = ul.getElementsByTagName('li');
+import icons from "../icons.json";
 
-    // Loop through all list items, and hide those who don't match the search query
-    for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("span")[0];
-        txtValue = a.textContent || a.innerText;
-        if (txtValue.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
-        }
+let input = ref("");
+
+function searchIcons() {
+  // Obter o filtro em letras maiúsculas
+  let filter = input.value.toUpperCase();
+  
+  // Selecionar a lista de ícones
+  let ul = document.getElementById("myUL");
+  let li = ul.getElementsByTagName("li");
+
+  // Loop através de todos os itens da lista e ocultar aqueles que não correspondem à consulta de pesquisa
+  for (let i = 0; i < li.length; i++) {
+    let icon = icons[i];
+    let nameMatch = icon.name.toUpperCase().indexOf(filter) > -1;
+    let keywordMatch = icon.keywords.toUpperCase().indexOf(filter) > -1;
+
+    // Mostrar o item da lista se houver correspondência com o nome, as palavras-chave ou o texto do conteúdo
+    if (nameMatch || keywordMatch) {
+      li[i].style.display = "";
+    } else {
+      li[i].style.display = "none";
     }
+  }
 }
 </script>
 
