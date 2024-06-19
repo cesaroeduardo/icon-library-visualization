@@ -49,12 +49,18 @@
       </div>
       <!-- Commands -->
       <div class="flex-col gap-4 md:flex md:w-64 hidden">
-        <select v-model="selectedFontSize">
-          <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
-            {{ fontSize.name }} ({{ fontSize.value }})
-          </option>
-        </select>
-        <color-picker v-model:pureColor="pureColor" v-model:gradientColor="gradientColor" class="rounded-md"/>
+          <div class="select-container w-full">
+            <i class="pi pi-arrows-h mr-8"></i>
+            <select v-model="selectedFontSize" class="w-full">
+              <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
+                {{ fontSize.name }} ({{ fontSize.value }})
+              </option>
+            </select>
+            <i class="pi pi-chevron-down select-icon"></i>
+          </div>
+          <div class="flex bg-neutral-100 border border-neutral-200 rounded-lg p-2.5 dark:bg-neutral-800 dark:border-neutral-700">
+            <color-picker v-model:pureColor="pureColor" class="rounded-md w-full flex"/>
+          </div>
       </div>
     </section>
   </div>
@@ -98,8 +104,7 @@ export default {
         { name: '56px', value: 'text-5xl' },
         { name: '64px', value: 'text-6xl' },
       ],
-      pureColor: 'rgb(243, 101, 43)', // Cor inicial para o color-picker em formato RGB
-      gradientColor: 'linear-gradient(0deg, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 100%)',
+      pureColor: 'rgb(243, 101, 43)',
     }
   },
   watch: {

@@ -1,5 +1,8 @@
 <template>
-   <input type="text" v-on:keyup="searchIcons()" id="searchInput" v-model="input" placeholder="Search icons..." />
+    <div class="input-container">
+        <i class="pi pi-search"></i>
+        <input class="w-full" type="text" v-on:keyup="searchIcons()" id="searchInput" v-model="input" placeholder="Search icons..." />
+    </div>
 </template>
 
 <script setup>
@@ -28,8 +31,6 @@ function searchIcons() {
 
 <style scoped>
 #searchInput {
-    height: 48px;
-    padding-left: 1rem;
-    min-width: 260px;
+  @apply h-12 pl-10 box-border
 }
 </style>

@@ -43,13 +43,21 @@ export default {
     },
     methods: {
         async downloadSVG() {
-            const svg = this.$refs.mySlot.innerHTML;
-            const blob = new Blob([svg.toString()]);
-            const element = document.createElement("a");
-            element.download = this.name.toLowerCase() + ".svg";
-            element.href = window.URL.createObjectURL(blob);
-            element.click();
-            element.remove();
+            try {
+                // Use require to get the correct path to the SVG file
+                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
+                const response = await fetch(iconPath);
+                if (!response.ok) throw new Error('Network response was not ok');
+                const svg = await response.text();
+                const blob = new Blob([svg], { type: 'image/svg+xml' });
+                const element = document.createElement("a");
+                element.download = `${this.name.toLowerCase()}.svg`;
+                element.href = window.URL.createObjectURL(blob);
+                element.click();
+                element.remove();
+            } catch (error) {
+                console.error('Failed to download SVG:', error);
+            }
         },
         async copyCode() {
             try {

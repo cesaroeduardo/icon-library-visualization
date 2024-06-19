@@ -8,12 +8,62 @@ body {
 }
 
 select, input {
-  @apply bg-neutral-100 cursor-pointer text-neutral-900 border border-neutral-200 placeholder:text-neutral-400 text-sm rounded-lg p-2.5 dark:bg-neutral-800 dark:placeholder:text-neutral-500 dark:text-neutral-300 dark:border-neutral-700;
+  @apply bg-neutral-100 cursor-pointer dark:text-neutral-300 border border-neutral-200 placeholder:text-neutral-400 text-sm rounded-lg p-2.5 dark:bg-neutral-800 dark:placeholder:text-neutral-500 dark:border-neutral-700;
 }
 input {
   cursor: text;
 }
-
+.input-container {
+  @apply flex items-center text-neutral-800 dark:text-neutral-300
+}
+.input-container i {
+  @apply absolute text-neutral-700 dark:text-neutral-400 ml-4 text-sm
+}
+.input-container select {
+  @apply pl-9
+}
 button {
   @apply bg-neutral-100 dark:bg-neutral-800 rounded-lg border dark:border-neutral-700 hover:bg-white hover:dark:bg-neutral-900 h-12 w-12 text-neutral-800 dark:text-gray-200
+}
+
+.select-container {
+  @apply w-full inline-block relative
+}
+
+.select-container select {
+  @apply appearance-none w-full pl-10 font-medium text-neutral-800 dark:text-neutral-300
+}
+
+.select-container > i:nth-child(1) {
+  @apply absolute left-4 top-[50%] -translate-y-1/2 text-sm text-neutral-700 dark:text-neutral-400 font-bold
+}
+.select-container .select-icon {
+  @apply absolute right-4 top-[50%] -translate-y-1/2 text-neutral-700 dark:text-neutral-400 text-xs
+}
+
+
+/* Custom Color Picker */
+.current-color, .vc-color-wrap {
+  @apply !shadow-none !rounded-md !w-full !w-20 !h-20
+}
+.vc-colorpicker {
+  @apply !bg-white dark:!bg-neutral-700 !shadow-none border border-neutral-200 dark:border-neutral-600 !rounded-lg !text-black dark:!text-white
+}
+.vc-compact {
+  @apply !shadow-none !w-[110%] -ml-0.5
+}
+.vc-color-input, .vc-color-input input, .vc-alpha-input, .vc-input-toggle{
+  @apply !text-black !bg-neutral-200 !rounded-sm
+}
+.vc-color-input input, .vc-alpha-input input {
+  @apply !cursor-text
+}
+.vc-display {
+  @apply !gap-1
+}
+.color-cube{
+  @apply pt-1
+}
+.color-cube {
+  @apply text-xs before:content-['\e957'] font-[primeicons] text-white before:active:content-['\e909']
 }
