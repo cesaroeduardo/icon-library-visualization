@@ -3,7 +3,7 @@
 ![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/d33c5604-5793-40c8-90ce-d374bef41e4b)
 
 
-# Project setup
+# Project Setup
 ## Installing Dependencies
 ```
 npm install
