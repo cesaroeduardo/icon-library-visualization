@@ -4,15 +4,18 @@
     <div class="w-full bg-neutral-200 dark:bg-neutral-900 overflow-hidden pb-5 gradient-mask-b-60 md:gradient-mask-b-60 px-4 md:px-8 top-0 z-20 py-4 md:py-8 sticky justify-center items-center flex flex-col">
       <div class="max-w-[1472px] w-full z-20 flex gap-2 md:gap-4 justify-between">
         <SearchBar class="w-full z-20" />
-        <button @click="toggleTheme" class="z-20">
+        <button @click="toggleTheme" class="z-20 hidden md:flex items-center justify-center h-12 w-12">
           <i :class="getThemeIcon()"></i>
+        </button>
+        <button @click="toggleBottombar" class="z-20 flex items-center justify-center h-12 w-12 md:hidden">
+          <i :class="[openBottombar ? 'pi pi-times' : 'pi pi-ellipsis-v']"></i>
         </button>
       </div>
       <div
-          v-for="(circleColor, index) in circleColors"
-          :key="index"
-          class="circle"
-          :style="{ backgroundColor: circleColor, top: circlePositions[index].top, left: circlePositions[index].left }">
+        v-for="(circleColor, index) in circleColors"
+        :key="index"
+        class="circle"
+        :style="{ backgroundColor: circleColor, top: circlePositions[index].top, left: circlePositions[index].left }">
       </div>
     </div>
     <div class="flex flex-col pb-8 w-full max-w-[1536px]">
@@ -51,7 +54,7 @@
           </div>
         </div>
         <!-- Comandos -->
-        <div class="flex flex-col gap-3 w-full md:flex-col md:w-64 md:sticky top-28 md:h-60 z-10">
+        <div class="flex-col gap-3 w-full md:flex-col md:w-64 md:sticky top-28 md:h-60 z-10 hidden md:flex">
           <div class="select-container w-full">
             <i class="pi pi-arrows-h mr-8"></i>
             <select v-model="selectedFontSize" class="w-full">
@@ -84,6 +87,46 @@
           </div>
         </div>
       </section>
+    </div>
+  </div>
+  <!-- Bottombar Mobile -->
+  <div v-if="openBottombar" class="flex w-full h-fit bottom-0 fixed bg-white z-30 rounded-t-xl md:hidden bg-neutral-300/90 dark:bg-neutral-800/90 border border-neutral-200 dark:border-neutral-600">
+    <div class="flex flex-col gap-3 w-full md:flex-col md:w-64 md:sticky top-28 md:h-60 z-10 px-4 pt-6 pb-8">
+      <!-- Comandos -->
+      <div class="select-container w-full">
+        <i class="pi pi-arrows-h mr-8"></i>
+        <select v-model="selectedFontSize" class="w-full">
+          <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
+            {{ fontSize.name }} ({{ fontSize.value }})
+          </option>
+        </select>
+        <i class="pi pi-chevron-down select-icon"></i>
+      </div>
+      <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+        <i class="pi pi-palette text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
+        <color-picker v-model:pureColor="pureColor"/>
+      </div>
+      <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+        <i class="pi pi-cog text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
+        <div class="radio-group">
+          <label class="w-full">
+            <input type="radio" value="svg" class="radio" v-model="downloadFormat" checked />
+            <div class="radio-container text-white p-8 checked:text-yellow-400">
+              .svg
+            </div>
+          </label>
+          <label class="w-full">
+            <input type="radio" value="png" class="radio" v-model="downloadFormat" />
+            <div class="radio-container">
+              .png
+            </div>
+          </label>
+        </div>
+      </div>
+      <!-- ToggleTheme -->
+      <button @click="toggleTheme" class="flex items-center justify-center h-12 w-full">
+        <i :class="getThemeIcon()"></i>
+      </button>
     </div>
   </div>
 </template>
@@ -126,7 +169,8 @@ export default {
         { name: '64px', value: 'text-6xl' },
       ],
       pureColor: 'rgb(133, 133, 133)',
-      downloadFormat: 'svg'
+      downloadFormat: 'svg',
+      openBottombar: false
     }
   },
   watch: {
@@ -136,7 +180,10 @@ export default {
     }
   },
   methods: {
-    toggleTheme
+    toggleTheme,
+    toggleBottombar() {
+      this.openBottombar = !this.openBottombar;
+    }
   },
 }
 </script>
