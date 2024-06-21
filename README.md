@@ -1,6 +1,6 @@
 # Icon Library Visualization
 ### [https://cesaroeduardo.github.io/icon-library-visualization](https://cesaroeduardo.github.io/icon-library-visualization/)
-![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/d33c5604-5793-40c8-90ce-d374bef41e4b)
+![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/e00573d9-12c5-4576-ac31-03edbe35e841)
 
 
 # Project Setup
