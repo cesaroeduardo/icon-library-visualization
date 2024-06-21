@@ -10,6 +10,9 @@
                 <button title="Download SVG" @click="downloadSVG" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
                     <i class="pi pi-download"></i>
                 </button>
+                <button title="Download PNG" @click="downloadPNG" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
+                    <i class="pi pi-image"></i>
+                </button>
                 <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
                     <i v-if="!showCheckIcon" class="pi pi-copy"></i>
                     <i v-if="showCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
@@ -18,6 +21,7 @@
         </div>
     </li>
 </template>
+
 
 <script>
 export default {
@@ -34,6 +38,14 @@ export default {
         keywords: {
             type: String,
             required: false,
+        },
+        color: {
+            type: String,
+            required: true,
+        },
+        size: {
+            type: String,
+            required: true,
         }
     },
     data() {
@@ -44,11 +56,33 @@ export default {
     methods: {
         async downloadSVG() {
             try {
-                // Use require to get the correct path to the SVG file
                 const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
                 const response = await fetch(iconPath);
                 if (!response.ok) throw new Error('Network response was not ok');
-                const svg = await response.text();
+                let svg = await response.text();
+                
+                // Modify SVG with the current color
+                svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+
+                // Extract dimensions from size class
+                const sizeMap = {
+                    'text-xs': 12,
+                    'text-sm': 16,
+                    'text-base': 20,
+                    'text-lg': 24,
+                    'text-xl': 28,
+                    'text-2xl': 32,
+                    'text-3xl': 40,
+                    'text-4xl': 48,
+                    'text-5xl': 56,
+                    'text-6xl': 64,
+                };
+                const dimension = sizeMap[this.size] || 100;
+
+                // Add width and height attributes to SVG
+                svg = svg.replace(/(width|height)="[^"]*"/g, '')
+                          .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
                 const element = document.createElement("a");
                 element.download = `${this.name.toLowerCase()}.svg`;
@@ -69,7 +103,59 @@ export default {
             } catch (error) {
                 console.error('Failed to copy:', error);
             }
+        },
+        async downloadPNG() {
+            try {
+                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
+                const response = await fetch(iconPath);
+                if (!response.ok) throw new Error('Network response was not ok');
+                let svg = await response.text();
+
+                // Modify SVG with the current color and size
+                svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+                
+                // Extract dimensions from size class
+                const sizeMap = {
+                    'text-xs': 12,
+                    'text-sm': 16,
+                    'text-base': 20,
+                    'text-lg': 24,
+                    'text-xl': 28,
+                    'text-2xl': 32,
+                    'text-3xl': 40,
+                    'text-4xl': 48,
+                    'text-5xl': 56,
+                    'text-6xl': 64,
+                };
+                const dimension = sizeMap[this.size] || 100;
+
+                svg = svg.replace(/(width|height)="[^"]*"/g, '')
+                          .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = dimension;
+                canvas.height = dimension;
+                const ctx = canvas.getContext('2d');
+
+                const img = new Image();
+                img.onload = () => {
+                    ctx.drawImage(img, 0, 0, dimension, dimension);
+                    canvas.toBlob((blob) => {
+                        const element = document.createElement("a");
+                        element.download = `${this.name.toLowerCase()}.png`;
+                        element.href = window.URL.createObjectURL(blob);
+                        element.click();
+                        element.remove();
+                    }, 'image/png');
+                };
+
+                const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
+                img.src = URL.createObjectURL(svgBlob);
+            } catch (error) {
+                console.error('Failed to download PNG:', error);
+            }
         }
     }
 };
 </script>
+

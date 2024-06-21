@@ -30,6 +30,8 @@
             :name="icon.name"
             :keywords="icon.keywords"
             :icon="icon.icon"
+            :color="IconsColor"
+            :size="selectedFontSize"
           >
             <i :class="'' + icon.icon + ' ' + selectedFontSize" :style="{ color: IconsColor }"></i>
           </icon-card>
@@ -58,6 +60,7 @@
     </section>
   </div>
 </template>
+
 
 <script>
 import IconCard from './components/IconCard.vue'
