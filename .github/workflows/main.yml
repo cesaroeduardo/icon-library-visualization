@@ -1,31 +1,17 @@
-name: Deploy to GH Pages
-
-on:
-  push:
-    branches:
-      - main
-
+name: Build and Deploy Vue Application to Github Pages
+on: 
+    push:
+        branch:
+            -main
 jobs:
-  build-deploy:
+  build_deploy_vue:
     runs-on: ubuntu-latest
-
+    name: Build and Deploy Vue
     steps:
-      - name: Checkout 🛎️
-        uses: actions/checkout@master
-        with:
-          persist-credentials: false
-
-      - name: Install 🔧
-        run: yarn install
-
-      - name: Build 🏗️
-        run: yarn build
-        env:
-          NODE_ENV: production
-
-      - name: Deploy to GH Pages 🚀
-        if: ${{ github.event_name != 'pull_request' }}
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: dist
+    - uses: actions/checkout@v2
+    - id: Build-Deploy-Vue
+      uses: thefrustrateddev/vue-deploy-github-pages@v1.0.0
+      with:
+        username: 'cesaroeduardo'
+        reponame: '{{icon-library-visualization}}'
+        token: ${{ secrets.GITHUB_TOKEN }} # no need to change this line this is used to create the branch in your application repository
