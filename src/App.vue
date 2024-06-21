@@ -2,7 +2,7 @@
   <div class="flex flex-col justify-center items-center w-full">
     <!-- Top Bar -->
     <div class="w-full bg-neutral-200 dark:bg-neutral-900 overflow-hidden pb-5 gradient-mask-b-60 md:gradient-mask-b-60 px-4 md:px-8 top-0 z-20 py-4 md:py-8 sticky justify-center items-center flex flex-col">
-      <div class="max-w-[1480px] w-full z-20 flex gap-4 justify-between">
+      <div class="max-w-[1480px] w-full z-20 flex gap-2 md:gap-4 justify-between">
         <SearchBar class="w-full z-20" />
         <button @click="toggleTheme" class="z-20">
           <i :class="getThemeIcon()"></i>
