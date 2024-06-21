@@ -6,9 +6,9 @@
 body {
   @apply bg-neutral-200 dark:bg-neutral-900;
 }
-
+/* Inputs Custom */
 select, input {
-  @apply bg-neutral-100/60 cursor-pointer dark:text-neutral-300 border border-neutral-200 placeholder:text-neutral-400 text-sm rounded-lg p-2.5 dark:bg-neutral-800/60 dark:placeholder:text-neutral-500 dark:border-neutral-700;
+  @apply bg-neutral-100/60 dark:bg-neutral-800/60 cursor-pointer dark:text-neutral-300 border border-neutral-200 dark:border-neutral-700 placeholder:text-neutral-400 text-sm rounded-lg p-2.5 dark:placeholder:text-neutral-500
 }
 input {
   cursor: text;
@@ -22,23 +22,40 @@ input {
 .input-container select {
   @apply pl-9
 }
-button {
-  @apply bg-neutral-100/60 dark:bg-neutral-800/60 rounded-lg border dark:border-neutral-700 hover:bg-white/70 hover:dark:bg-neutral-900/80 h-12 w-12 text-neutral-800 dark:text-gray-200
-}
-
 .select-container {
   @apply w-full inline-block relative
 }
-
 .select-container select {
   @apply appearance-none w-full pl-10 text-xs text-neutral-800 dark:text-neutral-300
 }
-
 .select-container > i:nth-child(1) {
-  @apply absolute left-4 top-[50%] -translate-y-1/2 text-xs text-neutral-700 dark:text-neutral-400 font-bold
+  @apply absolute left-4 top-[50%] -translate-y-1/2 text-xs text-neutral-700 dark:text-neutral-400
 }
 .select-container .select-icon {
   @apply absolute right-4 top-[50%] -translate-y-1/2 text-neutral-700 dark:text-neutral-400 text-xs
+}
+.radio-group {
+  @apply flex items-center rounded-md w-full overflow-hidden mr-3 border border-neutral-300 dark:border-neutral-700
+}
+.radio-group:first-child {
+  @apply rounded-lg
+}
+input[type="radio"] {
+  @apply flex absolute overflow-hidden h-0 w-0 bg-none
+}
+.radio-container {
+  @apply flex justify-center items-center w-full py-2 px-4 overflow-hidden text-xs text-neutral-800 dark:text-neutral-100 
+}
+.radio-container:hover {
+  @apply cursor-pointer bg-white/30 dark:bg-black/40
+}
+.radio:checked ~ .radio-container {
+  @apply bg-neutral-900 dark:bg-neutral-100 text-neutral-100 dark:text-neutral-900
+}
+
+/* Button Custom */
+button {
+  @apply bg-neutral-100/60 dark:bg-neutral-800/60 rounded-lg border dark:border-neutral-700 hover:bg-white/70 hover:dark:bg-neutral-900/80 h-12 w-12 text-neutral-800 dark:text-gray-200
 }
 
 

@@ -32,6 +32,7 @@
             :icon="icon.icon"
             :color="IconsColor"
             :size="selectedFontSize"
+            :download-format="downloadFormat"
           >
             <i :class="'' + icon.icon + ' ' + selectedFontSize" :style="{ color: IconsColor }"></i>
           </icon-card>
@@ -52,15 +53,31 @@
           </select>
           <i class="pi pi-chevron-down select-icon"></i>
         </div>
-        <div class="flex items-start gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
-          <i class="pi pi-palette text-xs ml-1 mt-1.5 text-neutral-700 dark:text-neutral-400"></i>
+        <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+          <i class="pi pi-palette text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
           <color-picker v-model:pureColor="pureColor"/>
+        </div>
+        <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+          <i class="pi pi-cog text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
+          <div class="radio-group">
+            <label class="w-full">
+              <input type="radio" value="svg" class="radio" v-model="downloadFormat" checked />
+              <div class="radio-container text-white p-8 checked:text-yellow-400">
+                .svg
+              </div>
+            </label>
+            <label class="w-full">
+              <input type="radio" value="png" class="radio" v-model="downloadFormat"  />
+              <div class="radio-container">
+                .png
+              </div>
+            </label>
+          </div>
         </div>
       </div>
     </section>
   </div>
 </template>
-
 
 <script>
 import IconCard from './components/IconCard.vue'
@@ -99,7 +116,8 @@ export default {
         { name: '56px', value: 'text-5xl' },
         { name: '64px', value: 'text-6xl' },
       ],
-      pureColor: 'rgb(243, 101, 43)'
+      pureColor: 'rgb(243, 101, 43)',
+      downloadFormat: 'svg'
     }
   },
   watch: {

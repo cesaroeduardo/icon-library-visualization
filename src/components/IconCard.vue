@@ -7,11 +7,8 @@
                 <slot></slot>
             </a>
             <div class="absolute bottom-0 right-0 flex items-center opacity-0 group-hover:opacity-100 transition-all duration-200">
-                <button title="Download SVG" @click="downloadSVG" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
+                <button :title="'Download ' + downloadFormat.toUpperCase()" @click="downloadIcon" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
                     <i class="pi pi-download"></i>
-                </button>
-                <button title="Download PNG" @click="downloadPNG" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
-                    <i class="pi pi-image"></i>
                 </button>
                 <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
                     <i v-if="!showCheckIcon" class="pi pi-copy"></i>
@@ -46,6 +43,10 @@ export default {
         size: {
             type: String,
             required: true,
+        },
+        downloadFormat: {
+            type: String,
+            required: true,
         }
     },
     data() {
@@ -54,6 +55,13 @@ export default {
         };
     },
     methods: {
+        async downloadIcon() {
+            if (this.downloadFormat === 'svg') {
+                this.downloadSVG();
+            } else {
+                this.downloadPNG();
+            }
+        },
         async downloadSVG() {
             try {
                 const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
@@ -93,17 +101,6 @@ export default {
                 console.error('Failed to download SVG:', error);
             }
         },
-        async copyCode() {
-            try {
-                await navigator.clipboard.writeText(`<i class='${this.icon.toLowerCase()}'></i>`);
-                this.showCheckIcon = true;
-                setTimeout(() => {
-                    this.showCheckIcon = false;
-                }, 1200);
-            } catch (error) {
-                console.error('Failed to copy:', error);
-            }
-        },
         async downloadPNG() {
             try {
                 const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
@@ -111,9 +108,9 @@ export default {
                 if (!response.ok) throw new Error('Network response was not ok');
                 let svg = await response.text();
 
-                // Modify SVG with the current color and size
+                // Modify SVG with the current color
                 svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
-                
+
                 // Extract dimensions from size class
                 const sizeMap = {
                     'text-xs': 12,
@@ -154,8 +151,18 @@ export default {
             } catch (error) {
                 console.error('Failed to download PNG:', error);
             }
+        },
+        async copyCode() {
+            try {
+                await navigator.clipboard.writeText(`<i class='${this.icon.toLowerCase()}'></i>`);
+                this.showCheckIcon = true;
+                setTimeout(() => {
+                    this.showCheckIcon = false;
+                }, 1200);
+            } catch (error) {
+                console.error('Failed to copy:', error);
+            }
         }
     }
 };
 </script>
-
