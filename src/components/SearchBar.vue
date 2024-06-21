@@ -37,6 +37,6 @@ function searchIcons() {
 
 <style scoped>
 #searchInput {
-  @apply h-12 pl-10 box-border
+  @apply h-12 pl-10 box-border text-xs
 }
 </style>
