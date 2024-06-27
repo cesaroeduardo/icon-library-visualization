@@ -1,7 +1,7 @@
 <template>
     <div class="input-container">
         <i class="pi pi-search"></i>
-        <input class="w-full" type="text" v-on:keyup="searchIcons()" id="searchInput" v-model="input" :placeholder="`Search by keywords in ${icons.length} icons...`"/>
+        <input class="w-full" autofocus type="text" v-on:keyup="searchIcons()" id="searchInput" v-model="input" :placeholder="`Search by keywords in ${icons.length} icons...`"/>
     </div>
 </template>
 
