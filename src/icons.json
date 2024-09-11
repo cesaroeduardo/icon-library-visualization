@@ -36,7 +36,6 @@
   { "name": "ai-remix", "icon": "ai ai-remix", "keywords": "remix, framework, logo" },
   { "name": "ai-secure-pillar", "icon": "ai ai-secure-pillar", "keywords": "secure, pillar" },
   { "name": "ai-store-pillar", "icon": "ai ai-store-pillar", "keywords": "store, pillar" },
-  { "name": "ai-twitter", "icon": "ai ai-twitter", "keywords": "twitter, social, x, logo" },
   { "name": "ai-variables", "icon": "ai ai-variables", "keywords": "variables, data" },
   { "name": "ai-vite", "icon": "ai ai-vite", "keywords": "vite, build tool, logo" },
   { "name": "ai-vue", "icon": "ai ai-vue", "keywords": "vue, framework, logo" },

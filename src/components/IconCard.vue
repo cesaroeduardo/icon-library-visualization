@@ -64,39 +64,44 @@ export default {
         },
         async downloadSVG() {
             try {
-                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
+                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);  // Ajuste para carregar corretamente o caminho
                 const response = await fetch(iconPath);
+
                 if (!response.ok) throw new Error('Network response was not ok');
+
                 let svg = await response.text();
-                
-                // Modify SVG with the current color
+
+                // Modifica o SVG com a cor atual
                 svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
 
-                // Extract dimensions from size class
+                // Mapeia o tamanho
                 const sizeMap = {
-                    'text-xs': 12,
-                    'text-sm': 16,
-                    'text-base': 20,
-                    'text-lg': 24,
-                    'text-xl': 28,
-                    'text-2xl': 32,
-                    'text-3xl': 40,
-                    'text-4xl': 48,
-                    'text-5xl': 56,
-                    'text-6xl': 64,
+                'text-xs': 12,
+                'text-sm': 16,
+                'text-base': 20,
+                'text-lg': 24,
+                'text-xl': 28,
+                'text-2xl': 32,
+                'text-3xl': 40,
+                'text-4xl': 48,
+                'text-5xl': 56,
+                'text-6xl': 64,
                 };
                 const dimension = sizeMap[this.size] || 100;
 
-                // Add width and height attributes to SVG
+                // Adiciona os atributos de largura e altura ao SVG
                 svg = svg.replace(/(width|height)="[^"]*"/g, '')
-                          .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+                        .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
 
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
-                const element = document.createElement("a");
-                element.download = `${this.name.toLowerCase()}.svg`;
-                element.href = window.URL.createObjectURL(blob);
-                element.click();
-                element.remove();
+                const url = window.URL.createObjectURL(blob);
+
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = `${this.name.toLowerCase()}.svg`;
+                document.body.appendChild(link);  // Adiciona o link ao DOM
+                link.click();  // Simula o clique no link
+                document.body.removeChild(link);  // Remove o link após o clique
             } catch (error) {
                 console.error('Failed to download SVG:', error);
             }
