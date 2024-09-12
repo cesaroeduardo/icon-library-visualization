@@ -3,7 +3,7 @@ const path = require('path');
 
 // Caminhos para a pasta SVG e para o arquivo JSON
 const svgFolder = path.join(__dirname, 'svg-raw');
-const jsonFilePath = path.join(__dirname, 'src/icons.json');
+const jsonFilePath = path.join(__dirname, '../icons.json');
 
 // Lê o arquivo JSON
 fs.readFile(jsonFilePath, 'utf8', (err, data) => {
