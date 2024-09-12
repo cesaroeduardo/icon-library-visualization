@@ -66,10 +66,12 @@
                 max="11"
                 @input="updateFontSize"
                 class="w-full slider-input"
+                :style="{ '--thumb-color': pureColor }"
                 style="cursor: grab;"
               />
               <p class="text-neutral-500 text-xs dark:text-neutral-400 w-12 text-left">{{ selectedFontSize }}px</p>
             </div>
+
           </div>
           <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
             <i class="pi pi-palette text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
@@ -110,6 +112,7 @@
             min="0"
             max="11"
             @input="updateFontSize"
+            :style="{ '--thumb-color': pureColor }"
             class="w-full slider-input"
           />
           <p class="text-neutral-500 dark:text-neutral-400 w-10 text-xs">{{ selectedFontSize }}px</p>
@@ -188,7 +191,9 @@ export default {
       this.openBottombar = !this.openBottombar;
     },
     updateFontSize() {
-      this.selectedFontSize = this.fontSizeValues[this.sliderValue];
+      window.requestAnimationFrame(() => {
+        this.selectedFontSize = this.fontSizeValues[this.sliderValue];
+      });
     }
   }
 }
@@ -210,7 +215,7 @@ export default {
   height: 0px;
   border-radius: 4px;
   transition: background 0.3s ease;
-  @apply dark:bg-neutral-300 bg-neutral-300
+  @apply bg-neutral-300 dark:bg-black/10 border-neutral-400/30 dark:border-neutral-400/25
 }
 
 .slider-input::-webkit-slider-thumb {
@@ -220,7 +225,7 @@ export default {
   height: 16px;
   border-radius: 50%;
   cursor: grab;
-  @apply dark:bg-black bg-neutral-600
+  background-color: var(--thumb-color, #4a5568); /* Aplica a cor da bolinha */
 }
 
 .slider-input::-moz-range-thumb {
@@ -228,7 +233,7 @@ export default {
   height: 16px;
   border-radius: 50%;
   cursor: grab;
-  @apply dark:bg-neutral-800 bg-neutral-600
+  background-color: var(--thumb-color, #4a5568); /* Aplica a cor da bolinha */
 }
 </style>
 
