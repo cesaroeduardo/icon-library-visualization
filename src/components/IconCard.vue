@@ -7,16 +7,16 @@
                 <slot></slot>
             </a>
             <div class="absolute bottom-0 right-0 flex items-center opacity-0 group-hover:opacity-100 transition-all duration-200">
-                <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
+                <button title="Copy code" @click="copyCode" class="rounded-none rounded-tl-md border-none bg-transparent h-10 w-10 text-xs">
                     <i v-if="!showCheckIcon" class="pi pi-code"></i>
                     <i v-if="showCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
-                </button>
-                <button :title="'Download ' + downloadFormat.toUpperCase()" @click="downloadIcon" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
-                    <i class="pi pi-download"></i>
                 </button>
                 <button :title="'Copy Image ' + downloadFormat.toUpperCase()" @click="copyImage" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
                     <i v-if="!showImageCheckIcon" class="pi pi-copy"></i>
                     <i v-if="showImageCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
+                </button>
+                <button :title="'Download ' + downloadFormat.toUpperCase()" @click="downloadIcon" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
+                    <i class="pi pi-download"></i>
                 </button>
             </div>
         </div>
