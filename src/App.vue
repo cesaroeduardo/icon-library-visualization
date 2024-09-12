@@ -191,7 +191,9 @@ export default {
       this.openBottombar = !this.openBottombar;
     },
     updateFontSize() {
-      this.selectedFontSize = this.fontSizeValues[this.sliderValue];
+      window.requestAnimationFrame(() => {
+        this.selectedFontSize = this.fontSizeValues[this.sliderValue];
+      });
     }
   }
 }
