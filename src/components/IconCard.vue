@@ -71,27 +71,34 @@ export default {
 
                 let svg = await response.text();
 
-                // Modifica o SVG com a cor atual
-                svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+                // Verifica e modifica o SVG para garantir que tenha 'fill', 'width', e 'height'
+                if (!svg.includes('fill=')) {
+                    svg = svg.replace(/<path/g, `<path fill="${this.color}"`);
+                } else {
+                    svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+                }
 
                 // Mapeia o tamanho
                 const sizeMap = {
-                'text-xs': 12,
-                'text-sm': 16,
-                'text-base': 20,
-                'text-lg': 24,
-                'text-xl': 28,
-                'text-2xl': 32,
-                'text-3xl': 40,
-                'text-4xl': 48,
-                'text-5xl': 56,
-                'text-6xl': 64,
+                    'text-xs': 12,
+                    'text-sm': 16,
+                    'text-base': 20,
+                    'text-lg': 24,
+                    'text-xl': 28,
+                    'text-2xl': 32,
+                    'text-3xl': 40,
+                    'text-4xl': 48,
+                    'text-5xl': 56,
+                    'text-6xl': 64,
                 };
                 const dimension = sizeMap[this.size] || 100;
 
-                // Adiciona os atributos de largura e altura ao SVG
-                svg = svg.replace(/(width|height)="[^"]*"/g, '')
-                        .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+                if (!svg.includes('width=')) {
+                    svg = svg.replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+                } else {
+                    svg = svg.replace(/(width|height)="[^"]*"/g, '')
+                            .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+                }
 
                 const blob = new Blob([svg], { type: 'image/svg+xml' });
                 const url = window.URL.createObjectURL(blob);
