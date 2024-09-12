@@ -36,15 +36,15 @@
         <div class="w-full flex flex-col gap-4 md:gap-8">
           <ul class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-3 gap-2 md:gap-4" id="myUL">
             <icon-card
-              v-for="icon in icons"
-              :key="icon.name"
-              :name="icon.name"
-              :keywords="icon.keywords"
-              :icon="icon.icon"
-              :color="IconsColor"
-              :size="selectedFontSize"
-              :download-format="downloadFormat"
-            >
+                v-for="icon in icons"
+                :key="icon.name"
+                :name="icon.name"
+                :keywords="icon.keywords"
+                :icon="icon.icon"
+                :color="IconsColor"
+                :size="`${selectedFontSize}px`"
+                :download-format="downloadFormat"
+              >
               <i :class="'' + icon.icon" :style="{ fontSize: selectedFontSize + 'px', color: IconsColor }"></i>
             </icon-card>
           </ul>
@@ -79,15 +79,15 @@
             <i class="pi pi-cog text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
             <div class="radio-group">
               <label class="w-full">
-                <input type="radio" value="svg" class="radio" v-model="downloadFormat" checked />
+                <input type="radio" value="png" class="radio" v-model="downloadFormat" checked />
                 <div class="radio-container text-white p-8 checked:text-yellow-400">
-                  .svg
+                  .png
                 </div>
               </label>
               <label class="w-full">
-                <input type="radio" value="png" class="radio" v-model="downloadFormat" />
+                <input type="radio" value="svg" class="radio" v-model="downloadFormat" />
                 <div class="radio-container">
-                  .png
+                  .svg
                 </div>
               </label>
             </div>
@@ -123,15 +123,15 @@
         <i class="pi pi-cog text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
         <div class="radio-group">
           <label class="w-full">
-            <input type="radio" value="svg" class="radio" v-model="downloadFormat" checked />
+            <input type="radio" value="png" class="radio" v-model="downloadFormat" checked />
             <div class="radio-container text-white p-8 checked:text-yellow-400">
-              .svg
+              .png
             </div>
           </label>
           <label class="w-full">
-            <input type="radio" value="png" class="radio" v-model="downloadFormat" />
+            <input type="radio" value="svg" class="radio" v-model="downloadFormat" />
             <div class="radio-container">
-              .png
+              .svg
             </div>
           </label>
         </div>
@@ -172,7 +172,7 @@ export default {
       fontSizeValues: [8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 320], // Exponential values
       icons: icons,
       pureColor: 'rgb(133, 133, 133)',
-      downloadFormat: 'svg',
+      downloadFormat: 'png',
       openBottombar: false
     }
   },
