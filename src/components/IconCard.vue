@@ -7,20 +7,24 @@
                 <slot></slot>
             </a>
             <div class="absolute bottom-0 right-0 flex items-center opacity-0 group-hover:opacity-100 transition-all duration-200">
+                <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
+                    <i v-if="!showCheckIcon" class="pi pi-code"></i>
+                    <i v-if="showCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
+                </button>
                 <button :title="'Download ' + downloadFormat.toUpperCase()" @click="downloadIcon" class="rounded-none border-none rounded-tl-md bg-transparent h-10 w-10 text-xs">
                     <i class="pi pi-download"></i>
                 </button>
-                <button title="Copy code" @click="copyCode" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
-                    <i v-if="!showCheckIcon" class="pi pi-copy"></i>
-                    <i v-if="showCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
+                <button :title="'Copy Image ' + downloadFormat.toUpperCase()" @click="copyImage" class="rounded-none border-none bg-transparent h-10 w-10 text-xs">
+                    <i v-if="!showImageCheckIcon" class="pi pi-copy"></i>
+                    <i v-if="showImageCheckIcon" class="pi pi-check text-green-500 dark:text-green-400"></i>
                 </button>
             </div>
         </div>
     </li>
 </template>
 
-
 <script>
+/* global ClipboardItem */
 export default {
     name: 'IconCard',
     props: {
@@ -51,7 +55,8 @@ export default {
     },
     data() {
         return {
-            showCheckIcon: false
+            showCheckIcon: false,
+            showImageCheckIcon: false // Estado para controlar o ícone de "check" no Copy Image
         };
     },
     methods: {
@@ -64,21 +69,19 @@ export default {
         },
         async downloadSVG() {
             try {
-                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);  // Ajuste para carregar corretamente o caminho
+                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
                 const response = await fetch(iconPath);
 
                 if (!response.ok) throw new Error('Network response was not ok');
 
                 let svg = await response.text();
 
-                // Verifica e modifica o SVG para garantir que tenha 'fill', 'width', e 'height'
                 if (!svg.includes('fill=')) {
                     svg = svg.replace(/<path/g, `<path fill="${this.color}"`);
                 } else {
                     svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
                 }
 
-                // Mapeia o tamanho
                 const sizeMap = {
                     'text-xs': 12,
                     'text-sm': 16,
@@ -106,9 +109,9 @@ export default {
                 const link = document.createElement('a');
                 link.href = url;
                 link.download = `${this.name.toLowerCase()}.svg`;
-                document.body.appendChild(link);  // Adiciona o link ao DOM
-                link.click();  // Simula o clique no link
-                document.body.removeChild(link);  // Remove o link após o clique
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             } catch (error) {
                 console.error('Failed to download SVG:', error);
             }
@@ -120,10 +123,8 @@ export default {
                 if (!response.ok) throw new Error('Network response was not ok');
                 let svg = await response.text();
 
-                // Modify SVG with the current color
                 svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
 
-                // Extract dimensions from size class
                 const sizeMap = {
                     'text-xs': 12,
                     'text-sm': 16,
@@ -174,7 +175,117 @@ export default {
             } catch (error) {
                 console.error('Failed to copy:', error);
             }
-        }
+        },
+        async copyImage() {
+            if (this.downloadFormat === 'svg') {
+                this.copySVG();
+            } else {
+                this.copyPNG();
+            }
+        },
+        async copySVG() {
+            try {
+                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
+                const response = await fetch(iconPath);
+
+                if (!response.ok) throw new Error('Network response was not ok');
+
+                let svg = await response.text();
+
+                // Verifica e modifica o SVG para garantir que tenha 'fill' e o tamanho correto
+                if (!svg.includes('fill=')) {
+                    svg = svg.replace(/<path/g, `<path fill="${this.color}"`);
+                } else {
+                    svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+                }
+
+                const sizeMap = {
+                    'text-xs': 12,
+                    'text-sm': 16,
+                    'text-base': 20,
+                    'text-lg': 24,
+                    'text-xl': 28,
+                    'text-2xl': 32,
+                    'text-3xl': 40,
+                    'text-4xl': 48,
+                    'text-5xl': 56,
+                    'text-6xl': 64,
+                };
+                const dimension = sizeMap[this.size] || 100;
+
+                if (!svg.includes('width=')) {
+                    svg = svg.replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+                } else {
+                    svg = svg.replace(/(width|height)="[^"]*"/g, '')
+                        .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+                }
+
+                // Copiamos o conteúdo SVG modificado como texto para o clipboard
+                await navigator.clipboard.writeText(svg);
+                console.log('SVG content copied to clipboard!');
+                
+                // Muda o ícone para "check" após a cópia
+                this.showImageCheckIcon = true;
+                setTimeout(() => {
+                    this.showImageCheckIcon = false;
+                }, 1200);
+            } catch (error) {
+                console.error('Failed to copy SVG content:', error);
+            }
+        },
+        async copyPNG() {
+            try {
+                const iconPath = require(`@/assets/svg-raw/${this.name}.svg`);
+                const response = await fetch(iconPath);
+                if (!response.ok) throw new Error('Network response was not ok');
+                let svg = await response.text();
+
+                svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
+
+                const sizeMap = {
+                    'text-xs': 12,
+                    'text-sm': 16,
+                    'text-base': 20,
+                    'text-lg': 24,
+                    'text-xl': 28,
+                    'text-2xl': 32,
+                    'text-3xl': 40,
+                    'text-4xl': 48,
+                    'text-5xl': 56,
+                    'text-6xl': 64,
+                };
+                const dimension = sizeMap[this.size] || 100;
+
+                svg = svg.replace(/(width|height)="[^"]*"/g, '')
+                    .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
+
+                const canvas = document.createElement('canvas');
+                canvas.width = dimension;
+                canvas.height = dimension;
+                const ctx = canvas.getContext('2d');
+
+                const img = new Image();
+                img.onload = async () => {
+                    ctx.drawImage(img, 0, 0, dimension, dimension);
+                    canvas.toBlob(async (blob) => {
+                        const clipboardItem = new ClipboardItem({ 'image/png': blob });
+                        await navigator.clipboard.write([clipboardItem]);
+                        console.log('PNG copied to clipboard!');
+
+                        // Muda o ícone para "check" após a cópia
+                        this.showImageCheckIcon = true;
+                        setTimeout(() => {
+                            this.showImageCheckIcon = false;
+                        }, 1200);
+                    }, 'image/png');
+                };
+
+                const svgBlob = new Blob([svg], { type: 'image/svg+xml' });
+                img.src = URL.createObjectURL(svgBlob);
+            } catch (error) {
+                console.error('Failed to copy PNG:', error);
+            }
+        },
     }
 };
 </script>
