@@ -46,7 +46,7 @@ export default {
         },
         size: {
             type: String,
-            required: true,
+            required: true, // Esse "size" pode ser uma classe do Tailwind CSS
         },
         downloadFormat: {
             type: String,
@@ -60,6 +60,29 @@ export default {
         };
     },
     methods: {
+        // Extração do valor em pixels de uma string no formato `text-[XXpx]`
+        getPixelSize(sizeClass) {
+        if (typeof sizeClass === 'string' && sizeClass.endsWith('px')) {
+            return parseInt(sizeClass.replace('px', ''), 10);
+        }
+        return sizeClass; // Se já for um número ou outra unidade que não é px, retorna diretamente
+    },
+        // Mapeia as classes do Tailwind para tamanhos reais em pixels
+        getDimension(sizeClass) {
+            const sizeMap = {
+                'text-xs': 12,
+                'text-sm': 16,
+                'text-base': 20,
+                'text-lg': 24,
+                'text-xl': 28,
+                'text-2xl': 32,
+                'text-3xl': 40,
+                'text-4xl': 48,
+                'text-5xl': 56,
+                'text-6xl': 64,
+            };
+            return sizeMap[sizeClass] || 100; // Valor padrão caso a classe não seja mapeada
+        },
         async downloadIcon() {
             if (this.downloadFormat === 'svg') {
                 this.downloadSVG();
@@ -82,19 +105,7 @@ export default {
                     svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
                 }
 
-                const sizeMap = {
-                    'text-xs': 12,
-                    'text-sm': 16,
-                    'text-base': 20,
-                    'text-lg': 24,
-                    'text-xl': 28,
-                    'text-2xl': 32,
-                    'text-3xl': 40,
-                    'text-4xl': 48,
-                    'text-5xl': 56,
-                    'text-6xl': 64,
-                };
-                const dimension = sizeMap[this.size] || 100;
+                const dimension = this.getPixelSize(this.size); // Usa o valor correto em pixels
 
                 if (!svg.includes('width=')) {
                     svg = svg.replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
@@ -125,19 +136,7 @@ export default {
 
                 svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
 
-                const sizeMap = {
-                    'text-xs': 12,
-                    'text-sm': 16,
-                    'text-base': 20,
-                    'text-lg': 24,
-                    'text-xl': 28,
-                    'text-2xl': 32,
-                    'text-3xl': 40,
-                    'text-4xl': 48,
-                    'text-5xl': 56,
-                    'text-6xl': 64,
-                };
-                const dimension = sizeMap[this.size] || 100;
+                const dimension = this.getDimension(this.size); // Usa o tamanho correto
 
                 svg = svg.replace(/(width|height)="[^"]*"/g, '')
                           .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
@@ -192,26 +191,13 @@ export default {
 
                 let svg = await response.text();
 
-                // Verifica e modifica o SVG para garantir que tenha 'fill' e o tamanho correto
                 if (!svg.includes('fill=')) {
                     svg = svg.replace(/<path/g, `<path fill="${this.color}"`);
                 } else {
                     svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
                 }
 
-                const sizeMap = {
-                    'text-xs': 12,
-                    'text-sm': 16,
-                    'text-base': 20,
-                    'text-lg': 24,
-                    'text-xl': 28,
-                    'text-2xl': 32,
-                    'text-3xl': 40,
-                    'text-4xl': 48,
-                    'text-5xl': 56,
-                    'text-6xl': 64,
-                };
-                const dimension = sizeMap[this.size] || 100;
+                const dimension = this.getPixelSize(this.size); // Usa o valor correto em pixels
 
                 if (!svg.includes('width=')) {
                     svg = svg.replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
@@ -220,11 +206,9 @@ export default {
                         .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
                 }
 
-                // Copiamos o conteúdo SVG modificado como texto para o clipboard
                 await navigator.clipboard.writeText(svg);
                 console.log('SVG content copied to clipboard!');
                 
-                // Muda o ícone para "check" após a cópia
                 this.showImageCheckIcon = true;
                 setTimeout(() => {
                     this.showImageCheckIcon = false;
@@ -242,19 +226,7 @@ export default {
 
                 svg = svg.replace(/fill="[^"]*"/g, `fill="${this.color}"`);
 
-                const sizeMap = {
-                    'text-xs': 12,
-                    'text-sm': 16,
-                    'text-base': 20,
-                    'text-lg': 24,
-                    'text-xl': 28,
-                    'text-2xl': 32,
-                    'text-3xl': 40,
-                    'text-4xl': 48,
-                    'text-5xl': 56,
-                    'text-6xl': 64,
-                };
-                const dimension = sizeMap[this.size] || 100;
+                const dimension = this.getPixelSize(this.size); // Usa o valor correto em pixels
 
                 svg = svg.replace(/(width|height)="[^"]*"/g, '')
                     .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
@@ -272,7 +244,6 @@ export default {
                         await navigator.clipboard.write([clipboardItem]);
                         console.log('PNG copied to clipboard!');
 
-                        // Muda o ícone para "check" após a cópia
                         this.showImageCheckIcon = true;
                         setTimeout(() => {
                             this.showImageCheckIcon = false;
