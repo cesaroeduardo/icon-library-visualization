@@ -103,7 +103,7 @@
       <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
         <i class="pi pi-arrows-h text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
         <!-- Slider for mobile -->
-        <div class="flex flex-col w-full items-center">
+        <div class="flex flex-row w-full items-center gap-2">
           <input
             type="range"
             v-model="sliderValue"
@@ -112,7 +112,7 @@
             @input="updateFontSize"
             class="w-full slider-input"
           />
-          <p class="text-neutral-500 dark:text-neutral-400">{{ selectedFontSize }}px</p>
+          <p class="text-neutral-500 dark:text-neutral-400 w-10 text-xs">{{ selectedFontSize }}px</p>
         </div>
       </div>
       <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
