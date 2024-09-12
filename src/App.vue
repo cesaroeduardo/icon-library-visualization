@@ -45,7 +45,7 @@
               :size="selectedFontSize"
               :download-format="downloadFormat"
             >
-              <i :class="'' + icon.icon + ' ' + selectedFontSize" :style="{ color: IconsColor }"></i>
+              <i :class="'' + icon.icon" :style="{ fontSize: selectedFontSize + 'px', color: IconsColor }"></i>
             </icon-card>
           </ul>
           <div class="text-neutral-700 dark:text-neutral-200 opacity-40 gap-2 w-full text-center justify-center items-center min-h-28 border border-neutral-200 dark:border-neutral-700 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-md text-xs flex px-4 py-8 ">
@@ -55,14 +55,21 @@
         </div>
         <!-- Comandos -->
         <div class="flex-col gap-3 w-full md:flex-col md:w-64 md:sticky top-28 md:h-60 z-10 hidden md:flex">
-          <div class="select-container w-full">
-            <i class="pi pi-arrows-h mr-8"></i>
-            <select v-model="selectedFontSize" class="w-full">
-              <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
-                {{ fontSize.name }} ({{ fontSize.value }})
-              </option>
-            </select>
-            <i class="pi pi-chevron-down select-icon"></i>
+          <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+            <i class="pi pi-arrows-h text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
+            <!-- Slider -->
+            <div class="flex flex-row w-full items-center gap-2">
+              <input
+                type="range"
+                v-model="sliderValue"
+                min="0"
+                max="11"
+                @input="updateFontSize"
+                class="w-full slider-input"
+                style="cursor: grab;"
+              />
+              <p class="text-neutral-500 text-xs dark:text-neutral-400 w-12 text-left">{{ selectedFontSize }}px</p>
+            </div>
           </div>
           <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
             <i class="pi pi-palette text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
@@ -93,14 +100,20 @@
   <div v-if="openBottombar" class="flex w-full h-fit bottom-0 fixed bg-white z-30 rounded-t-xl md:hidden bg-neutral-300/90 dark:bg-neutral-800/90 border border-neutral-200 dark:border-neutral-600">
     <div class="flex flex-col gap-3 w-full md:flex-col md:w-64 md:sticky top-28 md:h-60 z-10 px-4 pt-6 pb-8">
       <!-- Comandos -->
-      <div class="select-container w-full">
-        <i class="pi pi-arrows-h mr-8"></i>
-        <select v-model="selectedFontSize" class="w-full">
-          <option v-for="fontSize in fontSizes" :key="fontSize.value" :value="fontSize.value">
-            {{ fontSize.name }} ({{ fontSize.value }})
-          </option>
-        </select>
-        <i class="pi pi-chevron-down select-icon"></i>
+      <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
+        <i class="pi pi-arrows-h text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
+        <!-- Slider for mobile -->
+        <div class="flex flex-col w-full items-center">
+          <input
+            type="range"
+            v-model="sliderValue"
+            min="0"
+            max="11"
+            @input="updateFontSize"
+            class="w-full slider-input"
+          />
+          <p class="text-neutral-500 dark:text-neutral-400">{{ selectedFontSize }}px</p>
+        </div>
       </div>
       <div class="flex items-center gap-4 bg-neutral-100/60 py-2 border border-neutral-200 rounded-lg px-2.5 dark:bg-neutral-800/60 dark:border-neutral-700">
         <i class="pi pi-palette text-xs ml-1 text-neutral-700 dark:text-neutral-400"></i>
@@ -154,20 +167,10 @@ export default {
         { top: '20%', left: '90%' },
         { top: '80%', left: '20%' }
       ],
-      selectedFontSize: 'text-base',
+      selectedFontSize: 20, // Default font size
+      sliderValue: 2, // Default value in the exponential range
+      fontSizeValues: [8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 320], // Exponential values
       icons: icons,
-      fontSizes: [
-        { name: '12px', value: 'text-xs' },
-        { name: '16px', value: 'text-sm' },
-        { name: '20px', value: 'text-base' },
-        { name: '24px', value: 'text-lg' },
-        { name: '28px', value: 'text-xl' },
-        { name: '32px', value: 'text-2xl' },
-        { name: '40px', value: 'text-3xl' },
-        { name: '48px', value: 'text-4xl' },
-        { name: '56px', value: 'text-5xl' },
-        { name: '64px', value: 'text-6xl' },
-      ],
       pureColor: 'rgb(133, 133, 133)',
       downloadFormat: 'svg',
       openBottombar: false
@@ -183,8 +186,11 @@ export default {
     toggleTheme,
     toggleBottombar() {
       this.openBottombar = !this.openBottombar;
+    },
+    updateFontSize() {
+      this.selectedFontSize = this.fontSizeValues[this.sliderValue];
     }
-  },
+  }
 }
 </script>
 
@@ -196,4 +202,33 @@ export default {
   filter: blur(300px);
   position: absolute;
 }
+
+.slider-input {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 0px;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+  @apply dark:bg-neutral-300 bg-neutral-300
+}
+
+.slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: grab;
+  @apply dark:bg-black bg-neutral-600
+}
+
+.slider-input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  cursor: grab;
+  @apply dark:bg-neutral-800 bg-neutral-600
+}
 </style>
+
