@@ -1,0 +1,15 @@
+<!doctype html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="/favicon.ico"><title>icon-library-visualization</title><script defer="defer" src="/chunk-vendors.7af7cde3efcbf657.js"></script><script defer="defer" src="/app.ec1bb0bbc4173813.js"></script><link href="/css/chunk-vendors.5477d0d3.css" rel="stylesheet"><link href="/css/app.cdb938e4.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but icon-library-visualization doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><script>function copyCode() {
+          const name = document.getElementsByClassName('name')[0];
+          navigator.clipboard.writeText("<azn-icon name='" + name.innerText.toLowerCase() + "' />");
+      }
+  
+      function downloadSVG() {
+          const svg = document.getElementById('svg').innerHTML;
+          const blob = new Blob([svg.toString()]);
+          const element = document.createElement("a");
+          const name = document.getElementsByClassName('name')[0];
+          element.download = name.innerText.toLowerCase() + ".svg";
+          element.href = window.URL.createObjectURL(blob);
+          element.click();
+          element.remove();
+      }</script><div id="app"></div></body></html>
