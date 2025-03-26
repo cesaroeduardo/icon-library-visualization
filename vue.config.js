@@ -1,3 +1,15 @@
 module.exports = {
-  publicPath: '/icon-library-visualization/'
+  publicPath: '/',
+  devServer: {
+    port: 3333,
+    historyApiFallback: true,
+    hot: true,
+    open: true
+  },
+  configureWebpack: {
+    output: {
+      filename: '[name].[contenthash].js',
+      chunkFilename: '[name].[contenthash].js'
+    }
+  }
 }

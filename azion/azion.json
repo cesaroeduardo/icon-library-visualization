@@ -1,0 +1,53 @@
+{
+  "name": "icon-library",
+  "bucket": "icon-library",
+  "preset": "vue",
+  "env": "production",
+  "prefix": "20250326233530",
+  "not-first-run": true,
+  "function": {
+    "id": 41845,
+    "name": "__DEFAULT__",
+    "file": ".edge/worker.js",
+    "args": "azion/args.json",
+    "instance-id": 39536,
+    "instance-name": "__DEFAULT__",
+    "cache-id": 0
+  },
+  "application": {
+    "id": 1743027022,
+    "name": "__DEFAULT__"
+  },
+  "domain": {
+    "id": 1743025290,
+    "name": "icon-library",
+    "domain_name": "z8evt7cvz7.map.azionedge.net",
+    "url": "https://z8evt7cvz7.map.azionedge.net"
+  },
+  "rt-purge": {
+    "purge_on_publish": true
+  },
+  "origin": [
+    {
+      "origin-id": 203710,
+      "origin-key": "b64e4af7-4309-433e-9cf8-da32c19edc44",
+      "name": "origin-storage-default"
+    }
+  ],
+  "rules-engine": {
+    "created": false,
+    "rules": [
+      {
+        "id": 388757,
+        "name": "Deliver Static Assets",
+        "phase": "request"
+      },
+      {
+        "id": 388758,
+        "name": "Handle SPA Routes",
+        "phase": "request"
+      }
+    ]
+  },
+  "cache-settings": []
+}

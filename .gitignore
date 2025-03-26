@@ -3,3 +3,6 @@ node_modules
 .DS_Store
 
 dist
+#Paths added by Azion CLI
+.edge/
+.vulcan
