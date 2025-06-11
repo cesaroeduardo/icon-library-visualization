@@ -3,7 +3,7 @@
   "bucket": "icon-library",
   "preset": "vue",
   "env": "production",
-  "prefix": "20250326233530",
+  "prefix": "20250327134510",
   "not-first-run": true,
   "function": {
     "id": 41845,
@@ -29,8 +29,8 @@
   },
   "origin": [
     {
-      "origin-id": 203710,
-      "origin-key": "b64e4af7-4309-433e-9cf8-da32c19edc44",
+      "origin-id": 203726,
+      "origin-key": "4f83cf02-dca1-489d-98ce-1f6cd69de3be",
       "name": "origin-storage-default"
     }
   ],
@@ -38,13 +38,18 @@
     "created": false,
     "rules": [
       {
+        "id": 388801,
+        "name": "Set Storage Origin for All Requests",
+        "phase": "request"
+      },
+      {
         "id": 388757,
         "name": "Deliver Static Assets",
         "phase": "request"
       },
       {
-        "id": 388758,
-        "name": "Handle SPA Routes",
+        "id": 388802,
+        "name": "Redirect to index.html",
         "phase": "request"
       }
     ]
