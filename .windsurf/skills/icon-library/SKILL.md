@@ -17,30 +17,45 @@ description: |
 
 Provides icons from the Azion Icon Library with context-aware output formats.
 
-## Two Integration Approaches
+## CRITICAL: Icon Font Availability
 
-### 1. SVG Approach (Recommended - No Dependencies)
+### `ai-*` Azion Icons - ALWAYS USE SVG
 
-**Best for:** New projects, blogs, docs, marketing, any context without icon font setup.
+The Azion icon font (`azionicons.woff2`) is **NOT loaded by default** in most contexts.
+
+**`<i class="ai ai-application"></i>` will NOT render** unless the target project explicitly loads:
+- The `azionicons.woff2` font file
+- The CSS with `@font-face` and class definitions
+
+**For `ai-*` icons: ALWAYS provide inline SVG** from `assets/svg/`.
+
+### `pi-*` PrimeIcons - Font classes usually work
+
+PrimeIcons are loaded automatically in projects using PrimeVue/PrimeReact.
+
+**`<i class="pi pi-home"></i>` works** in most Vue/React projects with PrimeVue.
+
+## Icon Prefixes
+
+- **`ai-*`** - Azion-specific icons → **USE SVG** (font rarely available)
+- **`pi-*`** - PrimeIcons → Font class OK if PrimeVue is loaded, otherwise use SVG
+
+## Integration Approaches
+
+### 1. SVG Approach (Recommended - Always Works)
+
+**Use for:** ALL `ai-*` icons, and `pi-*` when unsure about font availability.
 
 - Read SVG from `assets/svg/{icon-name}.svg`
 - Copy/paste inline or reference as image
 - Works anywhere, no setup required
 - Supports multi-color icons
 
-### 2. Icon Font Approach (Requires Font Setup)
+### 2. Icon Font Approach (Limited Use)
 
-**Best for:** Projects that already have Azion icon fonts installed.
+**Use ONLY for `pi-*` icons** in projects with PrimeVue/PrimeReact.
 
-Requires:
-- Font files: `azionicons.woff2`, `primeicons.woff2`
-- CSS with icon class definitions
-- Only use if project already has these configured
-
-## Icon Prefixes
-
-- **`ai-*`** - Azion-specific icons (products, frameworks, services)
-- **`pi-*`** - PrimeIcons general-purpose icons (UI elements)
+**NEVER use `<i class="ai ai-*">` unless you've verified the Azion font is loaded.**
 
 ## Finding Icons
 
@@ -101,13 +116,13 @@ ai-application
 
 ## Decision Logic
 
-| Context | Has Icon Font? | Output |
-|---------|----------------|--------|
-| Vue/React/HTML | Yes | `<i class="ai ai-{name}"></i>` |
-| Vue/React/HTML | No | Inline SVG from `assets/svg/` |
-| Blog/Marketing | N/A | Inline SVG |
-| Markdown docs | N/A | SVG image or inline |
-| CMS/Struct field | N/A | Icon name only |
+| Icon Type | Context | Output |
+|-----------|---------|--------|
+| `ai-*` | ANY context | **Inline SVG** from `assets/svg/` |
+| `pi-*` | PrimeVue project | `<i class="pi pi-{name}"></i>` |
+| `pi-*` | Other contexts | Inline SVG from `assets/svg/` |
+| Any | CMS/Struct field | Icon name only (e.g., `ai-firewall`) |
+| Any | Markdown docs | SVG image reference or inline |
 
 ## Common Icons Quick Reference
 
