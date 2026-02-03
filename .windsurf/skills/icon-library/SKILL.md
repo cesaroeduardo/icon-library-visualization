@@ -126,7 +126,6 @@ ai-application
 | `ai-certificate-manager` | Certificate Manager |
 | `ai-orchestrator` | Orchestrator |
 | `ai-network-shield` | Network Shield |
-| `ai-domains` | Domains |
 | `ai-waf-rules` | WAF Rules |
 
 ### Frameworks
