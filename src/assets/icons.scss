@@ -49,7 +49,7 @@
 .ai.ai-domains::before {
   content: '\ea06';
 }
-.ai.ai-edge-application::before {
+.ai.ai-application::before {
   content: '\ea08';
 }
 .ai.ai-build-pillar::before {
@@ -61,16 +61,16 @@
 .ai.ai-secure-pillar::before {
   content: '\ea10';
 }
-.ai.ai-edge-firewall::before {
+.ai.ai-firewall::before {
   content: '\ea11';
 }
-.ai.ai-edge-dns::before {
+.ai.ai-dns::before {
   content: '\ea12';
 }
 .ai.ai-deploy-pillar::before {
   content: '\ea13';
 }
-.ai.ai-edge-nodes::before {
+.ai.ai-nodes::before {
   content: '\ea14';
 }
 .ai.ai-observe-pillar::before {
@@ -79,7 +79,7 @@
 .ai.ai-data-stream::before {
   content: '\ea16';
 }
-.ai.ai-edge-pulse::before {
+.ai.ai-pulse::before {
   content: '\ea17';
 }
 .ai.ai-real-time-metrics::before {
@@ -91,19 +91,19 @@
 .ai.ai-real-time-purge::before {
   content: '\ea20';
 }
-.ai.ai-edge-libraries::before {
+.ai.ai-libraries::before {
   content: '\ea21';
 }
-.ai.ai-edge-functions::before {
+.ai.ai-functions::before {
   content: '\ea22';
 }
-.ai.ai-edge-services::before {
+.ai.ai-services::before {
   content: '\ea23';
 }
-.ai.ai-digital-certificates::before {
+.ai.ai-certificate-manager::before {
   content: '\ea24';
 }
-.ai.ai-network-lists::before {
+.ai.ai-network-shield::before {
   content: '\ea25';
 }
 .ai.ai-waf-rules::before {
@@ -112,16 +112,16 @@
 .ai.ai-store-pillar::before {
   content: '\ea27';
 }
-.ai.ai-edge-storage::before {
+.ai.ai-storage::before {
   content: '\ea28';
 }
-.ai.ai-edge-sql::before {
+.ai.ai-sql::before {
   content: '\ea29';
 }
-.ai.ai-edge-kv::before {
+.ai.ai-kv::before {
   content: '\ea30';
 }
-.ai.ai-edge-orchestrator::before {
+.ai.ai-orchestrator::before {
   content: '\ea31';
 }
 .ai.ai-nextjs::before {
@@ -175,7 +175,7 @@
 .ai.ai-custom-pages::before {
   content: '\ea48';
 }
-.ai.ai-edge-connectors::before {
+.ai.ai-connectors::before {
   content: '\ea49';
 }
 .ai.ai-workloads::before {
@@ -214,10 +214,10 @@
 .ai.ai-graphql::before {
   content: '\ea61';
 }
-.ai.ai-edge-kv::before {
+.ai.ai-kv::before {
   content: '\ea62';
 }
-.ai.ai-edge-ai::before {
+.ai.ai-ai::before {
   content: '\ea63';
 }
 .ai.ai-azion-cli::before {
