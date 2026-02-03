@@ -57,6 +57,59 @@ PrimeIcons are loaded automatically in projects using PrimeVue/PrimeReact.
 
 **NEVER use `<i class="ai ai-*">` unless you've verified the Azion font is loaded.**
 
+## Setting Up Azion Icon Font (Optional)
+
+If you want `<i class="ai ai-*">` to work in your project, you need:
+
+### Step 1: Copy font file
+Copy `azionicons.woff2` to your project's assets folder.
+
+### Step 2: Create CSS file (`azionicons.css`)
+```css
+@font-face {
+  font-family: 'azionicons';
+  src: url('./azionicons.woff2') format('woff2');
+}
+
+.ai {
+  font-family: 'azionicons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Icon class definitions */
+.ai.ai-application::before { content: '\ea08'; }
+.ai.ai-firewall::before { content: '\ea11'; }
+.ai.ai-functions::before { content: '\ea22'; }
+.ai.ai-storage::before { content: '\ea28'; }
+.ai.ai-sql::before { content: '\ea29'; }
+.ai.ai-kv::before { content: '\ea30'; }
+.ai.ai-orchestrator::before { content: '\ea31'; }
+.ai.ai-certificate-manager::before { content: '\ea24'; }
+.ai.ai-network-shield::before { content: '\ea25'; }
+/* See icons.scss for complete list */
+```
+
+### Step 3: Import CSS globally
+```js
+// In main.js, App.vue, or _app.tsx
+import './assets/azionicons.css';
+```
+
+### Step 4: Use icon classes
+```html
+<i class="ai ai-application"></i>
+```
+
+**Note:** The complete `icons.scss` with all icon mappings is available in the icon-library-visualization repository.
+
 ## Finding Icons
 
 Search `references/icons-catalog.json` by keyword:
