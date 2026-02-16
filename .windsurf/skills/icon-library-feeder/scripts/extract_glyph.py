@@ -45,31 +45,125 @@ def extract_glyph_to_svg(font, glyph_name, width=24, height=24):
         glyph_set = font.getGlyphSet()
         glyph = glyph_set[glyph_name]
         
-        # Try to get glyph coordinates and build SVG path
+        # Try to extract the actual glyph path using fontTools
+        try:
+            from fontTools.pens.svgPathPen import SVGPathPen
+            
+            # Create SVG path pen
+            pen = SVGPathPen(glyphSet=glyph_set)
+            glyph.draw(pen)
+            
+            # Get the path data
+            path_data = pen.getCommands()
+            
+            # Convert commands to SVG path string
+            if path_data:
+                # Join all commands into a single path string
+                svg_path = "".join(str(cmd) for cmd in path_data)
+                
+                # Extract coordinates from path to calculate proper viewBox
+                import re
+                coords = re.findall(r'(\d+(?:\.\d+)?)', svg_path)
+                if coords:
+                    coords = [float(c) for c in coords]
+                    min_x = min(coords[::2])  # Every other coordinate starting from 0
+                    max_x = max(coords[::2])
+                    min_y = min(coords[1::2]) # Every other coordinate starting from 1
+                    max_y = max(coords[1::2])
+                    
+                    # Calculate scale to fit in 24x24 with some padding
+                    path_width = max_x - min_x
+                    path_height = max_y - min_y
+                    scale = min(20 / path_width, 20 / path_height) if path_width > 0 and path_height > 0 else 0.024
+                    
+                    # Center the icon
+                    center_x = (min_x + max_x) / 2
+                    center_y = (min_y + max_y) / 2
+                    
+                    # Create SVG with simple fixed transformation
+                    svg = f'''<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">
+  <g transform="scale({scale}) translate({12/scale - center_x}, {12/scale - center_y + 2})">
+    <path d="{svg_path}" fill="currentColor"/>
+  </g>
+</svg>'''
+                else:
+                    # Fallback transformation
+                    svg = f'''<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">
+  <g transform="scale(0.012) translate(0, 0)">
+    <path d="{svg_path}" fill="currentColor"/>
+  </g>
+</svg>'''
+                
+                return svg
+        except Exception as e:
+            print(f"⚠️  SVGPathPen failed: {e}")
+        
+        # If SVGPathPen doesn't work, try manual extraction
         if hasattr(glyph, 'coordinates') and hasattr(glyph, 'endPts'):
             coordinates = glyph.coordinates
+            endPts = glyph.endPts
+            flags = glyph.flags if hasattr(glyph, 'flags') else None
+            
             if len(coordinates) > 0:
-                # Simple path extraction - create basic shape
-                path_data = []
+                # Build SVG path from coordinates
+                path_commands = []
                 
-                # For now, create a simple placeholder based on glyph complexity
-                if hasattr(glyph, 'flags'):
-                    # More complex glyph
-                    path_data.append(f"M 6 6 L 18 6 L 18 18 L 6 18 Z")
+                # Scale coordinates to fit in the viewBox and center the icon
+                # Find bounding box first
+                min_x = min(x for x, y in coordinates)
+                max_x = max(x for x, y in coordinates)
+                min_y = min(y for x, y in coordinates)
+                max_y = max(y for x, y in coordinates)
+                
+                # Calculate scale to fit in 20x20 (leaving 2px margin)
+                icon_width = max_x - min_x
+                icon_height = max_y - min_y
+                scale = min(20 / icon_width, 20 / icon_height) if icon_width > 0 and icon_height > 0 else 0.024
+                
+                # Center the icon in the 24x24 viewBox
+                offset_x = (24 - icon_width * scale) / 2 - min_x * scale
+                offset_y = (24 - icon_height * scale) / 2 - min_y * scale
+                
+                # Simple path extraction for complex glyphs
+                if flags and len(flags) > 0:
+                    # More complex glyph with multiple contours
+                    current_contour = 0
+                    for i, (x, y) in enumerate(coordinates):
+                        x_scaled = x * scale + offset_x
+                        y_scaled = y * scale + offset_y  # Don't flip Y axis for now
+                        
+                        if i == 0 or (current_contour < len(endPts) and i == endPts[current_contour] + 1):
+                            # Start new contour
+                            path_commands.append(f"M {x_scaled:.1f} {y_scaled:.1f}")
+                            if current_contour < len(endPts) and i == endPts[current_contour] + 1:
+                                current_contour += 1
+                        else:
+                            # Line to next point
+                            path_commands.append(f"L {x_scaled:.1f} {y_scaled:.1f}")
                 else:
                     # Simple glyph
-                    path_data.append(f"M 8 8 L 16 8 L 16 16 L 8 16 Z")
+                    for i, (x, y) in enumerate(coordinates):
+                        x_scaled = x * scale + offset_x
+                        y_scaled = y * scale + offset_y  # Don't flip Y axis for now
+                        
+                        if i == 0:
+                            path_commands.append(f"M {x_scaled:.1f} {y_scaled:.1f}")
+                        else:
+                            path_commands.append(f"L {x_scaled:.1f} {y_scaled:.1f}")
                 
-                path = " ".join(path_data)
+                # Close the path
+                path_commands.append("Z")
                 
-                # Create SVG
+                svg_path = " ".join(path_commands)
+                
                 svg = f'''<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">
-  <path d="{path}" fill="currentColor"/>
+  <path d="{svg_path}" fill="currentColor"/>
 </svg>'''
                 
                 return svg
         
         # Fallback: create placeholder SVG
+        print(f"⚠️  Could not extract path for glyph {glyph_name}, using placeholder")
         return f'''<svg width="{width}" height="{height}" viewBox="0 0 {width} {height}" xmlns="http://www.w3.org/2000/svg">
   <rect x="2" y="2" width="20" height="20" fill="currentColor" opacity="0.3"/>
   <text x="12" y="16" text-anchor="middle" fill="currentColor" font-size="8">?</text>

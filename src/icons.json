@@ -35,64 +35,74 @@
     "name": "ai-deploy-pillar"
   },
   {
-    "icon": "ai ai-application",
-    "keywords": "application, app, software, demo",
-    "name": "ai-application"
+    "icon": "ai ai-digital-certificates",
+    "keywords": "certificates, digital, ssl, tls",
+    "name": "ai-digital-certificates"
   },
   {
-    "icon": "ai ai-dns",
-    "keywords": "dns, domain name system",
-    "name": "ai-dns"
+    "icon": "ai ai-domains",
+    "keywords": "domains, web",
+    "name": "ai-domains"
   },
   {
-    "icon": "ai ai-firewall",
+    "icon": "ai ai-edge-application",
+    "keywords": "edge, application",
+    "name": "ai-edge-application"
+  },
+  {
+    "icon": "ai ai-edge-dns",
+    "keywords": "dns, edge",
+    "name": "ai-edge-dns"
+  },
+  {
+    "icon": "ai ai-edge-firewall",
     "keywords": "firewall, security",
-    "name": "ai-firewall"
+    "name": "ai-edge-firewall"
   },
   {
-    "icon": "ai ai-functions",
-    "keywords": "functions, serverless",
-    "name": "ai-functions"
+    "icon": "ai ai-edge-functions",
+    "keywords": "functions, edge",
+    "name": "ai-edge-functions"
   },
   {
-    "icon": "ai ai-kv",
-    "keywords": "kv store, key-value, storage",
-    "name": "ai-kv"
+    "icon": "ai ai-edge-kv",
+    "keywords": "kv, edge",
+    "name": "ai-edge-kv"
   },
   {
-    "icon": "ai ai-libraries",
-    "keywords": "libraries, sdk",
-    "name": "ai-libraries"
+    "icon": "ai ai-edge-libraries",
+    "keywords": "libraries, edge",
+    "name": "ai-edge-libraries"
   },
   {
-    "icon": "ai ai-nodes",
-    "keywords": "nodes, infrastructure",
-    "name": "ai-nodes"
+    "icon": "ai ai-edge-nodes",
+    "keywords": "nodes, edge",
+    "name": "ai-edge-nodes"
   },
   {
-    "icon": "ai ai-orchestrator",
-    "keywords": "orchestrator, deployment",
-    "name": "ai-orchestrator"
+    "icon": "ai ai-edge-orchestrator",
+    "keywords": "orchestrator, edge",
+    "name": "ai-edge-orchestrator"
   },
   {
-    "icon": "ai ai-pulse",
-    "keywords": "pulse, monitoring",
-    "name": "ai-pulse"
+    "icon": "ai ai-edge-pulse",
+    "keywords": "pulse, edge",
+    "name": "ai-edge-pulse"
   },
   {
-    "icon": "ai ai-sql",
-    "keywords": "sql database, sql, database",
-    "name": "ai-sql"
+    "icon": "ai ai-edge-sql",
+    "keywords": "sql, edge",
+    "name": "ai-edge-sql"
   },
   {
-    "icon": "ai ai-services",
-    "keywords": "services",
-    "name": "ai-services"
+    "icon": "ai ai-edge-services",
+    "keywords": "services, edge",
+    "name": "ai-edge-services"
   },
   {
-    "icon": "ai ai-storage",
-    "keywords": "object storage, storage, s3",
-    "name": "ai-storage"
+    "icon": "ai ai-edge-storage",
+    "keywords": "storage, edge",
+    "name": "ai-edge-storage"
   },
   {
     "icon": "ai ai-eleventy",
@@ -120,14 +130,14 @@
     "name": "ai-marketplace"
   },
   {
-    "icon": "ai ai-network-shield",
-    "keywords": "network shield, network layer protection, security",
-    "name": "ai-network-shield"
+    "icon": "ai ai-network-lists",
+    "keywords": "network, lists",
+    "name": "ai-network-lists"
   },
   {
-    "icon": "ai ai-nextjs",
+    "icon": "ai ai-next",
     "keywords": "next.js, framework",
-    "name": "ai-nextjs"
+    "name": "ai-next"
   },
   {
     "icon": "ai ai-observe-pillar",
@@ -170,9 +180,9 @@
     "name": "ai-secure-pillar"
   },
   {
-    "icon": "ai ai-store-pillar",
+    "icon": "ai ai-store",
     "keywords": "store, pillar",
-    "name": "ai-store-pillar"
+    "name": "ai-store"
   },
   {
     "icon": "ai ai-variables",
@@ -220,9 +230,9 @@
     "name": "ai-custom-pages"
   },
   {
-    "icon": "ai ai-connectors",
-    "keywords": "connectors, integration, connectivity",
-    "name": "ai-connectors"
+    "icon": "ai ai-edge-connectors",
+    "keywords": "edge connectors, integration, connectivity",
+    "name": "ai-edge-connectors"
   },
   {
     "icon": "ai ai-workloads",
@@ -285,14 +295,14 @@
     "name": "ai-graphql"
   },
   {
-    "icon": "ai ai-kv",
-    "keywords": "kv store, key-value, storage, database",
-    "name": "ai-kv"
+    "icon": "ai ai-edge-kv",
+    "keywords": "edge KV, key-value, storage, database",
+    "name": "ai-edge-kv"
   },
   {
-    "icon": "ai ai-ai",
-    "keywords": "AI, artificial intelligence, machine learning",
-    "name": "ai-ai"
+    "icon": "ai ai-edge-ai",
+    "keywords": "edge AI, artificial intelligence, machine learning",
+    "name": "ai-edge-ai"
   },
   {
     "icon": "ai ai-azion-cli",
@@ -378,6 +388,31 @@
     "icon": "ai ai-lora",
     "keywords": "LoRa, wireless, IoT, networking, protocol",
     "name": "ai-lora"
+  },
+  {
+    "icon": "ai ai-datasheet",
+    "keywords": "datasheet, document, information, specs",
+    "name": "ai-datasheet"
+  },
+  {
+    "icon": "ai ai-scizors",
+    "keywords": "scizors, cut, scissors, edit",
+    "name": "ai-scizors"
+  },
+  {
+    "icon": "ai ai-json",
+    "keywords": "json, data, format, file",
+    "name": "ai-json"
+  },
+  {
+    "icon": "ai ai-layers",
+    "keywords": "layers, stack, hierarchy, organization",
+    "name": "ai-layers"
+  },
+  {
+    "icon": "ai ai-filter-alt",
+    "keywords": "filter, alt, alternative, search, refine",
+    "name": "ai-filter-alt"
   },
   {
     "icon": "pi pi-download",
@@ -1948,25 +1983,5 @@
     "icon": "pi pi-spinner",
     "keywords": "spinner",
     "name": "pi-spinner"
-  },
-  {
-    "icon": "ai ai-datasheet",
-    "keywords": "datasheet, data, sheet, spreadsheet",
-    "name": "ai-datasheet"
-  },
-  {
-    "icon": "ai ai-json",
-    "keywords": "json, data, format, file",
-    "name": "ai-json"
-  },
-  {
-    "icon": "ai ai-edge-application",
-    "keywords": "edge, application, app, computing",
-    "name": "ai-edge-application"
-  },
-  {
-    "icon": "ai ai-digital-certificates",
-    "keywords": "certificate manager, certificates, ssl, tls",
-    "name": "ai-digital-certificates"
   }
 ]
