@@ -166,7 +166,22 @@ export default {
         },
         async copyCode() {
             try {
-                await navigator.clipboard.writeText(`<i class='${this.icon.toLowerCase()}'></i>`);
+                const textToCopy = `<i class='${this.icon.toLowerCase()}'></i>`;
+                
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(textToCopy);
+                } else {
+                    // Fallback for browsers without clipboard API
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+                
                 this.showCheckIcon = true;
                 setTimeout(() => {
                     this.showCheckIcon = false;
@@ -206,7 +221,19 @@ export default {
                         .replace(/<svg/, `<svg width="${dimension}" height="${dimension}"`);
                 }
 
-                await navigator.clipboard.writeText(svg);
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    await navigator.clipboard.writeText(svg);
+                } else {
+                    // Fallback for browsers without clipboard API
+                    const textArea = document.createElement('textarea');
+                    textArea.value = svg;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '-9999px';
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
                 console.log('SVG content copied to clipboard!');
                 
                 this.showImageCheckIcon = true;
@@ -240,14 +267,40 @@ export default {
                 img.onload = async () => {
                     ctx.drawImage(img, 0, 0, dimension, dimension);
                     canvas.toBlob(async (blob) => {
-                        const clipboardItem = new ClipboardItem({ 'image/png': blob });
-                        await navigator.clipboard.write([clipboardItem]);
-                        console.log('PNG copied to clipboard!');
+                        try {
+                            if (typeof ClipboardItem !== 'undefined' && navigator.clipboard && navigator.clipboard.write) {
+                                const clipboardItem = new ClipboardItem({ 'image/png': blob });
+                                await navigator.clipboard.write([clipboardItem]);
+                                console.log('PNG copied to clipboard!');
+                            } else {
+                                // Fallback: copy as base64 data URL text
+                                const reader = new FileReader();
+                                reader.onloadend = async () => {
+                                    const base64data = reader.result;
+                                    if (navigator.clipboard && navigator.clipboard.writeText) {
+                                        await navigator.clipboard.writeText(base64data);
+                                    } else {
+                                        const textArea = document.createElement('textarea');
+                                        textArea.value = base64data;
+                                        textArea.style.position = 'fixed';
+                                        textArea.style.left = '-9999px';
+                                        document.body.appendChild(textArea);
+                                        textArea.select();
+                                        document.execCommand('copy');
+                                        document.body.removeChild(textArea);
+                                    }
+                                    console.log('PNG copied as base64 to clipboard!');
+                                };
+                                reader.readAsDataURL(blob);
+                            }
 
-                        this.showImageCheckIcon = true;
-                        setTimeout(() => {
-                            this.showImageCheckIcon = false;
-                        }, 1200);
+                            this.showImageCheckIcon = true;
+                            setTimeout(() => {
+                                this.showImageCheckIcon = false;
+                            }, 1200);
+                        } catch (err) {
+                            console.error('Failed to copy PNG to clipboard:', err);
+                        }
                     }, 'image/png');
                 };
 
