@@ -211,13 +211,13 @@
 .pi.pi-sort-numeric-up::before {
   content: '\f141';
 }
-.pi.pi-sort-numeric-down::before {
+.pi.pi-sort-numeric-up-alt::before {
   content: '\f142';
 }
-.pi.pi-sort-numeric-alt-up::before {
+.pi.pi-sort-numeric-down::before {
   content: '\f143';
 }
-.pi.pi-sort-numeric-alt-down::before {
+.pi.pi-sort-numeric-down-alt::before {
   content: '\f144';
 }
 .pi.pi-sort-down::before {
@@ -247,13 +247,13 @@
 .pi.pi-sort-alpha-up::before {
   content: '\f14d';
 }
-.pi.pi-sort-alpha-down::before {
+.pi.pi-sort-alpha-up-alt::before {
   content: '\f14e';
 }
-.pi.pi-sort-alpha-alt-up::before {
+.pi.pi-sort-alpha-down::before {
   content: '\f14f';
 }
-.pi.pi-sort-alpha-alt-down::before {
+.pi.pi-sort-alpha-down-alt::before {
   content: '\f150';
 }
 .pi.pi-sliders-v::before {
@@ -472,7 +472,7 @@
 .pi.pi-images::before {
   content: '\f198';
 }
-.pi.pi-image-81::before {
+.pi.pi-image::before {
   content: '\f199';
 }
 .pi.pi-id-card::before {
@@ -853,7 +853,7 @@
 .pi.pi-at::before {
   content: '\f217';
 }
-.pi.pi-asteriks::before {
+.pi.pi-asterisk::before {
   content: '\f218';
 }
 .pi.pi-arrows-v::before {
@@ -940,18 +940,24 @@
 .pi.pi-android::before {
   content: '\f234';
 }
-.pi.pi-align-right::before {
+.pi.pi-amazon::before {
   content: '\f235';
 }
-.pi.pi-align-left::before {
+.pi.pi-align-right::before {
   content: '\f236';
 }
-.pi.pi-align-justify::before {
+.pi.pi-align-left::before {
   content: '\f237';
 }
-.pi.pi-align-center::before {
+.pi.pi-align-justify::before {
   content: '\f238';
 }
-.pi.pi-address-book::before {
+.pi.pi-align-center::before {
   content: '\f239';
+}
+.pi.pi-address-book::before {
+  content: '\f23a';
+}
+.pi.ai-sparkles::before {
+  content: '\f23b';
 }
