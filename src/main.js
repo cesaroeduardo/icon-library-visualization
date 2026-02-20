@@ -2,7 +2,8 @@ import { createApp } from 'vue'
 import './assets/main.css'
 import App from './App.vue'
 import Vue3ColorPicker from "vue3-colorpicker"
-import './assets/icons.scss'
+import './assets/icons-new.scss'
+// import './assets/icons.scss'
 import "vue3-colorpicker/style.css"
 import { initializeTheme } from './theme'
 
