@@ -210,11 +210,6 @@
     "name": "ai-medium"
   },
   {
-    "icon": "ai ai-ask-azion",
-    "keywords": "ask azion, AI assistant, support, help",
-    "name": "ai-ask-azion"
-  },
-  {
     "icon": "ai ai-sparkles",
     "keywords": "sparkles, magic, effects, enhancement",
     "name": "ai-sparkles"
