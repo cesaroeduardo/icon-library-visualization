@@ -3,7 +3,7 @@ const BASESVGPATH = './src/assets/svg-raw'
 const FONTTYPES =  ['woff2']
 const FONTHEIGHT = 1000
 const JSONIdent = 2
-const OUTPUTDIR = './src/assets/icon-fonts/new'
+const OUTPUTDIR = './src/assets/icon-fonts'
 const TEMPLATE = {
   css: './templates/css.hbs'
 }

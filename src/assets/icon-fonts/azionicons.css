@@ -52,10 +52,10 @@
 .ai.ai-terraform::before {
   content: '\f10c';
 }
-.ai.ai-technical-account::before {
+.ai.ai-technical-support::before {
   content: '\f10d';
 }
-.ai.ai-technical-support::before {
+.ai.ai-technical-account::before {
   content: '\f10e';
 }
 .ai.ai-store::before {
