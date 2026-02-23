@@ -17,7 +17,7 @@
 import { readdirSync, readFileSync } from 'node:fs';
 import { join, basename } from 'node:path';
 
-const SVG_DIRS = ['svg/ai', 'svg/pi'];
+const SVG_DIRS = ['./src/assets/svg-raw/ai/', './src/assets/svg-raw/pi'];
 const EXPECTED_VIEWBOX = '0 0 24 24';
 
 const issues = {
