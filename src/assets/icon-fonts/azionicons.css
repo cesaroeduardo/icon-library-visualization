@@ -1,0 +1,279 @@
+@font-face {
+  font-family: 'azionicons';
+  src: url('azionicons.woff2') format('woff2');
+}
+
+.ai {
+  font-family: 'azionicons';
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+  display: inline-block;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.ai.ai-x::before {
+  content: '\f101';
+}
+.ai.ai-workloads::before {
+  content: '\f102';
+}
+.ai.ai-waf-rules::before {
+  content: '\f103';
+}
+.ai.ai-vuepress::before {
+  content: '\f104';
+}
+.ai.ai-vue::before {
+  content: '\f105';
+}
+.ai.ai-vitepress::before {
+  content: '\f106';
+}
+.ai.ai-vite::before {
+  content: '\f107';
+}
+.ai.ai-variables::before {
+  content: '\f108';
+}
+.ai.ai-twitch::before {
+  content: '\f109';
+}
+.ai.ai-turso::before {
+  content: '\f10a';
+}
+.ai.ai-tiered-cache::before {
+  content: '\f10b';
+}
+.ai.ai-terraform::before {
+  content: '\f10c';
+}
+.ai.ai-technical-support::before {
+  content: '\f10d';
+}
+.ai.ai-technical-account::before {
+  content: '\f10e';
+}
+.ai.ai-store::before {
+  content: '\f10f';
+}
+.ai.ai-sparkles::before {
+  content: '\f110';
+}
+.ai.ai-security-team::before {
+  content: '\f111';
+}
+.ai.ai-secure-pillar::before {
+  content: '\f112';
+}
+.ai.ai-scizors::before {
+  content: '\f113';
+}
+.ai.ai-rss::before {
+  content: '\f114';
+}
+.ai.ai-remix::before {
+  content: '\f115';
+}
+.ai.ai-redis::before {
+  content: '\f116';
+}
+.ai.ai-real-time-purge::before {
+  content: '\f117';
+}
+.ai.ai-real-time-metrics::before {
+  content: '\f118';
+}
+.ai.ai-real-time-events::before {
+  content: '\f119';
+}
+.ai.ai-react::before {
+  content: '\f11a';
+}
+.ai.ai-qwik::before {
+  content: '\f11b';
+}
+.ai.ai-professional-services::before {
+  content: '\f11c';
+}
+.ai.ai-preact::before {
+  content: '\f11d';
+}
+.ai.ai-pratices-review::before {
+  content: '\f11e';
+}
+.ai.ai-origin-shield::before {
+  content: '\f11f';
+}
+.ai.ai-open::before {
+  content: '\f120';
+}
+.ai.ai-observe-pillar::before {
+  content: '\f121';
+}
+.ai.ai-nuxt::before {
+  content: '\f122';
+}
+.ai.ai-next::before {
+  content: '\f123';
+}
+.ai.ai-network-lists::before {
+  content: '\f124';
+}
+.ai.ai-medium::before {
+  content: '\f125';
+}
+.ai.ai-marketplace::before {
+  content: '\f126';
+}
+.ai.ai-lora::before {
+  content: '\f127';
+}
+.ai.ai-load-balancer::before {
+  content: '\f128';
+}
+.ai.ai-live-ingest::before {
+  content: '\f129';
+}
+.ai.ai-layers::before {
+  content: '\f12a';
+}
+.ai.ai-json::before {
+  content: '\f12b';
+}
+.ai.ai-jekyll::before {
+  content: '\f12c';
+}
+.ai.ai-integration-services::before {
+  content: '\f12d';
+}
+.ai.ai-instructor::before {
+  content: '\f12e';
+}
+.ai.ai-hugo::before {
+  content: '\f12f';
+}
+.ai.ai-hono::before {
+  content: '\f130';
+}
+.ai.ai-home::before {
+  content: '\f131';
+}
+.ai.ai-hexo::before {
+  content: '\f132';
+}
+.ai.ai-graphql::before {
+  content: '\f133';
+}
+.ai.ai-gatsby::before {
+  content: '\f134';
+}
+.ai.ai-gateway::before {
+  content: '\f135';
+}
+.ai.ai-filter-alt::before {
+  content: '\f136';
+}
+.ai.ai-eleventy::before {
+  content: '\f137';
+}
+.ai.ai-edge-storage::before {
+  content: '\f138';
+}
+.ai.ai-edge-sql::before {
+  content: '\f139';
+}
+.ai.ai-edge-services::before {
+  content: '\f13a';
+}
+.ai.ai-edge-pulse::before {
+  content: '\f13b';
+}
+.ai.ai-edge-orchestrator::before {
+  content: '\f13c';
+}
+.ai.ai-edge-nodes::before {
+  content: '\f13d';
+}
+.ai.ai-edge-libraries::before {
+  content: '\f13e';
+}
+.ai.ai-edge-kv::before {
+  content: '\f13f';
+}
+.ai.ai-edge-functions::before {
+  content: '\f140';
+}
+.ai.ai-edge-firewall::before {
+  content: '\f141';
+}
+.ai.ai-edge-dns::before {
+  content: '\f142';
+}
+.ai.ai-edge-connectors::before {
+  content: '\f143';
+}
+.ai.ai-edge-application::before {
+  content: '\f144';
+}
+.ai.ai-edge-ai::before {
+  content: '\f145';
+}
+.ai.ai-domains::before {
+  content: '\f146';
+}
+.ai.ai-docusaurus::before {
+  content: '\f147';
+}
+.ai.ai-digital-certificates::before {
+  content: '\f148';
+}
+.ai.ai-deploy-pillar::before {
+  content: '\f149';
+}
+.ai.ai-datasheet::before {
+  content: '\f14a';
+}
+.ai.ai-data-stream::before {
+  content: '\f14b';
+}
+.ai.ai-custom-pages::before {
+  content: '\f14c';
+}
+.ai.ai-configuration-service::before {
+  content: '\f14d';
+}
+.ai.ai-column::before {
+  content: '\f14e';
+}
+.ai.ai-business-support::before {
+  content: '\f14f';
+}
+.ai.ai-build-pillar::before {
+  content: '\f150';
+}
+.ai.ai-azion::before {
+  content: '\f151';
+}
+.ai.ai-azion-cli::before {
+  content: '\f152';
+}
+.ai.ai-azion-api::before {
+  content: '\f153';
+}
+.ai.ai-astro::before {
+  content: '\f154';
+}
+.ai.ai-ask-azion::before {
+  content: '\f155';
+}
+.ai.ai-angular::before {
+  content: '\f156';
+}
+.ai.ai-ai-pillar::before {
+  content: '\f157';
+}

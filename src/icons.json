@@ -215,11 +215,6 @@
     "name": "ai-ask-azion"
   },
   {
-    "icon": "ai ai-sparkles",
-    "keywords": "sparkles, magic, effects, enhancement",
-    "name": "ai-sparkles"
-  },
-  {
     "icon": "ai ai-rss",
     "keywords": "rss, feed, syndication, news",
     "name": "ai-rss"
@@ -641,7 +636,7 @@
   },
   {
     "icon": "pi pi-sparkles",
-    "keywords": "sparkles",
+    "keywords": "sparkles, magic, stars, glitter",
     "name": "pi-sparkles"
   },
   {

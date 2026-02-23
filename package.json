@@ -1,18 +1,21 @@
 {
-  "name": "icon-library-visualization",
+  "name": "azion-icons",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build:package": "node scripts/build.js",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "format": "prettier --write scripts/ src/"
   },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.24.7",
     "axios": "^1.7.7",
     "azion": "^1.17.4",
     "core-js": "^3.8.3",
+    "fantasticon": "^4.1.0",
     "tailwind-gradient-mask-image": "^1.2.0",
     "vue": "^3.2.13",
     "vue3-colorpicker": "^2.3.0"
