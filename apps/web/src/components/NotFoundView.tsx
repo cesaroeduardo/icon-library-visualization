@@ -215,8 +215,11 @@ export function NotFoundView({
     setGrids([emptyCells(), emptyCells(), emptyCells()])
   }
 
+  const isBlank = grids.every((grid) => grid.every((cell) => !cell))
+
   return (
-    <main className="relative h-dvh w-full overflow-hidden bg-background">
+    <main className="relative h-dvh w-full overflow-hidden bg-background" aria-label="404">
+      <h1 className="sr-only">{t.title}</h1>
       <div className="absolute inset-0 grid grid-cols-3">
         {(['4', '0', '4'] as const).map((digit, i) => (
           <DrawGrid
@@ -258,9 +261,14 @@ export function NotFoundView({
           </ActionButton>
         </div>
 
-        <h1 className="pointer-events-none text-center text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-tight drop-shadow-sm">
+        <p
+          aria-hidden={!isBlank}
+          className={`pointer-events-none text-center text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-tight transition-opacity duration-200 ${
+            isBlank ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
           {t.title}
-        </h1>
+        </p>
 
         <div className="pointer-events-auto flex flex-wrap items-center justify-center gap-2">
           <ActionButton variant="primary" size="md" onClick={onHome}>
