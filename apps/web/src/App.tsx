@@ -32,19 +32,6 @@ import { SkillsSection } from '@/components/SkillsSection'
 import { DocsView } from '@/components/DocsView'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, type Lang } from '@/content'
 
-const POPULAR_NAMES = [
-  'search',
-  'heart',
-  'chevron-right',
-  'check',
-  'x',
-  'eye',
-  'home',
-  'settings',
-  'star',
-  'refresh-cw'
-]
-
 export function App() {
   const [lang, setLang] = useState<Lang>(() => {
     const saved = localStorage.getItem('icon-library-lang')
@@ -153,12 +140,6 @@ export function App() {
       active = false
     }
   }, [])
-
-  const popularIcons = POPULAR_NAMES.map((name) =>
-    demoIcons.find((i) => i.name === name)
-  ).filter((x): x is DemoIcon => Boolean(x))
-
-  const displayPopular = popularIcons.length >= 6 ? popularIcons : demoIcons.slice(0, 10)
 
   async function copyCloneCmd() {
     try {
@@ -343,49 +324,13 @@ export function App() {
                 </div>
               </motion.div>
 
-              {/* Right Column: Popular Icons Row + TUFFUI Quickstart Shell Card */}
+              {/* Right Column: TUFFUI Quickstart Shell Card */}
               <motion.div
                 initial={{ opacity: 0, y: 14 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: 0.08 }}
                 className="lg:col-span-6 space-y-4"
               >
-                {/* Popular icons preview strip */}
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between px-1">
-                    <span className="text-xs font-medium text-muted-foreground">
-                      {t.hero.popularLabel}
-                    </span>
-                    <Tag>WOFF2 · TTF</Tag>
-                  </div>
-                  <div className="grid grid-cols-5 sm:grid-cols-10 gap-1.5">
-                    {(displayPopular.length > 0 ? displayPopular : Array.from({ length: 10 })).map(
-                      (icon, idx) => (
-                        <a
-                          key={typeof icon === 'object' && icon ? icon.name : idx}
-                          href="#explorer"
-                          title={typeof icon === 'object' && icon ? icon.name : ''}
-                          className="h-11 rounded-xl bg-surface hover:bg-surface-raised flex items-center justify-center text-foreground transition-colors"
-                        >
-                          {typeof icon === 'object' && icon ? (
-                            <span
-                              style={{
-                                fontFamily: demoFamily ? `'${demoFamily}'` : undefined,
-                                fontSize: '20px'
-                              }}
-                              className="leading-none"
-                            >
-                              {icon.char}
-                            </span>
-                          ) : (
-                            <span className="w-4 h-4 rounded bg-foreground/10 animate-pulse" />
-                          )}
-                        </a>
-                      )
-                    )}
-                  </div>
-                </div>
-
                 {/* TUFFUI Quickstart Shell -> Panel -> Inset */}
                 <Shell>
                   <div className="flex items-center justify-between px-3 py-2">
