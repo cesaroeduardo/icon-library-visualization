@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
-import { Search, X, Check, ArrowUpRight } from 'lucide-react'
-import { Shell, Panel, Inset, StatusPill, ActionButton, ActionLink } from '@/components/ui/tuff'
+import { Search, X, Check, ArrowUpRight, Code2, Copy, Download } from 'lucide-react'
+import { Shell, Panel, StatusPill, ActionButton, ActionLink } from '@/components/ui/tuff'
 import { copy, type Lang } from '@/content'
 
 export interface DemoIcon {
@@ -8,6 +8,7 @@ export interface DemoIcon {
   icon: string
   keywords: string
   char: string
+  svg?: string
 }
 
 interface IconExplorerProps {
@@ -19,13 +20,26 @@ interface IconExplorerProps {
 
 const PAGE_SIZE = 60
 
+function prepareSvg(raw: string, dimension: number) {
+  let svg = raw
+  if (!svg.includes('viewBox')) {
+    svg = svg.replace('<svg', '<svg viewBox="0 0 24 24"')
+  }
+  svg = svg.replace(/\s*(width|height)="[^"]*"/g, '')
+  svg = svg.replace('<svg', `<svg width="${dimension}" height="${dimension}"`)
+  if (!svg.includes('xmlns=')) {
+    svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"')
+  }
+  return svg
+}
+
 export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerProps) {
   const t = copy[lang].explorer
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<'default' | 'az'>('default')
   const [size, setSize] = useState<16 | 24 | 48>(24)
   const [page, setPage] = useState(1)
-  const [copiedName, setCopiedName] = useState<string | null>(null)
+  const [feedback, setFeedback] = useState<{ key: string; label: string } | null>(null)
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -45,17 +59,53 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
   const sliceStart = (safePage - 1) * PAGE_SIZE
   const visible = filtered.slice(sliceStart, sliceStart + PAGE_SIZE)
 
-  async function handleCopy(item: DemoIcon) {
+  function showFeedback(key: string, label: string) {
+    setFeedback({ key, label })
+    setTimeout(() => {
+      setFeedback((prev) => (prev?.key === key ? null : prev))
+    }, 1400)
+  }
+
+  async function handleCopyCode(item: DemoIcon) {
     const snippet = `<i class="${item.icon}"></i>`
     try {
       await navigator.clipboard.writeText(snippet)
-      setCopiedName(item.name)
-      setTimeout(() => {
-        setCopiedName((prev) => (prev === item.name ? null : prev))
-      }, 1400)
+      showFeedback(`code:${item.name}`, t.copiedToast.replace('{snippet}', snippet))
     } catch {
-      // ignore clipboard errors
+      // ignore
     }
+  }
+
+  async function handleCopySvg(item: DemoIcon) {
+    if (!item.svg) return
+    try {
+      const svg = prepareSvg(item.svg, size)
+      await navigator.clipboard.writeText(svg)
+      showFeedback(
+        `svg:${item.name}`,
+        lang === 'pt' ? `SVG copiado: ${item.name}.svg` : `Copied SVG: ${item.name}.svg`
+      )
+    } catch {
+      // ignore
+    }
+  }
+
+  function handleDownloadSvg(item: DemoIcon) {
+    if (!item.svg) return
+    const svg = prepareSvg(item.svg, size)
+    const blob = new Blob([svg], { type: 'image/svg+xml' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${item.name.toLowerCase()}.svg`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+    showFeedback(
+      `dl:${item.name}`,
+      lang === 'pt' ? `Baixado: ${item.name}.svg` : `Downloaded: ${item.name}.svg`
+    )
   }
 
   return (
@@ -109,7 +159,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
             <div className="inline-flex items-center rounded-full bg-foreground/[0.05] p-0.5">
               <button
                 onClick={() => setSort('default')}
-                className={`h-7 px-3 rounded-full text-xs font-medium transition-colors ${
+                className={`h-7 px-3 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                   sort === 'default'
                     ? 'bg-surface-raised text-foreground'
                     : 'text-muted-foreground hover:text-foreground'
@@ -119,7 +169,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
               </button>
               <button
                 onClick={() => setSort('az')}
-                className={`h-7 px-3 rounded-full text-xs font-medium transition-colors ${
+                className={`h-7 px-3 rounded-full text-xs font-medium transition-colors cursor-pointer ${
                   sort === 'az'
                     ? 'bg-surface-raised text-foreground'
                     : 'text-muted-foreground hover:text-foreground'
@@ -135,7 +185,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
                 <button
                   key={px}
                   onClick={() => setSize(px)}
-                  className={`h-7 px-2.5 rounded-full text-[11px] font-medium transition-colors ${
+                  className={`h-7 px-2.5 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${
                     size === px
                       ? 'bg-surface-raised text-foreground'
                       : 'text-muted-foreground hover:text-foreground'
@@ -146,7 +196,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
               ))}
             </div>
 
-            <ActionLink href="./studio/#demo" variant="secondary" size="sm">
+            <ActionLink href="./studio/" variant="secondary" size="sm">
               <span>{t.openFull}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </ActionLink>
@@ -155,44 +205,42 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
 
         {/* Inner Panel holding the Icon Grid */}
         <Panel className="p-3 sm:p-4">
-          {copiedName && (
+          {feedback && (
             <div className="mb-3 flex justify-end">
               <StatusPill tone="positive" size="sm">
                 <Check className="w-3 h-3" />
-                <span>{t.copiedToast.replace('{snippet}', `<i class="ic ${copiedName}"></i>`)}</span>
+                <span>{feedback.label}</span>
               </StatusPill>
             </div>
           )}
 
           {loading ? (
-            <div className="grid grid-cols-3 sm:grid-cols-6 md:grid-cols-10 gap-2">
-              {Array.from({ length: 30 }).map((_, idx) => (
-                <div
-                  key={idx}
-                  className="h-20 rounded-xl bg-foreground/[0.04] animate-pulse"
-                />
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2.5">
+              {Array.from({ length: 24 }).map((_, idx) => (
+                <div key={idx} className="h-28 rounded-2xl bg-foreground/[0.04] animate-pulse" />
               ))}
             </div>
           ) : visible.length === 0 ? (
             <div className="py-16 text-center text-sm text-muted-foreground">{t.empty}</div>
           ) : (
-            <div className="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-8 lg:grid-cols-10 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2.5">
               {visible.map((item) => {
-                const isCopied = copiedName === item.name
+                const copiedCode = feedback?.key === `code:${item.name}`
+                const copiedSvg = feedback?.key === `svg:${item.name}`
                 return (
-                  <button
+                  <div
                     key={item.name}
-                    onClick={() => handleCopy(item)}
-                    title={`Click to copy <i class="${item.icon}"></i>`}
-                    className="group relative flex flex-col items-center justify-center gap-2 rounded-xl bg-foreground/[0.03] hover:bg-foreground/[0.08] p-3 min-h-[84px] transition-colors cursor-pointer active:scale-[0.97]"
+                    className="group relative flex flex-col items-center justify-center rounded-2xl bg-foreground/[0.03] hover:bg-foreground/[0.07] p-3 min-h-[116px] transition-colors"
                   >
-                    {isCopied && (
-                      <span className="absolute top-1.5 right-1.5 h-4 w-4 rounded-full bg-positive/20 text-positive flex items-center justify-center">
-                        <Check className="w-2.5 h-2.5" />
-                      </span>
-                    )}
                     <span
-                      className="leading-none text-foreground transition-transform group-hover:scale-110"
+                      className="absolute top-2.5 left-3 right-3 text-[10px] font-mono text-muted-foreground truncate"
+                      title={item.name}
+                    >
+                      {item.name}
+                    </span>
+
+                    <span
+                      className="leading-none text-foreground pt-3 transition-transform group-hover:scale-105"
                       style={{
                         fontFamily: fontFamily ? `'${fontFamily}'` : undefined,
                         fontSize: `${size}px`
@@ -200,10 +248,40 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
                     >
                       {item.char}
                     </span>
-                    <span className="text-[10px] font-mono text-muted-foreground truncate w-full text-center">
-                      {item.name}
-                    </span>
-                  </button>
+
+                    {/* Hover Action Pill Bar: Copy Code, Copy SVG, Download SVG */}
+                    <div className="absolute bottom-2 right-2 flex items-center gap-0.5 p-1 rounded-full bg-surface-raised opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
+                      <button
+                        onClick={() => handleCopyCode(item)}
+                        title={lang === 'pt' ? 'Copiar código HTML' : 'Copy HTML code'}
+                        className="h-6 w-6 rounded-full inline-flex items-center justify-center text-muted-foreground hover:bg-foreground/[0.08] hover:text-foreground cursor-pointer transition-colors"
+                      >
+                        {copiedCode ? (
+                          <Check className="w-3.5 h-3.5 text-positive" />
+                        ) : (
+                          <Code2 className="w-3.5 h-3.5" />
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleCopySvg(item)}
+                        title={lang === 'pt' ? 'Copiar imagem SVG' : 'Copy SVG image'}
+                        className="h-6 w-6 rounded-full inline-flex items-center justify-center text-muted-foreground hover:bg-foreground/[0.08] hover:text-foreground cursor-pointer transition-colors"
+                      >
+                        {copiedSvg ? (
+                          <Check className="w-3.5 h-3.5 text-positive" />
+                        ) : (
+                          <Copy className="w-3.5 h-3.5" />
+                        )}
+                      </button>
+                      <button
+                        onClick={() => handleDownloadSvg(item)}
+                        title={lang === 'pt' ? 'Baixar SVG' : 'Download SVG'}
+                        className="h-6 w-6 rounded-full inline-flex items-center justify-center text-muted-foreground hover:bg-foreground/[0.08] hover:text-foreground cursor-pointer transition-colors"
+                      >
+                        <Download className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
                 )
               })}
             </div>

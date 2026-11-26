@@ -86,121 +86,121 @@ async function buildLibrary() {
 </script>
 
 <template>
-  <section class="w-full max-w-3xl mx-auto px-4 md:px-8 py-8">
-    <button @click="emit('back')" class="icon-btn mb-6 text-xs">
-      <ArrowLeft class="w-4 h-4" />
+  <section class="w-full max-w-3xl mx-auto px-4 md:px-8 py-8 space-y-6">
+    <button @click="emit('back')" class="tuff-btn-quiet">
+      <ArrowLeft class="w-3.5 h-3.5" />
       <span>{{ t.backHome }}</span>
     </button>
 
-    <div class="mb-6">
-      <h1 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white mb-2">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-semibold tracking-[-0.03em] mb-1.5">
         {{ t.webfontUpload.title }}
       </h1>
-      <p class="text-sm text-neutral-600 dark:text-neutral-400">
+      <p class="text-sm" style="color: var(--muted-foreground);">
         {{ t.webfontUpload.subtitle }}
       </p>
     </div>
 
-    <!-- Dropzone -->
-    <div
-      @dragover.prevent="isDragging = true"
-      @dragleave.prevent="isDragging = false"
-      @drop.prevent="onDrop"
-      @click="fileInput?.click()"
-      class="cursor-pointer rounded-2xl border-2 border-dashed p-10 text-center transition-all backdrop-blur-sm"
-      :class="
-        isDragging
-          ? 'border-sky-500 bg-sky-500/10'
-          : 'border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-800/50 hover:border-neutral-400 dark:hover:border-neutral-500'
-      "
-    >
-      <input
-        ref="fileInput"
-        type="file"
-        multiple
-        accept=".ttf,.otf,.woff,.woff2,.css,.json,.zip"
-        class="hidden"
-        @change="onFileChange"
-      />
-      <UploadCloud class="w-10 h-10 mx-auto mb-3 text-neutral-500 dark:text-neutral-400" />
-      <p class="text-sm font-medium text-neutral-800 dark:text-neutral-200 mb-1">
-        {{ t.webfontUpload.dropTitle }}
-      </p>
-      <p class="text-xs text-neutral-500 dark:text-neutral-400">
-        {{ t.webfontUpload.dropHint }}
-      </p>
+    <!-- Dropzone inside TUFFUI Shell -> Panel -->
+    <div class="tuff-shell">
+      <div
+        @dragover.prevent="isDragging = true"
+        @dragleave.prevent="isDragging = false"
+        @drop.prevent="onDrop"
+        @click="fileInput?.click()"
+        class="tuff-panel cursor-pointer p-10 text-center transition-colors"
+        :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
+      >
+        <input
+          ref="fileInput"
+          type="file"
+          multiple
+          accept=".ttf,.otf,.woff,.woff2,.css,.json,.zip"
+          class="hidden"
+          @change="onFileChange"
+        />
+        <UploadCloud class="w-9 h-9 mx-auto mb-3" style="color: var(--muted-foreground);" />
+        <p class="text-sm font-medium mb-1">
+          {{ t.webfontUpload.dropTitle }}
+        </p>
+        <p class="text-xs" style="color: var(--muted-foreground);">
+          {{ t.webfontUpload.dropHint }}
+        </p>
+      </div>
     </div>
 
     <!-- Error -->
     <div
       v-if="errorMsg"
-      class="mt-4 p-3.5 rounded-xl border border-red-300 dark:border-red-800 bg-red-50/80 dark:bg-red-950/50 text-red-700 dark:text-red-300 text-xs flex items-start gap-2.5"
+      class="rounded-2xl p-4 text-xs flex items-start gap-2.5"
+      style="background-color: color-mix(in srgb, var(--negative) 14%, transparent); color: var(--negative);"
     >
       <AlertCircle class="w-4 h-4 shrink-0 mt-0.5" />
       <span>{{ errorMsg }}</span>
     </div>
 
     <!-- Selected files -->
-    <div
-      v-if="extractedFonts.length > 0 || extractedCss.length > 0"
-      class="mt-6 p-5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white/70 dark:bg-neutral-800/60 backdrop-blur-sm space-y-5"
-    >
-      <div class="flex items-center justify-between">
-        <span class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-          {{ t.webfontUpload.filesSelected }}
-        </span>
-        <button @click="clearFiles" class="text-xs text-neutral-500 hover:text-red-500 inline-flex items-center gap-1">
-          <X class="w-3.5 h-3.5" />
-          {{ t.webfontUpload.clearFiles }}
+    <div v-if="extractedFonts.length > 0 || extractedCss.length > 0" class="tuff-shell">
+      <div class="tuff-panel p-5 space-y-5">
+        <div class="flex items-center justify-between">
+          <span class="text-xs font-medium uppercase tracking-wider" style="color: var(--muted-foreground);">
+            {{ t.webfontUpload.filesSelected }}
+          </span>
+          <button @click="clearFiles" class="tuff-btn-quiet !h-7 text-xs">
+            <X class="w-3.5 h-3.5" />
+            {{ t.webfontUpload.clearFiles }}
+          </button>
+        </div>
+
+        <div class="flex flex-wrap gap-2">
+          <span
+            v-for="(f, idx) in extractedFonts"
+            :key="'f-' + idx"
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono"
+            style="background-color: color-mix(in srgb, var(--brand) 15%, transparent); color: var(--brand);"
+          >
+            <FileType class="w-3.5 h-3.5" />
+            {{ f.name }}
+          </span>
+          <span
+            v-for="(c, idx) in extractedCss"
+            :key="'c-' + idx"
+            class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono"
+            style="background-color: color-mix(in srgb, var(--positive) 15%, transparent); color: var(--positive);"
+          >
+            <FileCode class="w-3.5 h-3.5" />
+            {{ c.name }}
+          </span>
+        </div>
+
+        <div class="flex items-center gap-2 text-xs" style="color: var(--muted-foreground);">
+          <CheckCircle2 class="w-4 h-4 shrink-0" style="color: var(--positive);" />
+          <span>{{ extractedCss.length > 0 ? t.webfontUpload.cssDetected : t.webfontUpload.noCssNote }}</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-medium mb-1.5" style="color: var(--muted-foreground);">
+              {{ t.webfontUpload.fontNameLabel }}
+            </label>
+            <input v-model="customFontName" type="text" class="tuff-input w-full" placeholder="my-icons" />
+          </div>
+          <div>
+            <label class="block text-xs font-medium mb-1.5" style="color: var(--muted-foreground);">
+              {{ t.webfontUpload.prefixLabel }}
+            </label>
+            <input v-model="customPrefix" type="text" class="tuff-input w-full" placeholder="ic" />
+          </div>
+        </div>
+
+        <button
+          @click="buildLibrary"
+          :disabled="loading || extractedFonts.length === 0"
+          class="tuff-btn-primary w-full !h-10 text-sm"
+        >
+          {{ loading ? t.webfontUpload.loading : t.webfontUpload.loadBtn }}
         </button>
       </div>
-
-      <div class="flex flex-wrap gap-2">
-        <span
-          v-for="(f, idx) in extractedFonts"
-          :key="'f-' + idx"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-sky-500/10 text-sky-700 dark:text-sky-300 border border-sky-500/20"
-        >
-          <FileType class="w-3.5 h-3.5" />
-          {{ f.name }}
-        </span>
-        <span
-          v-for="(c, idx) in extractedCss"
-          :key="'c-' + idx"
-          class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-mono bg-emerald-500/10 text-emerald-700 dark:text-emerald-300 border border-emerald-500/20"
-        >
-          <FileCode class="w-3.5 h-3.5" />
-          {{ c.name }}
-        </span>
-      </div>
-
-      <div class="flex items-center gap-2 text-xs text-neutral-600 dark:text-neutral-400">
-        <CheckCircle2 class="w-4 h-4 text-emerald-500 shrink-0" />
-        <span>{{ extractedCss.length > 0 ? t.webfontUpload.cssDetected : t.webfontUpload.noCssNote }}</span>
-      </div>
-
-      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-xs font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
-            {{ t.webfontUpload.fontNameLabel }}
-          </label>
-          <input v-model="customFontName" type="text" class="w-full" placeholder="my-icons" />
-        </div>
-        <div>
-          <label class="block text-xs font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
-            {{ t.webfontUpload.prefixLabel }}
-          </label>
-          <input v-model="customPrefix" type="text" class="w-full" placeholder="ic" />
-        </div>
-      </div>
-
-      <button
-        @click="buildLibrary"
-        :disabled="loading || extractedFonts.length === 0"
-        class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 disabled:opacity-50 transition-opacity"
-      >
-        {{ loading ? t.webfontUpload.loading : t.webfontUpload.loadBtn }}
-      </button>
     </div>
   </section>
 </template>

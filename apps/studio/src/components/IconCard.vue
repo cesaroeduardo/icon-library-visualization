@@ -150,46 +150,65 @@ async function downloadIcon() {
 </script>
 
 <template>
-  <li
-    class="border border-neutral-200 dark:border-neutral-700 rounded-lg overflow-hidden bg-white/60 dark:bg-neutral-800/60 backdrop-blur-sm group hover:border-neutral-400 dark:hover:border-neutral-500 transition-colors"
-  >
-    <div class="relative min-h-40">
+  <li class="tuff-icon-card group relative rounded-2xl overflow-hidden transition-colors">
+    <div class="relative min-h-36">
       <p
-        class="absolute z-10 top-3 left-3 right-3 text-neutral-500 dark:text-neutral-400 truncate text-xs font-mono"
+        class="absolute z-10 top-3 left-3.5 right-3.5 truncate text-[11px] font-mono"
+        style="color: var(--muted-foreground);"
         :title="name"
       >
         {{ name }}
       </p>
+
       <div class="absolute inset-0 flex items-center justify-center p-4 pt-8">
         <slot></slot>
       </div>
+
+      <!-- Hover Action Pill Bar: Copy Code, Copy Image, Download SVG/PNG -->
       <div
-        class="absolute bottom-0 right-0 flex items-center opacity-0 group-hover:opacity-100 transition-all duration-200 bg-white/80 dark:bg-neutral-900/80 backdrop-blur-sm rounded-tl-lg"
+        class="absolute bottom-2 right-2 flex items-center gap-0.5 p-1 rounded-full opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150"
+        style="background-color: var(--surface-raised);"
       >
         <button
           :title="t.gallery.copyCode"
           @click="copyCode"
-          class="h-9 w-9 inline-flex items-center justify-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors"
+          class="tuff-card-action h-7 w-7 rounded-full inline-flex items-center justify-center transition-colors"
         >
-          <Check v-if="showCheckIcon" class="w-4 h-4 text-emerald-500" />
-          <Code2 v-else class="w-4 h-4" />
+          <Check v-if="showCheckIcon" class="w-3.5 h-3.5" style="color: var(--positive);" />
+          <Code2 v-else class="w-3.5 h-3.5" />
         </button>
         <button
           :title="`${t.gallery.copyImage} (${downloadFormat.toUpperCase()})`"
           @click="copyImage"
-          class="h-9 w-9 inline-flex items-center justify-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors"
+          class="tuff-card-action h-7 w-7 rounded-full inline-flex items-center justify-center transition-colors"
         >
-          <Check v-if="showImageCheckIcon" class="w-4 h-4 text-emerald-500" />
-          <Copy v-else class="w-4 h-4" />
+          <Check v-if="showImageCheckIcon" class="w-3.5 h-3.5" style="color: var(--positive);" />
+          <Copy v-else class="w-3.5 h-3.5" />
         </button>
         <button
           :title="`${t.gallery.downloadIcon} (${downloadFormat.toUpperCase()})`"
           @click="downloadIcon"
-          class="h-9 w-9 inline-flex items-center justify-center text-neutral-700 dark:text-neutral-300 hover:text-black dark:hover:text-white transition-colors"
+          class="tuff-card-action h-7 w-7 rounded-full inline-flex items-center justify-center transition-colors"
         >
-          <Download class="w-4 h-4" />
+          <Download class="w-3.5 h-3.5" />
         </button>
       </div>
     </div>
   </li>
 </template>
+
+<style scoped>
+.tuff-icon-card {
+  background-color: var(--surface);
+}
+.tuff-icon-card:hover {
+  background-color: var(--surface-raised);
+}
+.tuff-card-action {
+  color: var(--muted-foreground);
+}
+.tuff-card-action:hover {
+  background-color: var(--fg-tint-8);
+  color: var(--foreground);
+}
+</style>

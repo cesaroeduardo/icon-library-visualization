@@ -20,7 +20,6 @@ import { parseUploadedWebfont } from '@icon-library/core'
 
 const { lang, t, toggleLang } = useI18n()
 
-// Views inside the Icon Library app: 'gallery' | 'webfont' | 'svg'
 const activeView = ref('gallery')
 const currentLibrary = ref(null)
 const savedRawSvgs = ref([])
@@ -75,27 +74,29 @@ onMounted(async () => {
 
 <template>
   <div class="min-h-screen flex flex-col">
-    <!-- Compact Library Header -->
+    <!-- TUFFUI Sticky Header -->
     <header
-      class="sticky top-0 z-30 h-14 w-full bg-neutral-200/80 dark:bg-neutral-900/80 backdrop-blur-md border-b border-neutral-300/70 dark:border-neutral-800 px-4 md:px-8 flex items-center justify-center"
+      class="sticky top-0 z-30 h-14 w-full backdrop-blur-md px-4 md:px-8 flex items-center justify-center"
+      style="background-color: color-mix(in srgb, var(--background) 85%, transparent); border-bottom: 1px solid var(--border);"
     >
       <div class="max-w-[1472px] w-full flex items-center justify-between gap-3">
-        <div class="flex items-center gap-3">
+        <div class="flex items-center gap-2">
           <a
             href="../"
-            class="icon-btn !h-9 text-xs font-medium"
+            class="tuff-btn-quiet"
             :title="lang === 'pt' ? 'Voltar ao site' : 'Back to site'"
           >
-            <ArrowLeft class="w-4 h-4" />
+            <ArrowLeft class="w-3.5 h-3.5" />
             <span class="hidden sm:inline">{{ lang === 'pt' ? 'Site' : 'Home' }}</span>
           </a>
 
           <button
             @click="activeView = 'gallery'"
-            class="inline-flex items-center gap-2 text-sm font-semibold text-neutral-900 dark:text-white hover:opacity-80 transition-opacity"
+            class="inline-flex items-center gap-2 text-sm font-semibold tracking-[-0.02em] hover:opacity-85 transition-opacity"
           >
             <span
-              class="w-7 h-7 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 flex items-center justify-center"
+              class="w-7 h-7 rounded-lg flex items-center justify-center"
+              style="background-color: var(--surface-raised);"
             >
               <Layers class="w-3.5 h-3.5" />
             </span>
@@ -103,40 +104,44 @@ onMounted(async () => {
           </button>
         </div>
 
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-1.5">
           <button
             @click="activeView = activeView === 'webfont' ? 'gallery' : 'webfont'"
-            class="icon-btn !h-9 text-xs font-medium"
-            :class="activeView === 'webfont' ? '!bg-neutral-900 !text-white dark:!bg-white dark:!text-neutral-900' : ''"
+            class="tuff-btn-quiet"
+            :class="activeView === 'webfont' ? 'tuff-btn-quiet-active' : ''"
           >
-            <FileType class="w-4 h-4" />
+            <FileType class="w-3.5 h-3.5" />
             <span class="hidden sm:inline">{{ t.cards.webfont.title }}</span>
           </button>
 
           <button
             @click="activeView = activeView === 'svg' ? 'gallery' : 'svg'"
-            class="icon-btn !h-9 text-xs font-medium"
-            :class="activeView === 'svg' ? '!bg-neutral-900 !text-white dark:!bg-white dark:!text-neutral-900' : ''"
+            class="tuff-btn-quiet"
+            :class="activeView === 'svg' ? 'tuff-btn-quiet-active' : ''"
           >
-            <FileCode2 class="w-4 h-4" />
+            <FileCode2 class="w-3.5 h-3.5" />
             <span class="hidden sm:inline">{{ lang === 'pt' ? 'Compilar SVGs' : 'Compile SVGs' }}</span>
           </button>
 
-          <a href="../#docs" class="icon-btn !h-9 text-xs font-medium">
-            <BookOpen class="w-4 h-4" />
+          <a href="../#docs" class="tuff-btn-quiet">
+            <BookOpen class="w-3.5 h-3.5" />
             <span class="hidden sm:inline">{{ t.docsNav }}</span>
           </a>
 
           <button
             @click="toggleLang"
-            class="icon-btn !h-9 text-xs font-medium"
+            class="tuff-btn-quiet"
             :title="lang === 'pt' ? 'Switch to English' : 'Mudar para Português'"
           >
-            <Languages class="w-4 h-4" />
-            <span>{{ lang === 'pt' ? 'PT' : 'EN' }}</span>
+            <Languages class="w-3.5 h-3.5" />
+            <span class="font-mono text-xs">{{ lang === 'pt' ? 'PT' : 'EN' }}</span>
           </button>
 
-          <button @click="toggleTheme" class="icon-btn !h-9 !w-9 !px-0" aria-label="Toggle theme">
+          <button
+            @click="toggleTheme"
+            class="tuff-btn-quiet !w-8 !px-0"
+            aria-label="Toggle theme"
+          >
             <Sun v-if="isDark" class="w-4 h-4" />
             <Moon v-else class="w-4 h-4" />
           </button>
@@ -161,7 +166,8 @@ onMounted(async () => {
 
       <div
         v-else-if="loadingLibrary && !currentLibrary"
-        class="w-full py-24 flex items-center justify-center gap-2 text-sm text-neutral-500"
+        class="w-full py-24 flex items-center justify-center gap-2 text-sm"
+        style="color: var(--muted-foreground);"
       >
         <Loader2 class="w-4 h-4 animate-spin" />
         <span>{{ t.demo.loading }}</span>

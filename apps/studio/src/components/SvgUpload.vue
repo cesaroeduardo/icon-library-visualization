@@ -158,161 +158,162 @@ async function compile() {
 </script>
 
 <template>
-  <section class="w-full max-w-5xl mx-auto px-4 md:px-8 py-8">
-    <button @click="emit('back')" class="icon-btn mb-6 text-xs">
-      <ArrowLeft class="w-4 h-4" />
+  <section class="w-full max-w-5xl mx-auto px-4 md:px-8 py-8 space-y-6">
+    <button @click="emit('back')" class="tuff-btn-quiet">
+      <ArrowLeft class="w-3.5 h-3.5" />
       <span>{{ t.backHome }}</span>
     </button>
 
-    <div class="mb-6">
-      <h1 class="text-2xl md:text-3xl font-bold text-neutral-900 dark:text-white mb-2">
+    <div>
+      <h1 class="text-2xl md:text-3xl font-semibold tracking-[-0.03em] mb-1.5">
         {{ t.svgUpload.title }}
       </h1>
-      <p class="text-sm text-neutral-600 dark:text-neutral-400">
+      <p class="text-sm" style="color: var(--muted-foreground);">
         {{ t.svgUpload.subtitle }}
       </p>
     </div>
 
-    <!-- Dropzone -->
-    <div
-      @dragover.prevent="isDragging = true"
-      @dragleave.prevent="isDragging = false"
-      @drop.prevent="onDrop"
-      @click="fileInput?.click()"
-      class="cursor-pointer rounded-2xl border-2 border-dashed p-8 md:p-10 text-center transition-all backdrop-blur-sm"
-      :class="
-        isDragging
-          ? 'border-emerald-500 bg-emerald-500/10'
-          : 'border-neutral-300 dark:border-neutral-700 bg-white/60 dark:bg-neutral-800/50 hover:border-neutral-400 dark:hover:border-neutral-500'
-      "
-    >
-      <input
-        ref="fileInput"
-        type="file"
-        multiple
-        accept=".svg,.zip,.json"
-        class="hidden"
-        @change="onFileChange"
-      />
-      <UploadCloud class="w-10 h-10 mx-auto mb-3 text-neutral-500 dark:text-neutral-400" />
-      <p class="text-sm font-medium text-neutral-800 dark:text-neutral-200 mb-1">
-        {{ t.svgUpload.dropTitle }}
-      </p>
-      <p class="text-xs text-neutral-500 dark:text-neutral-400">
-        {{ t.svgUpload.dropHint }}
-      </p>
+    <!-- Dropzone inside TUFFUI Shell -> Panel -->
+    <div class="tuff-shell">
+      <div
+        @dragover.prevent="isDragging = true"
+        @dragleave.prevent="isDragging = false"
+        @drop.prevent="onDrop"
+        @click="fileInput?.click()"
+        class="tuff-panel cursor-pointer p-8 md:p-10 text-center transition-colors"
+        :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
+      >
+        <input
+          ref="fileInput"
+          type="file"
+          multiple
+          accept=".svg,.zip,.json"
+          class="hidden"
+          @change="onFileChange"
+        />
+        <UploadCloud class="w-9 h-9 mx-auto mb-3" style="color: var(--muted-foreground);" />
+        <p class="text-sm font-medium mb-1">
+          {{ t.svgUpload.dropTitle }}
+        </p>
+        <p class="text-xs" style="color: var(--muted-foreground);">
+          {{ t.svgUpload.dropHint }}
+        </p>
+      </div>
     </div>
 
     <div
       v-if="errorMsg"
-      class="mt-4 p-3.5 rounded-xl border border-red-300 dark:border-red-800 bg-red-50/80 dark:bg-red-950/50 text-red-700 dark:text-red-300 text-xs flex items-start gap-2.5"
+      class="rounded-2xl p-4 text-xs flex items-start gap-2.5"
+      style="background-color: color-mix(in srgb, var(--negative) 14%, transparent); color: var(--negative);"
     >
       <AlertCircle class="w-4 h-4 shrink-0 mt-0.5" />
       <span>{{ errorMsg }}</span>
     </div>
 
-    <div v-if="svgItems.length > 0" class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <div v-if="svgItems.length > 0" class="grid grid-cols-1 lg:grid-cols-3 gap-5">
       <!-- Left: Config & Validation -->
       <div class="lg:col-span-1 space-y-4">
-        <div
-          class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white/70 dark:bg-neutral-800/60 backdrop-blur-sm space-y-4"
-        >
-          <div class="grid grid-cols-3 gap-2 text-center">
-            <div class="p-2.5 rounded-xl bg-neutral-100/80 dark:bg-neutral-900/60">
-              <div class="text-lg font-bold">{{ svgItems.length }}</div>
-              <div class="text-[11px] text-neutral-500">{{ t.svgUpload.readyCount }}</div>
+        <div class="tuff-shell">
+          <div class="tuff-panel p-5 space-y-4">
+            <div class="grid grid-cols-3 gap-2 text-center">
+              <div class="tuff-inset p-2.5">
+                <div class="text-lg font-semibold font-mono">{{ svgItems.length }}</div>
+                <div class="text-[11px]" style="color: var(--muted-foreground);">{{ t.svgUpload.readyCount }}</div>
+              </div>
+              <div class="tuff-inset p-2.5">
+                <div class="text-lg font-semibold font-mono" style="color: var(--positive);">{{ monoCount }}</div>
+                <div class="text-[11px]" style="color: var(--muted-foreground);">{{ t.svgUpload.monoCount }}</div>
+              </div>
+              <div class="tuff-inset p-2.5">
+                <div class="text-lg font-semibold font-mono" style="color: var(--brand);">{{ coloredCount }}</div>
+                <div class="text-[11px]" style="color: var(--muted-foreground);">{{ t.svgUpload.coloredCount }}</div>
+              </div>
             </div>
-            <div class="p-2.5 rounded-xl bg-neutral-100/80 dark:bg-neutral-900/60">
-              <div class="text-lg font-bold text-emerald-600 dark:text-emerald-400">{{ monoCount }}</div>
-              <div class="text-[11px] text-neutral-500">{{ t.svgUpload.monoCount }}</div>
-            </div>
-            <div class="p-2.5 rounded-xl bg-neutral-100/80 dark:bg-neutral-900/60">
-              <div class="text-lg font-bold text-violet-600 dark:text-violet-400">{{ coloredCount }}</div>
-              <div class="text-[11px] text-neutral-500">{{ t.svgUpload.coloredCount }}</div>
-            </div>
-          </div>
 
-          <div>
-            <label class="block text-xs font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
-              {{ t.svgUpload.fontNameLabel }}
+            <div>
+              <label class="block text-xs font-medium mb-1.5" style="color: var(--muted-foreground);">
+                {{ t.svgUpload.fontNameLabel }}
+              </label>
+              <input v-model="fontName" type="text" class="tuff-input w-full" placeholder="custom-icons" />
+            </div>
+
+            <div>
+              <label class="block text-xs font-medium mb-1.5" style="color: var(--muted-foreground);">
+                {{ t.svgUpload.prefixLabel }}
+              </label>
+              <input v-model="prefix" type="text" class="tuff-input w-full" placeholder="ic" />
+            </div>
+
+            <label class="flex items-start gap-2.5 text-xs cursor-pointer" style="color: var(--muted-foreground);">
+              <input type="checkbox" v-model="normalizeNames" class="mt-0.5 rounded" />
+              <span>{{ t.svgUpload.normalizeNames }}</span>
             </label>
-            <input v-model="fontName" type="text" class="w-full" placeholder="custom-icons" />
-          </div>
 
-          <div>
-            <label class="block text-xs font-medium text-neutral-600 dark:text-neutral-400 mb-1.5">
-              {{ t.svgUpload.prefixLabel }}
+            <label class="flex items-start gap-2.5 text-xs cursor-pointer" style="color: var(--muted-foreground);">
+              <input type="checkbox" v-model="autoDetectColored" class="mt-0.5 rounded" />
+              <span>{{ t.svgUpload.coloredMode }}</span>
             </label>
-            <input v-model="prefix" type="text" class="w-full" placeholder="ic" />
+
+            <button
+              @click="compile"
+              :disabled="building || svgItems.length === 0"
+              class="tuff-btn-primary w-full !h-10 text-sm"
+            >
+              <Hammer class="w-4 h-4" />
+              <span>{{ building ? t.svgUpload.building : t.svgUpload.buildBtn }}</span>
+            </button>
           </div>
-
-          <label class="flex items-start gap-2.5 text-xs text-neutral-700 dark:text-neutral-300 cursor-pointer">
-            <input type="checkbox" v-model="normalizeNames" class="mt-0.5 rounded" />
-            <span>{{ t.svgUpload.normalizeNames }}</span>
-          </label>
-
-          <label class="flex items-start gap-2.5 text-xs text-neutral-700 dark:text-neutral-300 cursor-pointer">
-            <input type="checkbox" v-model="autoDetectColored" class="mt-0.5 rounded" />
-            <span>{{ t.svgUpload.coloredMode }}</span>
-          </label>
-
-          <button
-            @click="compile"
-            :disabled="building || svgItems.length === 0"
-            class="w-full py-3 px-4 rounded-xl font-medium text-sm bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 hover:opacity-90 disabled:opacity-50 transition-opacity inline-flex items-center justify-center gap-2"
-          >
-            <Hammer class="w-4 h-4" />
-            <span>{{ building ? t.svgUpload.building : t.svgUpload.buildBtn }}</span>
-          </button>
         </div>
 
         <!-- Validation summary -->
-        <div
-          class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white/70 dark:bg-neutral-800/60 backdrop-blur-sm space-y-3"
-        >
-          <h3 class="text-xs font-semibold uppercase tracking-wider text-neutral-500 dark:text-neutral-400">
-            {{ t.svgUpload.validationTitle }}
-          </h3>
-          <div class="flex items-center gap-4 text-xs">
-            <span class="inline-flex items-center gap-1 text-red-600 dark:text-red-400 font-medium">
-              <AlertCircle class="w-3.5 h-3.5" /> {{ validation.errorCount }} {{ t.svgUpload.errors }}
-            </span>
-            <span class="inline-flex items-center gap-1 text-amber-600 dark:text-amber-400 font-medium">
-              <AlertTriangle class="w-3.5 h-3.5" /> {{ validation.warnCount }} {{ t.svgUpload.warnings }}
-            </span>
-            <span class="inline-flex items-center gap-1 text-sky-600 dark:text-sky-400 font-medium">
-              <Info class="w-3.5 h-3.5" /> {{ validation.infoCount }} {{ t.svgUpload.info }}
-            </span>
-          </div>
-
-          <div
-            v-if="validation.errorCount + validation.warnCount > 0"
-            class="max-h-40 overflow-y-auto space-y-1.5 text-[11px] font-mono pr-1"
-          >
-            <div
-              v-for="(item, idx) in [
-                ...validation.issues.placeholder,
-                ...validation.issues.noPath
-              ]"
-              :key="'e-' + idx"
-              class="text-red-600 dark:text-red-400 truncate"
-              :title="`${item.file}: ${item.detail}`"
-            >
-              ✕ {{ item.file }} — {{ item.detail }}
+        <div class="tuff-shell">
+          <div class="tuff-panel p-5 space-y-3">
+            <h3 class="text-xs font-medium uppercase tracking-wider" style="color: var(--muted-foreground);">
+              {{ t.svgUpload.validationTitle }}
+            </h3>
+            <div class="flex items-center gap-4 text-xs">
+              <span class="inline-flex items-center gap-1 font-medium" style="color: var(--negative);">
+                <AlertCircle class="w-3.5 h-3.5" /> {{ validation.errorCount }} {{ t.svgUpload.errors }}
+              </span>
+              <span class="inline-flex items-center gap-1 font-medium" style="color: var(--warning);">
+                <AlertTriangle class="w-3.5 h-3.5" /> {{ validation.warnCount }} {{ t.svgUpload.warnings }}
+              </span>
+              <span class="inline-flex items-center gap-1 font-medium" style="color: var(--brand);">
+                <Info class="w-3.5 h-3.5" /> {{ validation.infoCount }} {{ t.svgUpload.info }}
+              </span>
             </div>
+
             <div
-              v-for="(item, idx) in [
-                ...validation.issues.stroke,
-                ...validation.issues.fillBlack,
-                ...validation.issues.clipPath,
-                ...validation.issues.nonSquareViewBox,
-                ...validation.issues.filenameSpace
-              ]"
-              :key="'w-' + idx"
-              class="text-amber-600 dark:text-amber-400 truncate"
-              :title="`${item.file}: ${item.detail}`"
+              v-if="validation.errorCount + validation.warnCount > 0"
+              class="max-h-40 overflow-y-auto space-y-1.5 text-[11px] font-mono pr-1"
             >
-              ⚠ {{ item.file }} — {{ item.detail }}
+              <div
+                v-for="(item, idx) in [
+                  ...validation.issues.placeholder,
+                  ...validation.issues.noPath
+                ]"
+                :key="'e-' + idx"
+                class="truncate"
+                style="color: var(--negative);"
+                :title="`${item.file}: ${item.detail}`"
+              >
+                ✕ {{ item.file }} — {{ item.detail }}
+              </div>
+              <div
+                v-for="(item, idx) in [
+                  ...validation.issues.stroke,
+                  ...validation.issues.fillBlack,
+                  ...validation.issues.clipPath,
+                  ...validation.issues.nonSquareViewBox,
+                  ...validation.issues.filenameSpace
+                ]"
+                :key="'w-' + idx"
+                class="truncate"
+                style="color: var(--warning);"
+                :title="`${item.file}: ${item.detail}`"
+              >
+                ⚠ {{ item.file }} — {{ item.detail }}
+              </div>
             </div>
           </div>
         </div>
@@ -320,47 +321,49 @@ async function compile() {
 
       <!-- Right: SVG Preview Grid -->
       <div class="lg:col-span-2">
-        <div
-          class="p-5 rounded-2xl border border-neutral-200 dark:border-neutral-700 bg-white/70 dark:bg-neutral-800/60 backdrop-blur-sm"
-        >
-          <div class="flex items-center justify-between mb-4">
-            <button @click="fileInput?.click()" class="icon-btn !h-9 text-xs">
-              <Plus class="w-3.5 h-3.5" />
-              <span>{{ t.svgUpload.addMore }}</span>
-            </button>
-            <button
-              @click="clearAll"
-              class="text-xs text-neutral-500 hover:text-red-500 inline-flex items-center gap-1"
-            >
-              <Trash2 class="w-3.5 h-3.5" />
-              {{ t.svgUpload.clearAll }}
-            </button>
-          </div>
-
-          <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5 max-h-[460px] overflow-y-auto pr-1">
-            <div
-              v-for="(item, idx) in processedItems"
-              :key="item.name + idx"
-              class="relative group rounded-xl border border-neutral-200 dark:border-neutral-700 bg-white/80 dark:bg-neutral-900/60 p-3 flex flex-col items-center justify-center gap-2"
-            >
-              <button
-                @click="removeItem(idx)"
-                class="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 text-neutral-400 hover:text-red-500 transition-opacity"
-              >
-                <Trash2 class="w-3.5 h-3.5" />
+        <div class="tuff-shell">
+          <div class="tuff-panel p-5">
+            <div class="flex items-center justify-between mb-4">
+              <button @click="fileInput?.click()" class="tuff-btn-secondary !h-8 text-xs">
+                <Plus class="w-3.5 h-3.5" />
+                <span>{{ t.svgUpload.addMore }}</span>
               </button>
-              <span
-                v-if="item.colored"
-                class="absolute top-1.5 left-1.5 w-2 h-2 rounded-full bg-violet-500"
-                title="Colored SVG"
-              ></span>
+              <button @click="clearAll" class="tuff-btn-quiet !h-8 text-xs">
+                <Trash2 class="w-3.5 h-3.5" />
+                {{ t.svgUpload.clearAll }}
+              </button>
+            </div>
+
+            <div class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2.5 max-h-[460px] overflow-y-auto pr-1">
               <div
-                class="w-8 h-8 flex items-center justify-center text-neutral-800 dark:text-neutral-200 [&>svg]:w-7 [&>svg]:h-7"
-                v-html="item.content"
-              ></div>
-              <span class="text-[10px] font-mono text-neutral-500 dark:text-neutral-400 truncate w-full text-center">
-                {{ item.name }}
-              </span>
+                v-for="(item, idx) in processedItems"
+                :key="item.name + idx"
+                class="tuff-inset relative group p-3 flex flex-col items-center justify-center gap-2"
+              >
+                <button
+                  @click="removeItem(idx)"
+                  class="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                  style="color: var(--muted-foreground);"
+                >
+                  <Trash2 class="w-3.5 h-3.5" />
+                </button>
+                <span
+                  v-if="item.colored"
+                  class="absolute top-2 left-2 w-2 h-2 rounded-full"
+                  style="background-color: var(--brand);"
+                  title="Colored SVG"
+                ></span>
+                <div
+                  class="w-8 h-8 flex items-center justify-center [&>svg]:w-7 [&>svg]:h-7"
+                  v-html="item.content"
+                ></div>
+                <span
+                  class="text-[10px] font-mono truncate w-full text-center"
+                  style="color: var(--muted-foreground);"
+                >
+                  {{ item.name }}
+                </span>
+              </div>
             </div>
           </div>
         </div>

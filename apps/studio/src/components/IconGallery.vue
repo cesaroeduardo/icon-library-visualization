@@ -8,13 +8,13 @@ import {
   Package,
   MoreVertical,
   X,
-  ArrowLeft,
   Smile,
   Plus
 } from 'lucide-vue-next'
 import IconCard from './IconCard.vue'
 import ColoredIcon from './ColoredIcon.vue'
 import { useI18n } from '@/i18n'
+import { isDark } from '@/theme'
 import { createBundleZip } from '@icon-library/core'
 
 const { t } = useI18n()
@@ -26,15 +26,11 @@ const props = defineProps({
 const emit = defineEmits(['back', 'edit-svgs'])
 
 const searchQuery = ref('')
-const activeFilter = ref('all') // all | mono | color
-const iconsColor = ref('rgb(133, 133, 133)')
-const pureColor = ref('rgb(133, 133, 133)')
-const circleColors = ref(['rgb(133, 133, 133)', 'rgb(133, 133, 133)', 'rgb(133, 133, 133)'])
-const circlePositions = [
-  { top: '-30%', left: '-30%' },
-  { top: '20%', left: '90%' },
-  { top: '80%', left: '20%' }
-]
+const activeFilter = ref('all')
+const defaultColor = () => (isDark.value ? '#f5f5f5' : '#161618')
+const iconsColor = ref(defaultColor())
+const pureColor = ref(defaultColor())
+const userPickedColor = ref(false)
 const fontSizeValues = [8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 320]
 const sliderValue = ref(3) // 24px default
 const selectedFontSize = ref(24)
@@ -44,7 +40,17 @@ const exporting = ref(false)
 
 watch(pureColor, (newVal) => {
   iconsColor.value = newVal
-  circleColors.value = [newVal, newVal, newVal]
+  if (newVal !== '#f5f5f5' && newVal !== '#161618') {
+    userPickedColor.value = true
+  }
+})
+
+watch(isDark, () => {
+  if (!userPickedColor.value) {
+    const c = defaultColor()
+    pureColor.value = c
+    iconsColor.value = c
+  }
 })
 
 function updateFontSize() {
@@ -88,59 +94,59 @@ async function downloadBundle() {
 
 <template>
   <div class="flex flex-col justify-center items-center w-full relative">
-    <!-- Ambient Background Circles (from icons-gallery) -->
-    <div class="w-full h-full fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-      <div
-        v-for="(circleColor, index) in circleColors"
-        :key="index"
-        class="circle"
-        :style="{
-          backgroundColor: circleColor,
-          top: circlePositions[index].top,
-          left: circlePositions[index].left
-        }"
-      ></div>
-    </div>
-
-    <!-- Sticky Search Bar -->
+    <!-- Sticky TUFFUI Search Bar -->
     <div
-      class="w-full bg-neutral-200/80 dark:bg-neutral-900/80 backdrop-blur-md px-4 md:px-8 top-14 z-20 py-4 sticky flex justify-center border-b border-neutral-300/60 dark:border-neutral-800/80"
+      class="w-full backdrop-blur-md px-4 md:px-8 top-14 z-20 py-3.5 sticky flex justify-center"
+      style="background-color: color-mix(in srgb, var(--background) 88%, transparent); border-bottom: 1px solid var(--border);"
     >
-      <div class="max-w-[1472px] w-full flex flex-wrap md:flex-nowrap gap-2.5 md:gap-3 items-center">
+      <div class="max-w-[1472px] w-full flex flex-wrap md:flex-nowrap gap-2.5 items-center">
         <div class="relative flex-1 min-w-[220px]">
-          <Search class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-neutral-500" />
+          <Search
+            class="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none"
+            style="color: var(--muted-foreground);"
+          />
           <input
             v-model="searchQuery"
-            type="search"
+            type="text"
             autofocus
-            class="w-full h-11 !pl-10 text-xs"
+            class="tuff-input w-full !pl-10 !pr-9"
             :placeholder="t.gallery.searchPlaceholder.replace('{count}', String(library.icons.length))"
           />
+          <button
+            v-if="searchQuery"
+            @click="searchQuery = ''"
+            aria-label="Clear"
+            class="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 rounded-full inline-flex items-center justify-center"
+            style="color: var(--muted-foreground);"
+          >
+            <X class="w-3.5 h-3.5" />
+          </button>
         </div>
 
-        <!-- Filter pills (when both mono and colored exist) -->
+        <!-- Filter pills when both mono and colored exist -->
         <div
           v-if="library.coloredCount > 0 && library.monoCount > 0"
-          class="flex items-center rounded-lg border border-neutral-300 dark:border-neutral-700 overflow-hidden bg-neutral-100/70 dark:bg-neutral-800/70 h-11 text-xs"
+          class="inline-flex items-center rounded-full p-0.5 text-xs"
+          style="background-color: var(--fg-tint-6);"
         >
           <button
             @click="activeFilter = 'all'"
-            class="px-3 h-full transition-colors"
-            :class="activeFilter === 'all' ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium' : ''"
+            class="px-3 h-7 rounded-full font-medium transition-colors"
+            :style="activeFilter === 'all' ? 'background-color: var(--surface-raised); color: var(--foreground);' : 'color: var(--muted-foreground);'"
           >
             {{ t.gallery.filterAll }}
           </button>
           <button
             @click="activeFilter = 'mono'"
-            class="px-3 h-full transition-colors"
-            :class="activeFilter === 'mono' ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium' : ''"
+            class="px-3 h-7 rounded-full font-medium transition-colors"
+            :style="activeFilter === 'mono' ? 'background-color: var(--surface-raised); color: var(--foreground);' : 'color: var(--muted-foreground);'"
           >
             {{ t.gallery.filterMono }} ({{ library.monoCount }})
           </button>
           <button
             @click="activeFilter = 'color'"
-            class="px-3 h-full transition-colors"
-            :class="activeFilter === 'color' ? 'bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 font-medium' : ''"
+            class="px-3 h-7 rounded-full font-medium transition-colors"
+            :style="activeFilter === 'color' ? 'background-color: var(--surface-raised); color: var(--foreground);' : 'color: var(--muted-foreground);'"
           >
             {{ t.gallery.filterColor }} ({{ library.coloredCount }})
           </button>
@@ -150,29 +156,24 @@ async function downloadBundle() {
           @click="downloadBundle"
           :disabled="exporting"
           :title="t.gallery.downloadBundleHint"
-          class="h-11 px-4 rounded-lg bg-neutral-900 dark:bg-white text-white dark:text-neutral-900 text-xs font-medium inline-flex items-center gap-2 hover:opacity-90 transition-opacity shrink-0"
+          class="tuff-btn-primary shrink-0"
         >
-          <Package class="w-4 h-4" />
+          <Package class="w-3.5 h-3.5" />
           <span class="hidden sm:inline">{{ t.gallery.downloadBundle }}</span>
         </button>
 
         <button
           v-if="library.sourceType === 'svg-build'"
           @click="emit('edit-svgs')"
-          class="icon-btn text-xs shrink-0 hidden sm:inline-flex"
+          class="tuff-btn-secondary shrink-0 hidden sm:inline-flex"
         >
-          <Plus class="w-4 h-4" />
+          <Plus class="w-3.5 h-3.5" />
           <span>{{ t.gallery.addMoreSvgs }}</span>
-        </button>
-
-        <button @click="emit('back')" class="icon-btn text-xs shrink-0 hidden sm:inline-flex">
-          <ArrowLeft class="w-4 h-4" />
-          <span>{{ t.gallery.newProject }}</span>
         </button>
 
         <button
           @click="openBottombar = !openBottombar"
-          class="icon-btn !w-11 !px-0 md:hidden shrink-0"
+          class="tuff-btn-quiet !w-9 !h-9 !px-0 md:hidden shrink-0"
         >
           <X v-if="openBottombar" class="w-4 h-4" />
           <MoreVertical v-else class="w-4 h-4" />
@@ -183,18 +184,19 @@ async function downloadBundle() {
     <!-- Main Content -->
     <div class="flex flex-col py-6 pb-16 w-full max-w-[1536px]">
       <!-- Meta bar -->
-      <div class="px-4 md:px-8 mb-4 flex flex-wrap items-center justify-between gap-2 text-xs text-neutral-600 dark:text-neutral-400">
+      <div
+        class="px-4 md:px-8 mb-4 flex flex-wrap items-center justify-between gap-2 text-xs"
+        style="color: var(--muted-foreground);"
+      >
         <div class="flex items-center gap-2">
-          <span class="font-semibold text-neutral-900 dark:text-white">{{ library.fontName }}</span>
-          <span class="px-2 py-0.5 rounded bg-neutral-300/60 dark:bg-neutral-800 font-mono text-[11px]">
-            .{{ library.prefix }}
-          </span>
+          <span class="font-semibold" style="color: var(--foreground);">{{ library.fontName }}</span>
+          <span class="tuff-tag">.{{ library.prefix }}</span>
           <span class="hidden sm:inline">·</span>
           <span class="hidden sm:inline">
             {{ library.sourceType === 'svg-build' ? t.gallery.sourceSvgBuild : t.gallery.sourceWebfont }}
           </span>
         </div>
-        <div>
+        <div class="font-mono">
           {{
             t.gallery.iconsCount
               .replace('{shown}', String(filteredIcons.length))
@@ -203,12 +205,12 @@ async function downloadBundle() {
         </div>
       </div>
 
-      <section class="w-full flex gap-4 md:gap-8 md:flex-row flex-col-reverse px-4 md:px-8">
+      <section class="w-full flex gap-5 md:gap-7 md:flex-row flex-col-reverse px-4 md:px-8">
         <!-- Icons Grid -->
         <div class="w-full flex flex-col gap-4">
           <ul
             v-if="filteredIcons.length > 0"
-            class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2.5 md:gap-4"
+            class="grid xl:grid-cols-5 lg:grid-cols-4 md:grid-cols-3 grid-cols-2 gap-2.5 md:gap-3"
           >
             <IconCard
               v-for="icon in filteredIcons"
@@ -244,74 +246,83 @@ async function downloadBundle() {
           </ul>
 
           <div
-            class="text-neutral-700 dark:text-neutral-200 opacity-60 gap-2 w-full text-center justify-center items-center min-h-28 border border-neutral-300/70 dark:border-neutral-700 bg-neutral-100/60 dark:bg-neutral-800/60 rounded-lg text-xs flex px-4 py-8"
+            class="tuff-shell w-full"
           >
-            <p>{{ t.gallery.notFound }}</p>
-            <Smile class="w-4 h-4" />
+            <div
+              class="tuff-panel gap-2 w-full text-center justify-center items-center min-h-24 text-xs flex px-4 py-8"
+              style="color: var(--muted-foreground);"
+            >
+              <p>{{ t.gallery.notFound }}</p>
+              <Smile class="w-4 h-4" />
+            </div>
           </div>
         </div>
 
-        <!-- Right Controls Sidebar (Desktop) -->
-        <aside class="flex-col gap-3 w-full md:w-64 md:sticky top-36 md:h-fit z-10 hidden md:flex shrink-0">
-          <!-- Size Slider -->
-          <div
-            class="flex items-center gap-3 bg-neutral-100/70 py-2.5 border border-neutral-300/70 rounded-lg px-3 dark:bg-neutral-800/70 dark:border-neutral-700 backdrop-blur-sm"
-          >
-            <SlidersHorizontal class="w-4 h-4 text-neutral-600 dark:text-neutral-400 shrink-0" />
-            <div class="flex flex-row w-full items-center gap-2">
-              <input
-                type="range"
-                v-model="sliderValue"
-                min="0"
-                max="11"
-                @input="updateFontSize"
-                class="w-full slider-input"
-                :style="{ '--thumb-color': pureColor }"
-              />
-              <p class="text-neutral-500 text-xs dark:text-neutral-400 w-11 text-right font-mono">
-                {{ selectedFontSize }}px
-              </p>
-            </div>
-          </div>
+        <!-- Right Controls Sidebar (TUFFUI Shell -> Panel -> Inset) -->
+        <aside class="w-full md:w-64 md:sticky top-36 md:h-fit z-10 hidden md:block shrink-0">
+          <div class="tuff-shell space-y-1.5">
+            <div class="tuff-panel p-3.5 space-y-3">
+              <!-- Size Slider -->
+              <div class="tuff-inset p-3 space-y-2">
+                <div class="flex items-center justify-between text-xs" style="color: var(--muted-foreground);">
+                  <span class="inline-flex items-center gap-1.5 font-medium">
+                    <SlidersHorizontal class="w-3.5 h-3.5" />
+                    {{ t.gallery.size }}
+                  </span>
+                  <span class="font-mono" style="color: var(--foreground);">{{ selectedFontSize }}px</span>
+                </div>
+                <input
+                  type="range"
+                  v-model="sliderValue"
+                  min="0"
+                  max="11"
+                  @input="updateFontSize"
+                  class="w-full slider-input"
+                  :style="{ '--thumb-color': pureColor }"
+                />
+              </div>
 
-          <!-- Color Picker -->
-          <div
-            class="flex items-center gap-3 bg-neutral-100/70 py-2.5 border border-neutral-300/70 rounded-lg px-3 dark:bg-neutral-800/70 dark:border-neutral-700 backdrop-blur-sm"
-          >
-            <Palette class="w-4 h-4 text-neutral-600 dark:text-neutral-400 shrink-0" />
-            <color-picker v-model:pureColor="pureColor" />
-          </div>
+              <!-- Color Picker -->
+              <div class="tuff-inset p-3 space-y-2">
+                <div class="flex items-center gap-1.5 text-xs font-medium" style="color: var(--muted-foreground);">
+                  <Palette class="w-3.5 h-3.5" />
+                  <span>{{ t.gallery.color }}</span>
+                </div>
+                <color-picker v-model:pureColor="pureColor" />
+              </div>
 
-          <!-- Format Switch -->
-          <div
-            class="flex items-center gap-3 bg-neutral-100/70 py-2.5 border border-neutral-300/70 rounded-lg px-3 dark:bg-neutral-800/70 dark:border-neutral-700 backdrop-blur-sm"
-          >
-            <Settings2 class="w-4 h-4 text-neutral-600 dark:text-neutral-400 shrink-0" />
-            <div class="radio-group">
-              <label class="w-full">
-                <input type="radio" value="png" class="radio" v-model="downloadFormat" />
-                <div class="radio-container">.png</div>
-              </label>
-              <label class="w-full">
-                <input type="radio" value="svg" class="radio" v-model="downloadFormat" />
-                <div class="radio-container">.svg</div>
-              </label>
+              <!-- Format Switch -->
+              <div class="tuff-inset p-3 space-y-2">
+                <div class="flex items-center gap-1.5 text-xs font-medium" style="color: var(--muted-foreground);">
+                  <Settings2 class="w-3.5 h-3.5" />
+                  <span>{{ t.gallery.format }}</span>
+                </div>
+                <div class="radio-group">
+                  <label class="w-full">
+                    <input type="radio" value="png" class="radio" v-model="downloadFormat" />
+                    <div class="radio-container">.png</div>
+                  </label>
+                  <label class="w-full">
+                    <input type="radio" value="svg" class="radio" v-model="downloadFormat" />
+                    <div class="radio-container">.svg</div>
+                  </label>
+                </div>
+              </div>
             </div>
           </div>
         </aside>
       </section>
     </div>
 
-    <!-- Mobile Bottombar -->
+    <!-- Mobile Bottombar (TUFFUI) -->
     <div
       v-if="openBottombar"
-      class="flex w-full bottom-0 fixed z-30 rounded-t-2xl md:hidden bg-neutral-100/95 dark:bg-neutral-800/95 backdrop-blur-md border-t border-neutral-300 dark:border-neutral-700 p-4 pb-6"
+      class="flex w-full bottom-0 fixed z-30 rounded-t-3xl md:hidden p-3 pb-6"
+      style="background-color: var(--surface);"
     >
-      <div class="flex flex-col gap-3 w-full">
-        <div
-          class="flex items-center gap-3 bg-white/70 py-2.5 border border-neutral-200 rounded-lg px-3 dark:bg-neutral-900/60 dark:border-neutral-700"
-        >
-          <SlidersHorizontal class="w-4 h-4 text-neutral-600 dark:text-neutral-400 shrink-0" />
+      <div class="tuff-panel p-4 flex flex-col gap-3 w-full">
+        <div class="tuff-inset p-3 flex items-center gap-3">
+          <SlidersHorizontal class="w-4 h-4 shrink-0" style="color: var(--muted-foreground);" />
           <input
             type="range"
             v-model="sliderValue"
@@ -321,22 +332,16 @@ async function downloadBundle() {
             :style="{ '--thumb-color': pureColor }"
             class="w-full slider-input"
           />
-          <p class="text-neutral-500 dark:text-neutral-400 w-11 text-right text-xs font-mono">
-            {{ selectedFontSize }}px
-          </p>
+          <p class="w-11 text-right text-xs font-mono">{{ selectedFontSize }}px</p>
         </div>
 
-        <div
-          class="flex items-center gap-3 bg-white/70 py-2.5 border border-neutral-200 rounded-lg px-3 dark:bg-neutral-900/60 dark:border-neutral-700"
-        >
-          <Palette class="w-4 h-4 text-neutral-600 dark:text-neutral-400 shrink-0" />
+        <div class="tuff-inset p-3 flex items-center gap-3">
+          <Palette class="w-4 h-4 shrink-0" style="color: var(--muted-foreground);" />
           <color-picker v-model:pureColor="pureColor" />
         </div>
 
-        <div
-          class="flex items-center gap-3 bg-white/70 py-2.5 border border-neutral-200 rounded-lg px-3 dark:bg-neutral-900/60 dark:border-neutral-700"
-        >
-          <Settings2 class="w-4 h-4 text-neutral-600 dark:text-neutral-400 shrink-0" />
+        <div class="tuff-inset p-3 flex items-center gap-3">
+          <Settings2 class="w-4 h-4 shrink-0" style="color: var(--muted-foreground);" />
           <div class="radio-group">
             <label class="w-full">
               <input type="radio" value="png" class="radio" v-model="downloadFormat" />
@@ -354,40 +359,32 @@ async function downloadBundle() {
 </template>
 
 <style scoped>
-.circle {
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  filter: blur(300px);
-  opacity: 0.35;
-  position: absolute;
-}
-
 .slider-input {
   -webkit-appearance: none;
   appearance: none;
   width: 100%;
   height: 4px;
-  border-radius: 4px;
-  @apply bg-neutral-300 dark:bg-neutral-700;
+  border-radius: 9999px;
+  background-color: var(--fg-tint-10);
 }
 
 .slider-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   cursor: grab;
-  background-color: var(--thumb-color, #4a5568);
+  background-color: var(--thumb-color, var(--brand));
+  border: 2px solid var(--surface-inset);
 }
 
 .slider-input::-moz-range-thumb {
-  width: 16px;
-  height: 16px;
+  width: 14px;
+  height: 14px;
   border-radius: 50%;
   cursor: grab;
-  border: none;
-  background-color: var(--thumb-color, #4a5568);
+  border: 2px solid var(--surface-inset);
+  background-color: var(--thumb-color, var(--brand));
 }
 </style>

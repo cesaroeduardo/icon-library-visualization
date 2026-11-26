@@ -137,7 +137,8 @@ export function App() {
             name: i.name,
             icon: i.icon,
             keywords: i.keywords,
-            char: i.char
+            char: i.char,
+            svg: i.svg || ''
           }))
         )
       } catch (e) {

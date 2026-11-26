@@ -1,11 +1,10 @@
 import { ref } from 'vue'
 
-export const isDark = ref(false)
+export const isDark = ref(true)
 
 export function initTheme() {
   const saved = localStorage.getItem('icon-library-theme')
-  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
-  const dark = saved ? saved === 'dark' : prefersDark
+  const dark = saved ? saved === 'dark' : true // TUFFUI dark default
   applyTheme(dark)
 }
 
