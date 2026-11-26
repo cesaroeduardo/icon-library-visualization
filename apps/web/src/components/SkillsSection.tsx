@@ -6,20 +6,25 @@ import {
   ExternalLink,
   Copy,
   Check,
-  Terminal,
   ArrowRight,
   BookOpen
 } from 'lucide-react'
 import {
   Shell,
   Panel,
-  Inset,
   IconTile,
   StatusPill,
   Tag,
   ActionButton,
   ActionLink
 } from '@/components/ui/tuff'
+import {
+  AgentCanvasShowcase,
+  ClaudeMark,
+  OpenAIMark,
+  CursorMark,
+  GeminiMark
+} from '@/components/AgentCanvasShowcase'
 import type { Lang } from '@/content'
 
 interface SkillsSectionProps {
@@ -29,7 +34,7 @@ interface SkillsSectionProps {
 
 export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
   const [copiedCmd, setCopiedCmd] = useState(false)
-  const installCmd = 'unzip create-icons.zip -d .agents/skills/ && unzip catalog-icons.zip -d .agents/skills/'
+  const installCmd = 'unzip create-icons.zip -d .agents/skills/'
 
   const isPt = lang === 'pt'
 
@@ -60,13 +65,80 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
         </div>
         <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
           {isPt
-            ? 'O repositório inclui duas skills prontas em skills/ para Antigravity, Claude Code e Cursor: uma para desenhar ícones originais alinhados ao seu design system e outra para gerar catalog.json com keywords bilíngues.'
-            : 'The repository ships two ready-to-use skills inside skills/ for Antigravity, Claude Code, and Cursor: one to draw original icons matched to your design system and another to generate a searchable catalog.json.'}
+            ? 'O repositório inclui duas skills prontas em skills/ para qualquer agente compatível com SKILL.md: uma para desenhar ícones originais alinhados ao seu design system e outra para gerar catalog.json com keywords bilíngues.'
+            : 'The repository ships two ready-to-use skills inside skills/ for any SKILL.md-compatible agent: one to draw original icons matched to your design system and another to generate a searchable catalog.json.'}
         </p>
       </div>
 
+      {/* Live Animated Claude Agent Drawing on 24x24 Canvas */}
+      <AgentCanvasShowcase lang={lang} />
+
+      {/* Works With Any Model + Copyable Command Strip (inspired by uploaded reference) */}
+      <Shell className="mb-4">
+        <Panel className="px-5 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-wrap items-center justify-center gap-3.5">
+            <span className="text-sm text-muted-foreground font-medium">
+              {isPt ? 'Funciona com' : 'Works with'}
+            </span>
+
+            {/* Overlapping Circular Model Badges */}
+            <div className="flex items-center -space-x-2.5">
+              <span
+                title="Claude (Anthropic)"
+                className="h-10 w-10 rounded-full flex items-center justify-center text-white ring-2 ring-surface-inset z-40"
+                style={{ backgroundColor: '#D97757' }}
+              >
+                <ClaudeMark className="w-5 h-5" />
+              </span>
+              <span
+                title="OpenAI / Codex"
+                className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-30"
+              >
+                <OpenAIMark className="w-5 h-5" />
+              </span>
+              <span
+                title="Cursor"
+                className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-20"
+              >
+                <CursorMark className="w-5 h-5" />
+              </span>
+              <span
+                title="Gemini / Antigravity"
+                className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-10"
+              >
+                <GeminiMark className="w-5 h-5" />
+              </span>
+            </div>
+
+            {/* Dark Pill Command Box with Copy */}
+            <div className="inline-flex items-center gap-3 rounded-2xl bg-foreground/[0.05] px-4 py-2.5">
+              <code className="font-mono text-xs sm:text-[0.8125rem] text-foreground">
+                <span className="text-muted-foreground select-none">$ </span>
+                {installCmd}
+              </code>
+              <button
+                onClick={handleCopy}
+                aria-label={isPt ? 'Copiar comando' : 'Copy command'}
+                className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              >
+                {copiedCmd ? (
+                  <Check className="w-4 h-4 text-positive" />
+                ) : (
+                  <Copy className="w-4 h-4" />
+                )}
+              </button>
+            </div>
+          </div>
+
+          <ActionLink href="./studio/#create-own" variant="secondary" size="sm" className="shrink-0">
+            <span>{isPt ? 'Criar minha própria Library' : 'Create my own Library'}</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </ActionLink>
+        </Panel>
+      </Shell>
+
       {/* Two Skill Cards */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         {/* Skill 1: create-icons */}
         <Shell className="flex flex-col">
           <div className="flex items-center justify-between px-3 py-2">
@@ -179,31 +251,6 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
           </Panel>
         </Shell>
       </div>
-
-      {/* Quick Install + Studio CTA Bar */}
-      <Shell>
-        <Panel className="p-4 flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          <Inset className="flex-1 flex items-center justify-between gap-2 px-3 py-2">
-            <div className="flex items-center gap-2 min-w-0">
-              <Terminal className="w-3.5 h-3.5 text-muted-foreground shrink-0" />
-              <code className="font-mono text-xs text-foreground truncate">{installCmd}</code>
-            </div>
-            <ActionButton variant="quiet" size="sm" className="h-7 px-2.5 shrink-0" onClick={handleCopy}>
-              {copiedCmd ? (
-                <Check className="w-3.5 h-3.5 text-positive" />
-              ) : (
-                <Copy className="w-3.5 h-3.5" />
-              )}
-              <span className="text-xs">{copiedCmd ? (isPt ? 'Copiado' : 'Copied') : (isPt ? 'Copiar' : 'Copy')}</span>
-            </ActionButton>
-          </Inset>
-
-          <ActionLink href="./studio/#create-own" variant="secondary" size="md" className="shrink-0">
-            <span>{isPt ? 'Criar minha própria Library' : 'Create my own Library'}</span>
-            <ArrowRight className="w-4 h-4" />
-          </ActionLink>
-        </Panel>
-      </Shell>
     </section>
   )
 }
