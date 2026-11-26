@@ -1,0 +1,23 @@
+{
+  "name": "Icon Library Studio",
+  "short_name": "Studio",
+  "description": "Browse, search, compile, and export icon webfonts in the browser.",
+  "start_url": "/studio/",
+  "display": "standalone",
+  "background_color": "#0c0c0c",
+  "theme_color": "#0c0c0c",
+  "icons": [
+    {
+      "src": "/studio/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/studio/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
