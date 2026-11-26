@@ -21,13 +21,14 @@
   ],
   "rewrites": [
     {
-      "source": "/studio/(.*)",
+      "source": "/studio/:path*",
       "destination": {
-        "service": "studio"
+        "service": "studio",
+        "path": "/:path*"
       }
     },
     {
-      "source": "/(.*)",
+      "source": "/:path*",
       "destination": {
         "service": "web"
       }
