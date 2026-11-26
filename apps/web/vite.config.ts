@@ -11,6 +11,18 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
   },
+  server: {
+    host: '127.0.0.1',
+    port: 5173,
+    strictPort: true,
+    proxy: {
+      // Forward /studio to the Vue studio app (npm run dev starts both)
+      '/studio': {
+        target: 'http://127.0.0.1:5174',
+        changeOrigin: true
+      }
+    }
+  },
   optimizeDeps: {
     include: ['opentype.js', 'jszip', 'svgpath']
   }

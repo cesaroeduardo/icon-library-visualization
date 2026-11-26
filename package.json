@@ -5,7 +5,7 @@
   "description": "Open-source monorepo for Icon Library Studio (apps/web landing page, apps/studio web app, packages/core engine, packages/skill AI skill).",
   "type": "module",
   "scripts": {
-    "dev": "npm run dev --prefix apps/web",
+    "dev": "node scripts/dev.mjs",
     "dev:web": "npm run dev --prefix apps/web",
     "dev:studio": "npm run dev --prefix apps/studio",
     "pack:skill": "node packages/skill/pack-skill.mjs",
