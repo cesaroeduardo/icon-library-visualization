@@ -10,7 +10,8 @@ import {
   X,
   Smile,
   Plus,
-  ExternalLink
+  ExternalLink,
+  Sparkles
 } from 'lucide-vue-next'
 import IconCard from './IconCard.vue'
 import ColoredIcon from './ColoredIcon.vue'
@@ -23,10 +24,12 @@ const { lang, t } = useI18n()
 const props = defineProps({
   library: { type: Object, required: true },
   presets: { type: Array, default: () => [] },
-  activePresetId: { type: String, default: '' }
+  activePresetId: { type: String, default: '' },
+  availableStyles: { type: Array, default: () => [] },
+  activeStyle: { type: String, default: 'regular' }
 })
 
-const emit = defineEmits(['back', 'edit-svgs', 'select-preset', 'create-own'])
+const emit = defineEmits(['back', 'edit-svgs', 'select-preset', 'select-style', 'create-own'])
 
 const searchQuery = ref('')
 const activeFilter = ref('all')
@@ -366,6 +369,32 @@ async function downloadBundle() {
                 <color-picker v-model:pureColor="pureColor" />
               </div>
 
+              <!-- Icon Style / Weight Selector -->
+              <div v-if="availableStyles.length > 1" class="tuff-inset p-3 space-y-2">
+                <div class="flex items-center justify-between text-xs font-medium" style="color: var(--muted-foreground);">
+                  <span class="inline-flex items-center gap-1.5">
+                    <Sparkles class="w-3.5 h-3.5" />
+                    {{ lang === 'pt' ? 'Estilo' : 'Style' }}
+                  </span>
+                  <span class="font-mono capitalize" style="color: var(--brand);">{{ activeStyle }}</span>
+                </div>
+                <div class="grid grid-cols-2 gap-1.5">
+                  <button
+                    v-for="st in availableStyles"
+                    :key="st"
+                    @click="emit('select-style', st)"
+                    class="h-7 px-2.5 rounded-full text-xs font-medium capitalize transition-colors"
+                    :style="
+                      activeStyle === st
+                        ? 'background-color: var(--surface-raised); color: var(--foreground);'
+                        : 'background-color: var(--fg-tint-4); color: var(--muted-foreground);'
+                    "
+                  >
+                    {{ st }}
+                  </button>
+                </div>
+              </div>
+
               <!-- Format Switch -->
               <div class="tuff-inset p-3 space-y-2">
                 <div class="flex items-center gap-1.5 text-xs font-medium" style="color: var(--muted-foreground);">
@@ -413,6 +442,31 @@ async function downloadBundle() {
         <div class="tuff-inset p-3 flex items-center gap-3">
           <Palette class="w-4 h-4 shrink-0" style="color: var(--muted-foreground);" />
           <color-picker v-model:pureColor="pureColor" />
+        </div>
+
+        <div v-if="availableStyles.length > 1" class="tuff-inset p-3 space-y-2">
+          <div class="flex items-center justify-between text-xs font-medium" style="color: var(--muted-foreground);">
+            <span class="inline-flex items-center gap-1.5">
+              <Sparkles class="w-3.5 h-3.5" />
+              {{ lang === 'pt' ? 'Estilo' : 'Style' }}
+            </span>
+            <span class="font-mono capitalize" style="color: var(--brand);">{{ activeStyle }}</span>
+          </div>
+          <div class="flex flex-wrap gap-1.5">
+            <button
+              v-for="st in availableStyles"
+              :key="st"
+              @click="emit('select-style', st)"
+              class="h-7 px-3 rounded-full text-xs font-medium capitalize transition-colors"
+              :style="
+                activeStyle === st
+                  ? 'background-color: var(--surface-raised); color: var(--foreground);'
+                  : 'background-color: var(--fg-tint-4); color: var(--muted-foreground);'
+              "
+            >
+              {{ st }}
+            </button>
+          </div>
         </div>
 
         <div class="tuff-inset p-3 flex items-center gap-3">

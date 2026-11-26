@@ -49,18 +49,18 @@ export const DEMO_LIBRARIES: LibraryPreset[] = [
   },
   {
     id: 'pixelarticons',
-    label: 'Pixelarticons (Free)',
-    name: 'Pixelarticons (Free)',
+    label: 'Pixelarticons',
+    name: 'Pixelarticons',
     url: 'https://pixelarticons.com/',
     license: 'MIT',
     jsonPath: './demo/libraries/pixelarticons.json'
   },
   {
     id: 'hugeicons',
-    label: 'Hugeicons (Free)',
-    name: 'Hugeicons (Free)',
+    label: 'Hugeicons',
+    name: 'Hugeicons',
     url: 'https://hugeicons.com/',
-    license: 'MIT (Free)',
+    license: 'MIT',
     jsonPath: './demo/libraries/hugeicons.json'
   },
   {

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import {
   Sun,
   Moon,
@@ -20,6 +20,11 @@ import { parseUploadedWebfont } from '@icon-library/core'
 
 const { lang, t, toggleLang } = useI18n()
 
+const STROKE_WEIGHTS = {
+  feather: { thin: '1.25', light: '1.5', regular: '2', bold: '2.6' },
+  hugeicons: { thin: '1', light: '1.25', regular: '1.5', bold: '2.2' }
+}
+
 const PRESETS = [
   {
     id: 'phosphor',
@@ -27,7 +32,8 @@ const PRESETS = [
     name: 'Phosphor Icons',
     url: 'https://phosphoricons.com/',
     license: 'MIT',
-    jsonPath: './demo/libraries/phosphor.json'
+    styles: ['thin', 'light', 'regular', 'bold', 'fill', 'duotone'],
+    styleJsonTemplate: (style) => `./demo/libraries/phosphor-${style}.json`
   },
   {
     id: 'feather',
@@ -35,22 +41,25 @@ const PRESETS = [
     name: 'Feather Icons',
     url: 'https://feathericons.com/',
     license: 'MIT',
+    styles: ['thin', 'light', 'regular', 'bold'],
     jsonPath: './demo/libraries/feather.json'
   },
   {
     id: 'pixelarticons',
-    label: 'Pixelarticons (Free)',
-    name: 'Pixelarticons (Free)',
+    label: 'Pixelarticons',
+    name: 'Pixelarticons',
     url: 'https://pixelarticons.com/',
     license: 'MIT',
+    styles: ['regular'],
     jsonPath: './demo/libraries/pixelarticons.json'
   },
   {
     id: 'hugeicons',
-    label: 'Hugeicons (Free)',
-    name: 'Hugeicons (Free)',
+    label: 'Hugeicons',
+    name: 'Hugeicons',
     url: 'https://hugeicons.com/',
-    license: 'MIT (Free)',
+    license: 'MIT',
+    styles: ['thin', 'light', 'regular', 'bold'],
     jsonPath: './demo/libraries/hugeicons.json'
   },
   {
@@ -58,24 +67,56 @@ const PRESETS = [
     label: 'Demo Webfont',
     name: 'Demo Webfont (WOFF2/TTF)',
     url: 'https://github.com/cesaroeduardo/icon-library-visualization',
-    license: 'MIT'
+    license: 'MIT',
+    styles: ['regular']
   }
 ]
 
 const presetCache = new Map()
 const activeView = ref('gallery') // 'gallery' | 'create-own' | 'webfont' | 'svg'
 const activePresetId = ref('phosphor')
+const activeStyle = ref('regular')
 const currentLibrary = ref(null)
 const savedRawSvgs = ref([])
 const loadingLibrary = ref(true)
 
-async function loadPreset(presetId) {
+const availableStyles = computed(() => {
+  const preset = PRESETS.find((p) => p.id === activePresetId.value)
+  return preset ? preset.styles : []
+})
+
+function applyStrokeStyle(icons, presetId, style) {
+  const map = STROKE_WEIGHTS[presetId]
+  if (!map || !map[style]) return icons
+  const sw = map[style]
+  return icons.map((icon) => {
+    if (!icon.svg) return icon
+    const updatedSvg = icon.svg.includes('stroke-width=')
+      ? icon.svg.replace(/stroke-width="[^"]*"/g, `stroke-width="${sw}"`)
+      : icon.svg.replace('<svg', `<svg stroke-width="${sw}"`)
+    return { ...icon, svg: updatedSvg }
+  })
+}
+
+async function loadPreset(presetId, style = 'regular') {
   const preset = PRESETS.find((p) => p.id === presetId) || PRESETS[0]
+  const resolvedStyle = preset.styles.includes(style) ? style : 'regular'
   activePresetId.value = preset.id
+  activeStyle.value = resolvedStyle
   activeView.value = 'gallery'
 
-  if (presetCache.has(preset.id)) {
-    currentLibrary.value = presetCache.get(preset.id)
+  const cacheKey = preset.styleJsonTemplate ? `${preset.id}:${resolvedStyle}` : preset.id
+
+  if (presetCache.has(cacheKey)) {
+    const baseLib = presetCache.get(cacheKey)
+    if (STROKE_WEIGHTS[preset.id]) {
+      currentLibrary.value = {
+        ...baseLib,
+        icons: applyStrokeStyle(baseLib.icons, preset.id, resolvedStyle)
+      }
+    } else {
+      currentLibrary.value = baseLib
+    }
     loadingLibrary.value = false
     return
   }
@@ -100,19 +141,21 @@ async function loadPreset(presetId) {
         customPrefix: 'ic'
       })
       lib.credits = { name: preset.name, url: preset.url, license: preset.license }
-      presetCache.set(preset.id, lib)
+      presetCache.set(cacheKey, lib)
       currentLibrary.value = lib
-    } else if (preset.jsonPath) {
-      const res = await fetch(preset.jsonPath)
+    } else {
+      const url = preset.styleJsonTemplate ? preset.styleJsonTemplate(resolvedStyle) : preset.jsonPath
+      const res = await fetch(url)
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
+      const baseIcons = (data.icons || []).map((i) => ({ ...i, colored: false }))
       const lib = {
         sourceType: 'preset',
         fontName: data.meta?.name || preset.name,
         runtimeFamily: '',
         prefix: data.meta?.prefix || 'ic',
-        icons: (data.icons || []).map((i) => ({ ...i, colored: false })),
-        monoCount: (data.icons || []).length,
+        icons: baseIcons,
+        monoCount: baseIcons.length,
         coloredCount: 0,
         credits: {
           name: preset.name,
@@ -121,14 +164,16 @@ async function loadPreset(presetId) {
         },
         artifacts: {
           catalogJson: JSON.stringify(
-            (data.icons || []).map(({ name, icon, keywords }) => ({ name, icon, keywords })),
+            baseIcons.map(({ name, icon, keywords }) => ({ name, icon, keywords })),
             null,
             2
           )
         }
       }
-      presetCache.set(preset.id, lib)
-      currentLibrary.value = lib
+      presetCache.set(cacheKey, lib)
+      currentLibrary.value = STROKE_WEIGHTS[preset.id]
+        ? { ...lib, icons: applyStrokeStyle(lib.icons, preset.id, resolvedStyle) }
+        : lib
     }
   } catch (e) {
     console.error('Failed to load preset:', presetId, e)
@@ -137,8 +182,14 @@ async function loadPreset(presetId) {
   }
 }
 
+function handleSelectStyle(style) {
+  if (!activePresetId.value) return
+  loadPreset(activePresetId.value, style)
+}
+
 function handleWebfontLoaded(library) {
   activePresetId.value = ''
+  activeStyle.value = 'regular'
   currentLibrary.value = library
   savedRawSvgs.value = []
   activeView.value = 'gallery'
@@ -146,6 +197,7 @@ function handleWebfontLoaded(library) {
 
 function handleSvgsBuilt({ library, rawSvgs }) {
   activePresetId.value = ''
+  activeStyle.value = 'regular'
   currentLibrary.value = library
   savedRawSvgs.value = rawSvgs
   activeView.value = 'gallery'
@@ -160,24 +212,24 @@ onMounted(async () => {
   const hash = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase()
   if (hash === 'create-own') {
     activeView.value = 'create-own'
-    loadPreset('phosphor').then(() => {
+    loadPreset('phosphor', 'regular').then(() => {
       activeView.value = 'create-own'
     })
     return
   }
   if (hash === 'webfont' || hash === 'svg') {
     activeView.value = hash
-    loadPreset('phosphor').then(() => {
+    loadPreset('phosphor', 'regular').then(() => {
       activeView.value = hash
     })
     return
   }
   if (hash.startsWith('lib-')) {
     const target = hash.replace('lib-', '')
-    await loadPreset(target)
+    await loadPreset(target, 'regular')
     return
   }
-  await loadPreset('phosphor')
+  await loadPreset('phosphor', 'regular')
 })
 </script>
 
@@ -289,7 +341,10 @@ onMounted(async () => {
         :library="currentLibrary"
         :presets="PRESETS"
         :active-preset-id="activePresetId"
-        @select-preset="loadPreset"
+        :available-styles="availableStyles"
+        :active-style="activeStyle"
+        @select-preset="(id) => loadPreset(id, 'regular')"
+        @select-style="handleSelectStyle"
         @create-own="activeView = 'create-own'"
         @back="activeView = 'create-own'"
         @edit-svgs="activeView = 'svg'"
