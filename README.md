@@ -27,7 +27,7 @@ npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
 npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons
 ```
 
-![AI Agent Drawing Icon on 24x24 Canvas](docs/assets/agent-drawing.png)
+<img width="1208" height="707" alt="image" src="https://github.com/user-attachments/assets/7969123f-faf5-4040-acc4-81f1df50ca28" />
 
 > The `create-icons` skill was inspired by [@banhosdev](https://x.com/banhosdev)'s [sergiobanhos/generate-icons](https://github.com/sergiobanhos/generate-icons).
 
