@@ -6,7 +6,7 @@ import {
   Languages,
   Layers,
   BookOpen,
-  Plus,
+  Upload,
   ArrowLeft,
   Loader2
 } from 'lucide-vue-next'
@@ -255,8 +255,8 @@ onMounted(async () => {
             @click="activeView = activeView === 'create-own' ? 'gallery' : 'create-own'"
             class="tuff-btn-primary !h-8 text-xs"
           >
-            <Plus class="w-3.5 h-3.5" />
-            <span class="hidden sm:inline">{{ lang === 'pt' ? 'Criar minha própria' : 'Create my own' }}</span>
+            <Upload class="w-3.5 h-3.5" />
+            <span class="hidden sm:inline">{{ lang === 'pt' ? 'Enviar meus ícones' : 'Upload my own icons' }}</span>
           </button>
 
           <a href="/#docs" class="tuff-btn-quiet">
