@@ -120,3 +120,10 @@ body {
   background-image: radial-gradient(var(--border) 1px, transparent 1px);
   background-size: 20px 20px;
 }
+
+/* Persistent film-grain noise overlay */
+.site-noise {
+  background-position: 0 0;
+  background-size: 128px 128px;
+  background-repeat: repeat;
+}

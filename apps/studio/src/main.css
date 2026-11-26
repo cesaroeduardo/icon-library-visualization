@@ -242,3 +242,10 @@ input[type='radio'].radio {
 .vc-display {
   @apply !gap-1;
 }
+
+/* Persistent film-grain noise overlay */
+.site-noise {
+  background-position: 0 0;
+  background-size: 128px 128px;
+  background-repeat: repeat;
+}

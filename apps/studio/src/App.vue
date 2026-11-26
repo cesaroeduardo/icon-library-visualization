@@ -182,6 +182,11 @@ onMounted(async () => {
 </script>
 
 <template>
+  <div
+    aria-hidden="true"
+    class="site-noise pointer-events-none fixed inset-0 z-40 opacity-10 mix-blend-overlay motion-reduce:hidden"
+    style="background-image: url('./noise.webp');"
+  ></div>
   <div class="min-h-screen flex flex-col">
     <!-- TUFFUI Sticky Header -->
     <header

@@ -159,6 +159,11 @@ export function App() {
 
   return (
     <MotionConfig reducedMotion="user">
+      <div
+        aria-hidden="true"
+        className="site-noise pointer-events-none fixed inset-0 z-40 opacity-10 mix-blend-overlay motion-reduce:hidden"
+        style={{ backgroundImage: "url('./noise.webp')" }}
+      />
       <div className="min-h-screen flex flex-col bg-background text-foreground">
         {/* Top Open-Source Announcement Strip (pixelarticons structure, TUFFUI layered surface) */}
         <div className="w-full bg-surface border-b border-border px-4 py-2">
