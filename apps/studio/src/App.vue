@@ -19,10 +19,7 @@ import { useI18n } from './i18n'
 
 const { lang, t, toggleLang } = useI18n()
 
-const STROKE_WEIGHTS = {
-  feather: { thin: '1.25', light: '1.5', regular: '2', bold: '2.6' },
-  hugeicons: { thin: '1', light: '1.25', regular: '1.5', bold: '2.2' }
-}
+const BASE = import.meta.env.BASE_URL
 
 const PRESETS = [
   {
@@ -32,7 +29,47 @@ const PRESETS = [
     url: 'https://phosphoricons.com/',
     license: 'MIT',
     styles: ['thin', 'light', 'regular', 'bold', 'fill', 'duotone'],
-    styleJsonTemplate: (style) => `./demo/libraries/phosphor-${style}.json`
+    defaultStyle: 'regular',
+    styleJsonTemplate: (style) => `${BASE}demo/libraries/phosphor-${style}.json`
+  },
+  {
+    id: 'lucide',
+    label: 'Lucide',
+    name: 'Lucide Icons',
+    url: 'https://lucide.dev/',
+    license: 'ISC',
+    styles: ['regular'],
+    jsonPath: `${BASE}demo/libraries/lucide.json`
+  },
+  {
+    id: 'tabler',
+    label: 'Tabler',
+    name: 'Tabler Icons',
+    url: 'https://tabler.io/icons',
+    license: 'MIT',
+    styles: ['outline', 'filled'],
+    defaultStyle: 'outline',
+    styleJsonTemplate: (style) => `${BASE}demo/libraries/tabler-${style}.json`
+  },
+  {
+    id: 'solar',
+    label: 'Solar',
+    name: 'Solar Icons',
+    url: 'https://github.com/480design/Solar-Icon-Set',
+    license: 'CC BY 4.0',
+    styles: ['linear', 'outline', 'bold', 'bold-duotone', 'broken', 'line-duotone'],
+    defaultStyle: 'linear',
+    styleJsonTemplate: (style) => `${BASE}demo/libraries/solar-${style}.json`
+  },
+  {
+    id: 'remix',
+    label: 'Remix Icon',
+    name: 'Remix Icon',
+    url: 'https://remixicon.com/',
+    license: 'Apache 2.0',
+    styles: ['line', 'fill'],
+    defaultStyle: 'line',
+    styleJsonTemplate: (style) => `${BASE}demo/libraries/remix-${style}.json`
   },
   {
     id: 'feather',
@@ -40,8 +77,17 @@ const PRESETS = [
     name: 'Feather Icons',
     url: 'https://feathericons.com/',
     license: 'MIT',
-    styles: ['thin', 'light', 'regular', 'bold'],
-    jsonPath: './demo/libraries/feather.json'
+    styles: ['regular'],
+    jsonPath: `${BASE}demo/libraries/feather.json`
+  },
+  {
+    id: 'hugeicons',
+    label: 'Hugeicons',
+    name: 'Hugeicons',
+    url: 'https://hugeicons.com/',
+    license: 'MIT',
+    styles: ['regular'],
+    jsonPath: `${BASE}demo/libraries/hugeicons.json`
   },
   {
     id: 'pixelarticons',
@@ -50,16 +96,7 @@ const PRESETS = [
     url: 'https://pixelarticons.com/',
     license: 'MIT',
     styles: ['regular'],
-    jsonPath: './demo/libraries/pixelarticons.json'
-  },
-  {
-    id: 'hugeicons',
-    label: 'Hugeicons',
-    name: 'Hugeicons',
-    url: 'https://hugeicons.com/',
-    license: 'MIT',
-    styles: ['thin', 'light', 'regular', 'bold'],
-    jsonPath: './demo/libraries/hugeicons.json'
+    jsonPath: `${BASE}demo/libraries/pixelarticons.json`
   }
 ]
 
@@ -76,22 +113,10 @@ const availableStyles = computed(() => {
   return preset ? preset.styles : []
 })
 
-function applyStrokeStyle(icons, presetId, style) {
-  const map = STROKE_WEIGHTS[presetId]
-  if (!map || !map[style]) return icons
-  const sw = map[style]
-  return icons.map((icon) => {
-    if (!icon.svg) return icon
-    const updatedSvg = icon.svg.includes('stroke-width=')
-      ? icon.svg.replace(/stroke-width="[^"]*"/g, `stroke-width="${sw}"`)
-      : icon.svg.replace('<svg', `<svg stroke-width="${sw}"`)
-    return { ...icon, svg: updatedSvg }
-  })
-}
-
-async function loadPreset(presetId, style = 'regular') {
+async function loadPreset(presetId, style) {
   const preset = PRESETS.find((p) => p.id === presetId) || PRESETS[0]
-  const resolvedStyle = preset.styles.includes(style) ? style : 'regular'
+  const fallbackStyle = preset.defaultStyle || preset.styles[0] || 'regular'
+  const resolvedStyle = style && preset.styles.includes(style) ? style : fallbackStyle
   activePresetId.value = preset.id
   activeStyle.value = resolvedStyle
   activeView.value = 'gallery'
@@ -99,15 +124,7 @@ async function loadPreset(presetId, style = 'regular') {
   const cacheKey = preset.styleJsonTemplate ? `${preset.id}:${resolvedStyle}` : preset.id
 
   if (presetCache.has(cacheKey)) {
-    const baseLib = presetCache.get(cacheKey)
-    if (STROKE_WEIGHTS[preset.id]) {
-      currentLibrary.value = {
-        ...baseLib,
-        icons: applyStrokeStyle(baseLib.icons, preset.id, resolvedStyle)
-      }
-    } else {
-      currentLibrary.value = baseLib
-    }
+    currentLibrary.value = presetCache.get(cacheKey)
     loadingLibrary.value = false
     return
   }
@@ -141,9 +158,7 @@ async function loadPreset(presetId, style = 'regular') {
       }
     }
     presetCache.set(cacheKey, lib)
-    currentLibrary.value = STROKE_WEIGHTS[preset.id]
-      ? { ...lib, icons: applyStrokeStyle(lib.icons, preset.id, resolvedStyle) }
-      : lib
+    currentLibrary.value = lib
   } catch (e) {
     console.error('Failed to load preset:', presetId, e)
   } finally {
@@ -206,7 +221,7 @@ onMounted(async () => {
   <div
     aria-hidden="true"
     class="site-noise pointer-events-none fixed inset-0 z-40 opacity-[0.04] mix-blend-overlay motion-reduce:hidden"
-    style="background-image: url('./noise.webp');"
+    :style="{ backgroundImage: `url('${BASE}noise.webp')` }"
   ></div>
   <div class="min-h-screen flex flex-col">
     <!-- TUFFUI Sticky Header -->
@@ -217,7 +232,7 @@ onMounted(async () => {
       <div class="max-w-[1472px] w-full flex items-center justify-between gap-3">
         <div class="flex items-center gap-2">
           <a
-            href="../"
+            href="/"
             class="tuff-btn-quiet"
             :title="lang === 'pt' ? 'Voltar ao site' : 'Back to site'"
           >
@@ -248,7 +263,7 @@ onMounted(async () => {
             <span class="hidden sm:inline">{{ lang === 'pt' ? 'Criar minha própria' : 'Create my own' }}</span>
           </button>
 
-          <a href="../#docs" class="tuff-btn-quiet">
+          <a href="/#docs" class="tuff-btn-quiet">
             <BookOpen class="w-3.5 h-3.5" />
             <span class="hidden sm:inline">{{ t.docsNav }}</span>
           </a>
@@ -312,7 +327,7 @@ onMounted(async () => {
         :active-preset-id="activePresetId"
         :available-styles="availableStyles"
         :active-style="activeStyle"
-        @select-preset="(id) => loadPreset(id, 'regular')"
+        @select-preset="(id) => loadPreset(id)"
         @select-style="handleSelectStyle"
         @create-own="activeView = 'create-own'"
         @back="activeView = 'create-own'"

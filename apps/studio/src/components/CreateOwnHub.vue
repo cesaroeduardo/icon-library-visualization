@@ -16,6 +16,7 @@ import {
 } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
 import { parseCatalogJson } from '@icon-library/core'
+import AgentCanvasMini from './AgentCanvasMini.vue'
 
 const { lang, t } = useI18n()
 const emit = defineEmits(['back', 'select', 'import-svgs'])
@@ -176,9 +177,9 @@ async function handleImportFiles(fileList) {
         <span class="tuff-tag">AI SKILLS · CREATE + CATALOG · 8 STYLES</span>
       </div>
 
-      <div class="tuff-panel p-6 md:p-7">
+      <div class="tuff-panel p-6 md:p-7 space-y-6">
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
-          <!-- Left: Description, Skill Downloads & Install Command -->
+          <!-- Left: Description, Skill Install Command & Links -->
           <div class="lg:col-span-7 space-y-5">
             <div class="space-y-2">
               <h2 class="text-xl md:text-2xl font-semibold tracking-[-0.025em]">
@@ -247,55 +248,63 @@ async function handleImportFiles(fileList) {
                 <span>skills/catalog-icons</span>
                 <ExternalLink class="w-3.5 h-3.5" />
               </a>
-              <a href="../#docs-skills" class="tuff-btn-quiet">
+              <a href="/#docs-skills" class="tuff-btn-quiet">
                 <span>{{ lang === 'pt' ? 'Preview dos 8 estilos' : 'Preview 8 styles' }}</span>
                 <ExternalLink class="w-3.5 h-3.5" />
               </a>
             </div>
           </div>
 
-          <!-- Right: Direct Dropzone for Skill-Generated SVGs -->
+          <!-- Right: Animated Claude Agent Drawing Canvas -->
           <div class="lg:col-span-5">
-            <div
-              @dragover.prevent="isDragging = true"
-              @dragleave.prevent="isDragging = false"
-              @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
-              @click="fileInput?.click()"
-              class="tuff-inset p-7 text-center cursor-pointer transition-colors h-full min-h-[210px] flex flex-col items-center justify-center gap-3"
-              :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
+            <AgentCanvasMini :lang="lang" />
+          </div>
+        </div>
+
+        <!-- Bottom: Direct Dropzone for Skill-Generated SVGs -->
+        <div
+          @dragover.prevent="isDragging = true"
+          @dragleave.prevent="isDragging = false"
+          @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
+          @click="fileInput?.click()"
+          class="tuff-inset px-5 py-4 cursor-pointer transition-colors flex flex-col sm:flex-row items-center justify-between gap-4"
+          :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
+        >
+          <input
+            ref="fileInput"
+            type="file"
+            multiple
+            accept=".svg,.zip,.json"
+            class="hidden"
+            @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
+          />
+          <div class="flex items-center gap-3.5">
+            <span
+              class="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
+              style="background-color: var(--fg-tint-6);"
             >
-              <input
-                ref="fileInput"
-                type="file"
-                multiple
-                accept=".svg,.zip,.json"
-                class="hidden"
-                @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
-              />
-              <span
-                class="h-11 w-11 rounded-2xl flex items-center justify-center"
-                style="background-color: var(--fg-tint-6);"
-              >
-                <UploadCloud class="w-5 h-5" style="color: var(--brand);" />
-              </span>
-              <div class="space-y-1">
-                <p class="text-xs sm:text-sm font-medium">
-                  {{
-                    lang === 'pt'
-                      ? 'Já gerou seus ícones com a skill?'
-                      : 'Already generated icons with the skill?'
-                  }}
-                </p>
-                <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
-                  {{
-                    lang === 'pt'
-                      ? 'Arraste os SVGs + catalog.json (ou .zip) aqui para compilar direto na library.'
-                      : 'Drop your SVGs + catalog.json (or .zip) here to compile straight into the library.'
-                  }}
-                </p>
-              </div>
+              <UploadCloud class="w-5 h-5" style="color: var(--brand);" />
+            </span>
+            <div class="text-left">
+              <p class="text-xs sm:text-sm font-medium">
+                {{
+                  lang === 'pt'
+                    ? 'Já gerou seus ícones com a skill?'
+                    : 'Already generated icons with the skill?'
+                }}
+              </p>
+              <p class="text-xs" style="color: var(--muted-foreground);">
+                {{
+                  lang === 'pt'
+                    ? 'Arraste os SVGs + catalog.json (ou .zip) aqui para compilar direto na library.'
+                    : 'Drop your SVGs + catalog.json (or .zip) here to compile straight into the library.'
+                }}
+              </p>
             </div>
           </div>
+          <span class="tuff-btn-secondary shrink-0">
+            {{ lang === 'pt' ? 'Importar SVGs' : 'Import SVGs' }}
+          </span>
         </div>
       </div>
     </div>

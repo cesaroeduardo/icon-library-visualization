@@ -1,0 +1,36 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "services": {
+    "studio": {
+      "root": "apps/studio",
+      "framework": "vite",
+      "outputDirectory": "dist"
+    },
+    "web": {
+      "root": "apps/web",
+      "framework": "vite",
+      "outputDirectory": "dist"
+    }
+  },
+  "redirects": [
+    {
+      "source": "/studio",
+      "destination": "/studio/",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/studio/(.*)",
+      "destination": {
+        "service": "studio"
+      }
+    },
+    {
+      "source": "/(.*)",
+      "destination": {
+        "service": "web"
+      }
+    }
+  ]
+}

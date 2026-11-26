@@ -105,11 +105,11 @@ export function DocsView({ lang, initialSection, onBack }: DocsViewProps) {
         </ActionButton>
 
         <div className="flex items-center gap-2">
-          <ActionLink href="./studio/#demo" variant="secondary" size="sm">
+          <ActionLink href="/studio/" variant="secondary" size="sm">
             <Eye className="w-3.5 h-3.5" />
             <span>{doc.tryDemo}</span>
           </ActionLink>
-          <ActionLink href="./studio/" variant="primary" size="sm">
+          <ActionLink href="/studio/#create-own" variant="primary" size="sm">
             <span>{doc.openStudio}</span>
             <ArrowUpRight className="w-3.5 h-3.5" />
           </ActionLink>

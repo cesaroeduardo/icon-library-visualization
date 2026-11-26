@@ -1,6 +1,6 @@
 export const GITHUB_URL = 'https://github.com/cesaroeduardo/icon-library-visualization'
 export const CLONE_CMD = 'git clone https://github.com/cesaroeduardo/icon-library-visualization.git'
-export const STUDIO_URL = './studio/'
+export const STUDIO_URL = '/studio/'
 
 export type Lang = 'pt' | 'en'
 
@@ -31,9 +31,9 @@ export const copy = {
       copy: 'Copiar',
       copied: 'Copiado!',
       quickLinks: [
-        { label: 'Abrir Icon Library', href: './studio/' },
-        { label: 'Subir Webfont', href: './studio/#webfont' },
-        { label: 'Compilar SVGs', href: './studio/#svg' },
+        { label: 'Abrir Icon Library', href: '/studio/' },
+        { label: 'Subir Webfont', href: '/studio/#webfont' },
+        { label: 'Compilar SVGs', href: '/studio/#svg' },
         { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
         { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
         { label: 'Ler Documentação', href: '#docs', docs: true }
@@ -65,7 +65,7 @@ export const copy = {
           title: 'Webfont Inspector',
           desc: 'Suba uma fonte pronta com ou sem CSS. O motor lê os glifos, extrai os caminhos vetoriais, preserva classes CSS e keywords do catalog.json e exporta em SVG ou PNG.',
           cta: 'Subir Webfont',
-          href: './studio/#webfont'
+          href: '/studio/#webfont'
         },
         {
           id: 'svg',
@@ -73,7 +73,7 @@ export const copy = {
           title: 'SVG → Webfont Compiler',
           desc: 'Arraste múltiplos SVGs ou um .zip. Valide viewBox, strokes e clipPaths, separe ícones multicoloridos inline e baixe o pacote completo (.woff, .ttf, .css, catalog.json e svg/).',
           cta: 'Compilar SVGs',
-          href: './studio/#svg'
+          href: '/studio/#svg'
         },
         {
           id: 'skill',
@@ -159,9 +159,9 @@ export const copy = {
       copy: 'Copy',
       copied: 'Copied!',
       quickLinks: [
-        { label: 'Open Icon Library', href: './studio/' },
-        { label: 'Upload Webfont', href: './studio/#webfont' },
-        { label: 'Compile SVGs', href: './studio/#svg' },
+        { label: 'Open Icon Library', href: '/studio/' },
+        { label: 'Upload Webfont', href: '/studio/#webfont' },
+        { label: 'Compile SVGs', href: '/studio/#svg' },
         { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
         { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
         { label: 'Read Docs', href: '#docs', docs: true }
@@ -193,7 +193,7 @@ export const copy = {
           title: 'Webfont Inspector',
           desc: 'Upload any webfont with or without CSS. The engine parses glyphs, extracts vector paths, preserves CSS class names & catalog.json keywords, and exports SVG or PNG.',
           cta: 'Upload Webfont',
-          href: './studio/#webfont'
+          href: '/studio/#webfont'
         },
         {
           id: 'svg',
@@ -201,7 +201,7 @@ export const copy = {
           title: 'SVG → Webfont Compiler',
           desc: 'Drop multiple SVGs or a .zip archive. Validate viewBox, strokes, and clipPaths, keep multicolor icons inline, and download the complete bundle (.woff, .ttf, .css, catalog.json, svg/).',
           cta: 'Compile SVGs',
-          href: './studio/#svg'
+          href: '/studio/#svg'
         },
         {
           id: 'skill',

@@ -22,7 +22,15 @@ export interface DemoIcon {
 }
 
 export interface LibraryPreset {
-  id: 'phosphor' | 'feather' | 'pixelarticons' | 'hugeicons'
+  id:
+    | 'phosphor'
+    | 'lucide'
+    | 'tabler'
+    | 'solar'
+    | 'remix'
+    | 'feather'
+    | 'hugeicons'
+    | 'pixelarticons'
   label: string
   name: string
   url: string
@@ -37,7 +45,39 @@ export const DEMO_LIBRARIES: LibraryPreset[] = [
     name: 'Phosphor Icons',
     url: 'https://phosphoricons.com/',
     license: 'MIT',
-    jsonPath: './demo/libraries/phosphor.json'
+    jsonPath: '/demo/libraries/phosphor.json'
+  },
+  {
+    id: 'lucide',
+    label: 'Lucide',
+    name: 'Lucide Icons',
+    url: 'https://lucide.dev/',
+    license: 'ISC',
+    jsonPath: '/demo/libraries/lucide.json'
+  },
+  {
+    id: 'tabler',
+    label: 'Tabler',
+    name: 'Tabler Icons',
+    url: 'https://tabler.io/icons',
+    license: 'MIT',
+    jsonPath: '/demo/libraries/tabler.json'
+  },
+  {
+    id: 'solar',
+    label: 'Solar',
+    name: 'Solar Icons',
+    url: 'https://github.com/480design/Solar-Icon-Set',
+    license: 'CC BY 4.0',
+    jsonPath: '/demo/libraries/solar.json'
+  },
+  {
+    id: 'remix',
+    label: 'Remix Icon',
+    name: 'Remix Icon',
+    url: 'https://remixicon.com/',
+    license: 'Apache 2.0',
+    jsonPath: '/demo/libraries/remix.json'
   },
   {
     id: 'feather',
@@ -45,15 +85,7 @@ export const DEMO_LIBRARIES: LibraryPreset[] = [
     name: 'Feather Icons',
     url: 'https://feathericons.com/',
     license: 'MIT',
-    jsonPath: './demo/libraries/feather.json'
-  },
-  {
-    id: 'pixelarticons',
-    label: 'Pixelarticons',
-    name: 'Pixelarticons',
-    url: 'https://pixelarticons.com/',
-    license: 'MIT',
-    jsonPath: './demo/libraries/pixelarticons.json'
+    jsonPath: '/demo/libraries/feather.json'
   },
   {
     id: 'hugeicons',
@@ -61,7 +93,15 @@ export const DEMO_LIBRARIES: LibraryPreset[] = [
     name: 'Hugeicons',
     url: 'https://hugeicons.com/',
     license: 'MIT',
-    jsonPath: './demo/libraries/hugeicons.json'
+    jsonPath: '/demo/libraries/hugeicons.json'
+  },
+  {
+    id: 'pixelarticons',
+    label: 'Pixelarticons',
+    name: 'Pixelarticons',
+    url: 'https://pixelarticons.com/',
+    license: 'MIT',
+    jsonPath: '/demo/libraries/pixelarticons.json'
   }
 ]
 
@@ -238,7 +278,7 @@ export function IconExplorer({ lang }: IconExplorerProps) {
             })}
           </div>
 
-          <ActionLink href="./studio/#create-own" variant="primary" size="sm">
+          <ActionLink href="/studio/#create-own" variant="primary" size="sm">
             <Plus className="w-3.5 h-3.5" />
             <span>{lang === 'pt' ? 'Criar minha própria' : 'Create my own'}</span>
           </ActionLink>
@@ -316,7 +356,7 @@ export function IconExplorer({ lang }: IconExplorerProps) {
               ))}
             </div>
 
-            <ActionLink href={`./studio/#lib-${selectedLibId}`} variant="secondary" size="sm">
+            <ActionLink href={`/studio/#lib-${selectedLibId}`} variant="secondary" size="sm">
               <span>{t.openFull}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </ActionLink>

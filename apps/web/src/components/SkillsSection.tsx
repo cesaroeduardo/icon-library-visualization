@@ -24,7 +24,7 @@ import {
   ClaudeMark,
   OpenAIMark,
   CursorMark,
-  GeminiMark
+  GrokMark
 } from '@/components/AgentCanvasShowcase'
 import { GITHUB_URL, type Lang } from '@/content'
 
@@ -108,10 +108,10 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
                 <CursorMark className="w-5 h-5" />
               </span>
               <span
-                title="Gemini / Antigravity"
+                title="Grok (xAI)"
                 className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-10"
               >
-                <GeminiMark className="w-5 h-5" />
+                <GrokMark className="w-5 h-5" />
               </span>
             </div>
 
@@ -135,7 +135,7 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
             </div>
           </div>
 
-          <ActionLink href="./studio/#create-own" variant="secondary" size="sm" className="shrink-0">
+          <ActionLink href="/studio/#create-own" variant="secondary" size="sm" className="shrink-0">
             <span>{isPt ? 'Criar minha própria Library' : 'Create my own Library'}</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </ActionLink>

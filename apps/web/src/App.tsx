@@ -123,7 +123,7 @@ export function App() {
       <div
         aria-hidden="true"
         className="site-noise pointer-events-none fixed inset-0 z-40 opacity-[0.04] mix-blend-overlay motion-reduce:hidden"
-        style={{ backgroundImage: "url('./noise.webp')" }}
+        style={{ backgroundImage: "url('/noise.webp')" }}
       />
       <div className="min-h-screen flex flex-col bg-background text-foreground">
         {/* Top Open-Source Announcement Strip (pixelarticons structure, TUFFUI layered surface) */}
@@ -552,17 +552,17 @@ export function App() {
                 </div>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>
-                    <a href="./studio/" className="hover:text-foreground">
+                    <a href="/studio/" className="hover:text-foreground">
                       Icon Library
                     </a>
                   </li>
                   <li>
-                    <a href="./studio/#webfont" className="hover:text-foreground">
+                    <a href="/studio/#webfont" className="hover:text-foreground">
                       Webfont Inspector
                     </a>
                   </li>
                   <li>
-                    <a href="./studio/#svg" className="hover:text-foreground">
+                    <a href="/studio/#svg" className="hover:text-foreground">
                       SVG → Webfont
                     </a>
                   </li>

@@ -216,14 +216,20 @@ async function downloadBundle() {
           </button>
         </div>
 
-        <button @click="emit('create-own')" class="tuff-btn-primary !h-8 text-xs">
-          <Plus class="w-3.5 h-3.5" />
-          <span>{{ lang === 'pt' ? 'Criar minha própria' : 'Create my own' }}</span>
-        </button>
+        <div
+          class="font-mono text-xs"
+          style="color: var(--muted-foreground);"
+        >
+          {{
+            t.gallery.iconsCount
+              .replace('{shown}', String(filteredIcons.length))
+              .replace('{total}', String(library.icons.length))
+          }}
+        </div>
       </div>
 
       <!-- Library Credits Strip right below the library selector -->
-      <div v-if="library.credits" class="px-4 md:px-8 mb-4">
+      <div v-if="library.credits" class="px-4 md:px-8 mb-5">
         <div
           class="tuff-inset px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs"
           style="color: var(--muted-foreground);"
@@ -250,28 +256,6 @@ async function downloadBundle() {
         </div>
       </div>
 
-      <!-- Meta bar -->
-      <div
-        class="px-4 md:px-8 mb-4 flex flex-wrap items-center justify-between gap-2 text-xs"
-        style="color: var(--muted-foreground);"
-      >
-        <div class="flex items-center gap-2">
-          <span class="font-semibold" style="color: var(--foreground);">{{ library.fontName }}</span>
-          <span class="tuff-tag">.{{ library.prefix }}</span>
-          <span class="hidden sm:inline">·</span>
-          <span class="hidden sm:inline">
-            {{ library.sourceType === 'svg-build' ? t.gallery.sourceSvgBuild : t.gallery.sourceWebfont }}
-          </span>
-        </div>
-        <div class="font-mono">
-          {{
-            t.gallery.iconsCount
-              .replace('{shown}', String(filteredIcons.length))
-              .replace('{total}', String(library.icons.length))
-          }}
-        </div>
-      </div>
-
       <section class="w-full flex gap-5 md:gap-7 md:flex-row flex-col-reverse px-4 md:px-8">
         <!-- Icons Grid -->
         <div class="w-full flex flex-col gap-4">
@@ -281,7 +265,7 @@ async function downloadBundle() {
           >
             <IconCard
               v-for="icon in filteredIcons"
-              :key="icon.name"
+              :key="`${library.fontName}-${activeStyle}-${icon.name}`"
               :name="icon.name"
               :keywords="icon.keywords"
               :icon="icon.icon"
@@ -371,26 +355,23 @@ async function downloadBundle() {
 
               <!-- Icon Style / Weight Selector -->
               <div v-if="availableStyles.length > 1" class="tuff-inset p-3 space-y-2">
-                <div class="flex items-center justify-between text-xs font-medium" style="color: var(--muted-foreground);">
-                  <span class="inline-flex items-center gap-1.5">
-                    <Sparkles class="w-3.5 h-3.5" />
-                    {{ lang === 'pt' ? 'Estilo' : 'Style' }}
-                  </span>
-                  <span class="font-mono capitalize" style="color: var(--brand);">{{ activeStyle }}</span>
+                <div class="flex items-center gap-1.5 text-xs font-medium" style="color: var(--muted-foreground);">
+                  <Sparkles class="w-3.5 h-3.5" />
+                  <span>{{ lang === 'pt' ? 'Estilo' : 'Style' }}</span>
                 </div>
                 <div class="grid grid-cols-2 gap-1.5">
                   <button
                     v-for="st in availableStyles"
                     :key="st"
                     @click="emit('select-style', st)"
-                    class="h-7 px-2.5 rounded-full text-xs font-medium capitalize transition-colors"
+                    class="h-7 px-2.5 rounded-full text-[11px] font-medium capitalize transition-colors truncate"
                     :style="
                       activeStyle === st
                         ? 'background-color: var(--surface-raised); color: var(--foreground);'
                         : 'background-color: var(--fg-tint-4); color: var(--muted-foreground);'
                     "
                   >
-                    {{ st }}
+                    {{ st.replace(/-/g, ' ') }}
                   </button>
                 </div>
               </div>
@@ -445,12 +426,9 @@ async function downloadBundle() {
         </div>
 
         <div v-if="availableStyles.length > 1" class="tuff-inset p-3 space-y-2">
-          <div class="flex items-center justify-between text-xs font-medium" style="color: var(--muted-foreground);">
-            <span class="inline-flex items-center gap-1.5">
-              <Sparkles class="w-3.5 h-3.5" />
-              {{ lang === 'pt' ? 'Estilo' : 'Style' }}
-            </span>
-            <span class="font-mono capitalize" style="color: var(--brand);">{{ activeStyle }}</span>
+          <div class="flex items-center gap-1.5 text-xs font-medium" style="color: var(--muted-foreground);">
+            <Sparkles class="w-3.5 h-3.5" />
+            <span>{{ lang === 'pt' ? 'Estilo' : 'Style' }}</span>
           </div>
           <div class="flex flex-wrap gap-1.5">
             <button
