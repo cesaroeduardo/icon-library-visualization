@@ -136,7 +136,7 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
         subsections: [
           {
             title: 'skills/create-icons — Geração de ícones originais',
-            body: 'Lê os tokens CSS/Tailwind, fontes e ícones atuais do seu projeto, gera um style sheet explícito (icon-style.json), prova o estilo em uma amostra de 6–8 ícones e depois desenha o set completo + catalog.json validado.'
+            body: 'Inspirada na skill generate-icons de @banhosdev (github.com/sergiobanhos/generate-icons). Lê os tokens CSS/Tailwind, fontes e ícones atuais do seu projeto, gera um style sheet explícito (icon-style.json), prova o estilo em uma amostra de 6–8 ícones e depois desenha o set completo + catalog.json validado.'
           },
           {
             title: 'skills/catalog-icons — Catalogação e keywords bilíngues',
@@ -389,7 +389,7 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
         subsections: [
           {
             title: 'skills/create-icons — Original icon generation',
-            body: 'Scans your project’s CSS/Tailwind tokens, fonts, and current icons, writes an explicit style sheet (icon-style.json), proves the style on a 6–8 icon sample, and outputs the full set + validated catalog.json.'
+            body: 'Inspired by @banhosdev’s generate-icons skill (github.com/sergiobanhos/generate-icons). Scans your project’s CSS/Tailwind tokens, fonts, and current icons, writes an explicit style sheet (icon-style.json), proves the style on a 6–8 icon sample, and outputs the full set + validated catalog.json.'
           },
           {
             title: 'skills/catalog-icons — Cataloging & bilingual keywords',

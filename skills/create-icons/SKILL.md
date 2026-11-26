@@ -5,6 +5,8 @@ description: Generates a complete, original icon library that matches your proje
 
 # generate-icons
 
+> Inspired by [@banhosdev](https://x.com/banhosdev)'s [generate-icons](https://github.com/sergiobanhos/generate-icons).
+
 Build an icon library that looks like it was always part of this project. The center of the
 work is **matching the person's design system**: read what the project already says about
 color, shape, weight and type, turn that into an explicit style sheet, prove it on a few

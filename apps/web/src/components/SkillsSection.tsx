@@ -166,6 +166,28 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
                   : 'Scans your project’s CSS/Tailwind tokens, writes an explicit style sheet (icon-style.json), proves the style on a sample, and draws original SVGs + framework components + catalog.json.'}
               </p>
 
+              <p className="text-xs text-muted-foreground">
+                {isPt ? 'Inspirada na skill de ' : 'Inspired by '}
+                <a
+                  href="https://x.com/banhosdev"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand hover:underline font-medium"
+                >
+                  @banhosdev
+                </a>{' '}
+                (
+                <a
+                  href="https://github.com/sergiobanhos/generate-icons"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-brand hover:underline font-mono text-[11px]"
+                >
+                  sergiobanhos/generate-icons
+                </a>
+                ).
+              </p>
+
               <Inset className="px-3 py-2.5 flex items-center justify-between gap-2">
                 <code className="font-mono text-[11px] text-foreground truncate">
                   <span className="text-muted-foreground select-none">$ </span>

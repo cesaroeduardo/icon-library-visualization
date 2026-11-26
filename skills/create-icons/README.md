@@ -1,6 +1,6 @@
 # create-icons
 
-An agent skill that draws an **original icon library that matches your project's design system**.
+An agent skill that draws an **original icon library that matches your project's design system** — inspired by [@banhosdev](https://x.com/banhosdev)'s [generate-icons](https://github.com/sergiobanhos/generate-icons).
 
 It reads your tokens, theme, fonts and the icons you already use, turns that into an explicit
 style sheet, proves it on a small sample shown next to your real UI, and only then draws the

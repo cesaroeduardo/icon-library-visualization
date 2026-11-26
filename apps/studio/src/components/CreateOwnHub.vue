@@ -195,6 +195,23 @@ async function handleImportFiles(fileList) {
                     : 'Install our two skills (create-icons + catalog-icons) straight from GitHub into Antigravity, Claude Code, Cursor, or Codex to draw SVGs matched to your design system and build catalog.json with keywords.'
                 }}
               </p>
+              <p class="text-xs" style="color: var(--muted-foreground);">
+                {{ lang === 'pt' ? 'Skill create-icons inspirada em ' : 'create-icons skill inspired by ' }}
+                <a
+                  href="https://x.com/banhosdev"
+                  target="_blank"
+                  rel="noopener"
+                  class="font-medium hover:underline"
+                  style="color: var(--brand);"
+                >@banhosdev</a>
+                (<a
+                  href="https://github.com/sergiobanhos/generate-icons"
+                  target="_blank"
+                  rel="noopener"
+                  class="font-mono text-[11px] hover:underline"
+                  style="color: var(--brand);"
+                >sergiobanhos/generate-icons</a>).
+              </p>
             </div>
 
             <div class="tuff-inset px-3.5 py-2.5 flex items-center justify-between gap-2">

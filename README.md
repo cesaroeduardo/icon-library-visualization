@@ -12,7 +12,7 @@ Open-source monorepo for inspecting webfonts, compiling SVGs into webfonts, and 
 │   ├── core/           # Shared browser engine (SVG validator, SVG→TTF/WOFF compiler, Webfont & catalog.json parser)
 │   └── skill/          # Skill packaging scripts (pack-skill.mjs)
 ├── skills/
-│   ├── create-icons/   # AI skill for generating original icon libraries (8 starter styles + catalog.json)
+│   ├── create-icons/   # AI skill for generating original icon libraries (inspired by @banhosdev — github.com/sergiobanhos/generate-icons)
 │   └── catalog-icons/  # AI skill for cataloging SVGs/webfont CSS into validated catalog.json with keywords
 └── scripts/
     └── build-all.mjs   # Unified static build -> dist/ (web + docs) + dist/studio/ (library app)

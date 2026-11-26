@@ -314,7 +314,38 @@ export function DocsView({ lang, initialSection, onBack }: DocsViewProps) {
               )}
 
               {/* Embedded Native TUFFUI 8 Starter Styles Preview */}
-              {sec.showSkillStyles && <SkillStylesPreview lang={lang} />}
+              {sec.showSkillStyles && (
+                <>
+                  <Shell>
+                    <Panel className="px-4 py-3 flex flex-wrap items-center justify-between gap-2 text-xs text-muted-foreground">
+                      <span>
+                        {lang === 'pt'
+                          ? 'A skill create-icons foi inspirada no trabalho open source de '
+                          : 'The create-icons skill was inspired by the open-source work of '}
+                        <a
+                          href="https://x.com/banhosdev"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-brand hover:underline font-medium"
+                        >
+                          @banhosdev
+                        </a>
+                        .
+                      </span>
+                      <a
+                        href="https://github.com/sergiobanhos/generate-icons"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 font-mono text-[11px] text-brand hover:underline"
+                      >
+                        <span>github.com/sergiobanhos/generate-icons</span>
+                        <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    </Panel>
+                  </Shell>
+                  <SkillStylesPreview lang={lang} />
+                </>
+              )}
             </section>
           ))}
         </article>
