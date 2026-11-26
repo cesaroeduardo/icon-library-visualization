@@ -10,6 +10,7 @@ import {
   Upload,
   ExternalLink
 } from 'lucide-react'
+import { prepareSvg as prepareSvgCore } from '@icon-library/core'
 import { Shell, Panel, StatusPill, Tag, ActionButton, ActionLink } from '@/components/ui/tuff'
 import { copy, type Lang } from '@/content'
 
@@ -115,16 +116,7 @@ const DEFAULT_SIZE_INDEX = 3 // 24px
 const libraryCache = new Map<string, DemoIcon[]>()
 
 function prepareSvg(raw: string, dimension: number) {
-  let svg = raw
-  if (!svg.includes('viewBox')) {
-    svg = svg.replace('<svg', '<svg viewBox="0 0 24 24"')
-  }
-  svg = svg.replace(/\s*(width|height)="[^"]*"/g, '')
-  svg = svg.replace('<svg', `<svg width="${dimension}" height="${dimension}"`)
-  if (!svg.includes('xmlns=')) {
-    svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"')
-  }
-  return svg
+  return prepareSvgCore(raw, { dimension, colored: true })
 }
 
 export function IconExplorer({ lang }: IconExplorerProps) {

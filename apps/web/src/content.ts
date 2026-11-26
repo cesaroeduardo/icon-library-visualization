@@ -41,6 +41,7 @@ export const copy = {
         { label: 'Compilar SVGs', href: '/studio/#svg' },
         { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
         { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
+        { label: 'Self-host da library', href: '#docs-selfhost', docs: true },
         { label: 'Ler Documentação', href: '#docs', docs: true }
       ]
     },
@@ -63,20 +64,21 @@ export const copy = {
         'Visualize bibliotecas, busque, inspecione e exporte — um lugar para organizar o set de ícones do seu produto, do upload à webfont pronta para usar.',
       items: [
         {
-          id: 'webfont',
-          tag: 'WOFF2 · WOFF · TTF · OTF · ZIP',
-          title: 'Webfont Inspector',
-          desc: 'Suba uma fonte pronta com ou sem CSS. O motor lê os glifos, extrai os caminhos vetoriais, preserva classes CSS e keywords do catalog.json e exporta em SVG ou PNG.',
-          cta: 'Subir Webfont',
-          href: '/studio/#webfont'
+          id: 'studio',
+          tag: 'WEBFONT · SVG → WOFF/TTF',
+          title: 'Inspector & Compiler no Studio',
+          desc: 'Suba uma webfont pronta (com ou sem CSS) para inspecionar glifos, ou arraste SVGs/.zip para validar, compilar em WOFF/TTF + CSS + catalog.json e exportar o pacote completo — tudo no navegador.',
+          cta: 'Abrir Studio',
+          href: '/studio/#create-own'
         },
         {
-          id: 'svg',
-          tag: 'VALIDAÇÃO + COMPILAÇÃO',
-          title: 'SVG → Webfont Compiler',
-          desc: 'Arraste múltiplos SVGs ou um .zip. Valide viewBox, strokes e clipPaths, separe ícones multicoloridos inline e baixe o pacote completo (.woff, .ttf, .css, catalog.json e svg/).',
-          cta: 'Compilar SVGs',
-          href: '/studio/#svg'
+          id: 'selfhost',
+          tag: 'APPS/SELFHOST · PASTA ICONS/',
+          title: 'Self-host só da sua library',
+          desc: 'Publique uma galeria só com os seus ícones: pasta icons/ como fonte da verdade, logo própria, build estático e catalog.json opcional — sem demos e sem landing.',
+          cta: 'Guia de self-host',
+          href: '#docs-selfhost',
+          docs: true
         },
         {
           id: 'skill',
@@ -84,7 +86,7 @@ export const copy = {
           title: 'Skills de Criação & Catalogação',
           desc: 'Duas skills prontas no repositório: create-icons (desenha SVGs originais em 8 estilos) e catalog-icons (gera e valida catalog.json com nomes, grupos e keywords bilíngues).',
           cta: 'Ver Guia das Skills',
-          href: '#docs',
+          href: '#docs-skills',
           docs: true
         }
       ]
@@ -119,8 +121,12 @@ export const copy = {
           a: 'O pacote .zip exportado inclui .ttf (para instalar no Windows/macOS e usar no Figma ou em apps mobile), .woff + .css (para sites) e a pasta svg/ (para importar como Components no Figma). Veja o guia completo na página de Docs.'
         },
         {
+          q: 'Como faço self-host só da minha library, sem demos?',
+          a: 'Use apps/selfhost: coloque SVGs em icons/ (catalog.json opcional), configure logo e nome em selfhost.config.json, rode pnpm --filter @icon-library/selfhost build e publique apps/selfhost/dist/. Guia completo nas Docs (Self-host da sua library).'
+        },
+        {
           q: 'Como funciona a arquitetura em monorepo?',
-          a: 'O repositório separa apps/web (site + documentação em React 19 + Tailwind v4 + TUFFUI), apps/studio (o app focado apenas na Icon Library em Vue 3), packages/core (motor compartilhado de fontes e SVGs) e skills/ (create-icons e catalog-icons).'
+          a: 'O repositório separa apps/web (site + documentação), apps/studio (Studio público com demos), apps/selfhost (galeria só da sua pasta icons/), packages/core (motor de fontes/SVGs) e skills/ (create-icons e catalog-icons).'
         }
       ]
     },
@@ -167,6 +173,7 @@ export const copy = {
         { label: 'Compile SVGs', href: '/studio/#svg' },
         { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
         { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
+        { label: 'Self-host your library', href: '#docs-selfhost', docs: true },
         { label: 'Read Docs', href: '#docs', docs: true }
       ]
     },
@@ -189,20 +196,21 @@ export const copy = {
         'Browse libraries, search, inspect, and export — a place to organize your product’s icon set, from upload to a production-ready webfont.',
       items: [
         {
-          id: 'webfont',
-          tag: 'WOFF2 · WOFF · TTF · OTF · ZIP',
-          title: 'Webfont Inspector',
-          desc: 'Upload any webfont with or without CSS. The engine parses glyphs, extracts vector paths, preserves CSS class names & catalog.json keywords, and exports SVG or PNG.',
-          cta: 'Upload Webfont',
-          href: '/studio/#webfont'
+          id: 'studio',
+          tag: 'WEBFONT · SVG → WOFF/TTF',
+          title: 'Studio Inspector & Compiler',
+          desc: 'Upload a ready webfont (with or without CSS) to inspect glyphs, or drop SVGs/.zip to validate, compile into WOFF/TTF + CSS + catalog.json, and export the full bundle — all in the browser.',
+          cta: 'Open Studio',
+          href: '/studio/#create-own'
         },
         {
-          id: 'svg',
-          tag: 'VALIDATE + COMPILE',
-          title: 'SVG → Webfont Compiler',
-          desc: 'Drop multiple SVGs or a .zip archive. Validate viewBox, strokes, and clipPaths, keep multicolor icons inline, and download the complete bundle (.woff, .ttf, .css, catalog.json, svg/).',
-          cta: 'Compile SVGs',
-          href: '/studio/#svg'
+          id: 'selfhost',
+          tag: 'APPS/SELFHOST · ICONS/ FOLDER',
+          title: 'Self-host only your library',
+          desc: 'Ship a gallery with just your icons: icons/ as the source of truth, your logo, a static build, and optional catalog.json — no demos and no landing page.',
+          cta: 'Self-host guide',
+          href: '#docs-selfhost',
+          docs: true
         },
         {
           id: 'skill',
@@ -210,7 +218,7 @@ export const copy = {
           title: 'Icon Creation & Cataloging Skills',
           desc: 'Two agent skills included in the repo: create-icons (draws original SVGs in 8 styles) and catalog-icons (generates and validates catalog.json with bilingual keywords and groups).',
           cta: 'Read Skills Guide',
-          href: '#docs',
+          href: '#docs-skills',
           docs: true
         }
       ]
@@ -245,8 +253,12 @@ export const copy = {
           a: 'The exported .zip bundle includes .ttf (install on macOS/Windows for Figma or mobile apps), .woff + .css (for web apps), and standalone svg/ files (for Figma Components). Full instructions are in the Docs page.'
         },
         {
+          q: 'How do I self-host only my library, without demos?',
+          a: 'Use apps/selfhost: put SVGs in icons/ (catalog.json optional), set logo and name in selfhost.config.json, run pnpm --filter @icon-library/selfhost build, and publish apps/selfhost/dist/. Full guide in Docs (Self-host your library).'
+        },
+        {
           q: 'How is the monorepo organized?',
-          a: 'apps/web hosts the site & TUFFUI documentation (React 19 + Tailwind v4), apps/studio hosts the focused Icon Library app (Vue 3), packages/core shares the font/SVG engine, and skills/ holds create-icons and catalog-icons.'
+          a: 'apps/web hosts the site & docs, apps/studio hosts the public Studio with demos, apps/selfhost hosts a gallery from your icons/ folder only, packages/core shares the font/SVG engine, and skills/ holds create-icons and catalog-icons.'
         }
       ]
     },

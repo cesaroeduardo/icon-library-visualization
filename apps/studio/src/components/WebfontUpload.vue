@@ -1,10 +1,16 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, watch, onMounted } from 'vue'
 import { UploadCloud, FileType, FileCode, X, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
 import { extractFilesFromUpload, parseUploadedWebfont } from '@icon-library/core'
 
 const { t } = useI18n()
+
+const props = defineProps({
+  initialFiles: { type: Array, default: () => [] },
+  autoBuild: { type: Boolean, default: false }
+})
+
 const emit = defineEmits(['back', 'loaded'])
 
 const isDragging = ref(false)
@@ -16,8 +22,9 @@ const extractedJson = ref([])
 const customFontName = ref('')
 const customPrefix = ref('')
 const fileInput = ref(null)
+const seeded = ref(false)
 
-async function handleFiles(fileList) {
+async function handleFiles(fileList, { autoBuild = false } = {}) {
   if (!fileList || fileList.length === 0) return
   errorMsg.value = ''
   try {
@@ -32,11 +39,28 @@ async function handleFiles(fileList) {
     if (!customFontName.value && fonts[0]) {
       customFontName.value = fonts[0].name.replace(/\.[^.]+$/, '')
     }
+    if (autoBuild && extractedFonts.value.length > 0) {
+      await buildLibrary()
+    }
   } catch (e) {
     console.error(e)
     errorMsg.value = e.message || t.value.webfontUpload.errorNoFont
   }
 }
+
+async function seedFromInitial() {
+  if (seeded.value || !props.initialFiles?.length) return
+  seeded.value = true
+  await handleFiles(props.initialFiles, { autoBuild: props.autoBuild })
+}
+
+onMounted(seedFromInitial)
+watch(
+  () => props.initialFiles,
+  () => {
+    if (!seeded.value) seedFromInitial()
+  }
+)
 
 function onDrop(e) {
   isDragging.value = false

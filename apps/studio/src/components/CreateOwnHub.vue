@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import JSZip from 'jszip'
 import {
   ArrowLeft,
@@ -7,26 +7,77 @@ import {
   FileCode2,
   FileType,
   Sparkles,
-  Download,
   ExternalLink,
   Copy,
   Check,
   UploadCloud,
-  Terminal
+  Terminal,
+  Server
 } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
 import { parseCatalogJson } from '@icon-library/core'
 import AgentCanvasMini from './AgentCanvasMini.vue'
 
 const { lang, t } = useI18n()
-const emit = defineEmits(['back', 'select', 'import-svgs'])
+const emit = defineEmits(['back', 'select', 'import-svgs', 'import-webfont'])
 
 const copied = ref(false)
 const isDragging = ref(false)
+const dropBusy = ref(false)
+const dropError = ref('')
+const dragDepth = ref(0)
 const fileInput = ref(null)
 
+const FONT_EXTS = ['.ttf', '.otf', '.woff', '.woff2']
 const installCmd = 'npx skills add cesaroeduardo/icon-library-visualization'
 const GITHUB_URL = 'https://github.com/cesaroeduardo/icon-library-visualization'
+
+function isFileDrag(e) {
+  return Array.from(e.dataTransfer?.types || []).includes('Files')
+}
+
+function onDragEnter(e) {
+  if (!isFileDrag(e)) return
+  e.preventDefault()
+  dragDepth.value += 1
+  isDragging.value = true
+  dropError.value = ''
+}
+
+function onDragOver(e) {
+  if (!isFileDrag(e)) return
+  e.preventDefault()
+  if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'
+  isDragging.value = true
+}
+
+function onDragLeave(e) {
+  if (!isFileDrag(e)) return
+  e.preventDefault()
+  dragDepth.value = Math.max(0, dragDepth.value - 1)
+  if (dragDepth.value === 0) isDragging.value = false
+}
+
+async function onDrop(e) {
+  e.preventDefault()
+  dragDepth.value = 0
+  isDragging.value = false
+  await handleIncomingFiles(e.dataTransfer?.files)
+}
+
+onMounted(() => {
+  window.addEventListener('dragenter', onDragEnter)
+  window.addEventListener('dragover', onDragOver)
+  window.addEventListener('dragleave', onDragLeave)
+  window.addEventListener('drop', onDrop)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('dragenter', onDragEnter)
+  window.removeEventListener('dragover', onDragOver)
+  window.removeEventListener('dragleave', onDragLeave)
+  window.removeEventListener('drop', onDrop)
+})
 
 async function copyInstall() {
   try {
@@ -54,8 +105,48 @@ async function copyPrompt() {
   }
 }
 
-async function handleImportFiles(fileList) {
-  if (!fileList || fileList.length === 0) return
+function endsWithAny(name, exts) {
+  return exts.some((ext) => name.endsWith(ext))
+}
+
+async function classifyUpload(fileList) {
+  let hasSvg = false
+  let hasFont = false
+  let hasCss = false
+
+  for (const file of Array.from(fileList)) {
+    const lower = file.name.toLowerCase()
+    if (lower.endsWith('.svg')) {
+      hasSvg = true
+      continue
+    }
+    if (endsWithAny(lower, FONT_EXTS)) {
+      hasFont = true
+      continue
+    }
+    if (lower.endsWith('.css')) {
+      hasCss = true
+      continue
+    }
+    if (!lower.endsWith('.zip')) continue
+
+    const zip = await JSZip.loadAsync(file)
+    for (const [relPath, entry] of Object.entries(zip.files)) {
+      if (entry.dir || relPath.includes('__MACOSX')) continue
+      const relLower = relPath.toLowerCase()
+      if (relLower.endsWith('.svg')) hasSvg = true
+      if (endsWithAny(relLower, FONT_EXTS)) hasFont = true
+      if (relLower.endsWith('.css')) hasCss = true
+    }
+  }
+
+  // Font packages win even if the zip also ships SVGs (compiled bundles).
+  if (hasFont || (hasCss && !hasSvg)) return 'webfont'
+  if (hasSvg) return 'svg'
+  return null
+}
+
+async function buildSvgPayload(fileList) {
   const svgs = []
   const metaMap = new Map()
   for (const file of Array.from(fileList)) {
@@ -79,19 +170,93 @@ async function handleImportFiles(fileList) {
       for (const [k, v] of parsed.entries()) metaMap.set(k, v)
     }
   }
-  if (svgs.length > 0) {
-    const enriched = svgs.map((item) => {
-      const base = item.fileName.replace(/\.svg$/i, '').toLowerCase()
-      const meta = metaMap.get(base)
-      return meta ? { ...item, keywords: meta.keywords, label: meta.label, group: meta.group } : item
-    })
-    emit('import-svgs', enriched)
+  return svgs.map((item) => {
+    const base = item.fileName.replace(/\.svg$/i, '').toLowerCase()
+    const meta = metaMap.get(base)
+    return meta ? { ...item, keywords: meta.keywords, label: meta.label, group: meta.group } : item
+  })
+}
+
+async function handleIncomingFiles(fileList) {
+  if (!fileList || fileList.length === 0 || dropBusy.value) return
+  dropBusy.value = true
+  dropError.value = ''
+  try {
+    const kind = await classifyUpload(fileList)
+    if (kind === 'webfont') {
+      emit('import-webfont', Array.from(fileList))
+      return
+    }
+    if (kind === 'svg') {
+      const enriched = await buildSvgPayload(fileList)
+      if (enriched.length === 0) {
+        dropError.value =
+          lang.value === 'pt'
+            ? 'Nenhum SVG encontrado nos arquivos enviados.'
+            : 'No SVG files found in the upload.'
+        return
+      }
+      emit('import-svgs', enriched)
+      return
+    }
+    dropError.value =
+      lang.value === 'pt'
+        ? 'Envie .svg, .zip com SVGs, ou uma webfont (.ttf, .otf, .woff, .woff2, .css).'
+        : 'Drop .svg, a .zip with SVGs, or a webfont (.ttf, .otf, .woff, .woff2, .css).'
+  } catch (e) {
+    console.error(e)
+    dropError.value =
+      lang.value === 'pt'
+        ? 'Não foi possível ler os arquivos. Tente novamente.'
+        : 'Could not read those files. Please try again.'
+  } finally {
+    dropBusy.value = false
   }
+}
+
+async function handleImportFiles(fileList) {
+  await handleIncomingFiles(fileList)
 }
 </script>
 
 <template>
-  <section class="w-full max-w-5xl mx-auto px-4 md:px-8 py-10 space-y-8">
+  <section class="relative w-full max-w-5xl mx-auto px-4 md:px-8 py-10 space-y-8">
+    <Teleport to="body">
+      <div
+        v-if="isDragging || dropBusy"
+        class="fixed inset-0 z-50 flex items-center justify-center p-6 pointer-events-none"
+        style="background-color: color-mix(in srgb, var(--background) 72%, transparent); backdrop-filter: blur(6px);"
+      >
+        <div
+          class="tuff-shell max-w-md w-full pointer-events-none"
+          style="box-shadow: 0 24px 80px color-mix(in srgb, var(--foreground) 18%, transparent);"
+        >
+          <div class="tuff-panel px-8 py-10 text-center space-y-3">
+            <span
+              class="mx-auto h-12 w-12 rounded-2xl flex items-center justify-center"
+              style="background-color: color-mix(in srgb, var(--brand) 16%, transparent); color: var(--brand);"
+            >
+              <UploadCloud class="w-6 h-6" :class="dropBusy ? 'animate-pulse' : ''" />
+            </span>
+            <p class="text-base font-semibold tracking-[-0.02em]">
+              {{
+                dropBusy
+                  ? (lang === 'pt' ? 'Reconhecendo arquivos…' : 'Recognizing files…')
+                  : (lang === 'pt' ? 'Solte para importar' : 'Drop to import')
+              }}
+            </p>
+            <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
+              {{
+                lang === 'pt'
+                  ? 'SVG, .zip ou webfont (.ttf / .otf / .woff / .woff2 / .css) — avançamos automático para a compilação.'
+                  : 'SVG, .zip, or webfont (.ttf / .otf / .woff / .woff2 / .css) — we route you straight to compilation.'
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </Teleport>
+
     <button @click="emit('back')" class="tuff-btn-quiet">
       <ArrowLeft class="w-3.5 h-3.5" />
       <span>{{ lang === 'pt' ? 'Voltar para a Library' : 'Back to Library' }}</span>
@@ -104,9 +269,16 @@ async function handleImportFiles(fileList) {
       <p class="text-sm leading-relaxed" style="color: var(--muted-foreground);">
         {{
           lang === 'pt'
-            ? 'Suba seus arquivos SVG para compilar uma webfont ou inspecione uma webfont que você já possui.'
-            : 'Upload your SVG files to compile a webfont or inspect a webfont you already have.'
+            ? 'Arraste .svg, .zip ou webfont em qualquer lugar desta página — reconhecemos o tipo e avançamos para a compilação. Ou escolha uma opção abaixo.'
+            : 'Drop .svg, .zip, or a webfont anywhere on this page — we detect the type and advance to compilation. Or pick an option below.'
         }}
+      </p>
+      <p
+        v-if="dropError"
+        class="text-xs rounded-xl px-3 py-2"
+        style="background-color: color-mix(in srgb, var(--negative) 14%, transparent); color: var(--negative);"
+      >
+        {{ dropError }}
       </p>
     </div>
 
@@ -159,6 +331,76 @@ async function handleImportFiles(fileList) {
             <span>{{ t.cards.webfont.cta }}</span>
             <ArrowRight class="w-4 h-4" />
           </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Self-host: only your library -->
+    <div class="tuff-shell">
+      <div class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="h-8 w-8 rounded-xl flex items-center justify-center"
+            style="background-color: color-mix(in srgb, var(--brand) 16%, transparent); color: var(--brand);"
+          >
+            <Server class="w-4 h-4" />
+          </span>
+          <span class="text-xs font-semibold tracking-[-0.01em]">
+            {{ lang === 'pt' ? 'Self-host facilitado' : 'Facilitated self-host' }}
+          </span>
+        </div>
+        <span class="tuff-tag">apps/selfhost</span>
+      </div>
+
+      <div class="tuff-panel p-6 md:p-7 space-y-5">
+        <div class="space-y-2 max-w-3xl">
+          <h2 class="text-xl md:text-2xl font-semibold tracking-[-0.025em]">
+            {{
+              lang === 'pt'
+                ? 'Publique só a sua Icon Library — sem demos e sem landing'
+                : 'Publish only your Icon Library — no demos, no landing'
+            }}
+          </h2>
+          <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--muted-foreground);">
+            {{
+              lang === 'pt'
+                ? 'O pacote apps/selfhost usa a pasta icons/ como fonte da verdade, gera a webfont no build, aplica a sua logo e sobe um site estático com a galeria da empresa. catalog.json é opcional e melhora a busca.'
+                : 'The apps/selfhost package uses the icons/ folder as the source of truth, builds the webfont at compile time, applies your logo, and ships a static site with your company gallery. catalog.json is optional and improves search.'
+            }}
+          </p>
+        </div>
+
+        <ul class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs" style="color: var(--muted-foreground);">
+          <li class="tuff-inset px-3 py-2.5">
+            <strong class="block font-medium mb-0.5" style="color: var(--foreground);">
+              {{ lang === 'pt' ? 'Pasta = verdade' : 'Folder = truth' }}
+            </strong>
+            icons/*.svg · catalog.json {{ lang === 'pt' ? 'opcional' : 'optional' }}
+          </li>
+          <li class="tuff-inset px-3 py-2.5">
+            <strong class="block font-medium mb-0.5" style="color: var(--foreground);">
+              {{ lang === 'pt' ? 'Logo & config' : 'Logo & config' }}
+            </strong>
+            brand/logo.svg · selfhost.config.json
+          </li>
+          <li class="tuff-inset px-3 py-2.5">
+            <strong class="block font-medium mb-0.5" style="color: var(--foreground);">
+              {{ lang === 'pt' ? 'Build estático' : 'Static build' }}
+            </strong>
+            pnpm --filter @icon-library/selfhost build
+          </li>
+        </ul>
+
+        <div class="flex flex-wrap items-center gap-2">
+          <a
+            :href="`${GITHUB_URL}/tree/main/apps/selfhost`"
+            target="_blank"
+            rel="noopener"
+            class="tuff-btn-primary !h-10"
+          >
+            <span>{{ lang === 'pt' ? 'Abrir apps/selfhost' : 'Open apps/selfhost' }}</span>
+            <ExternalLink class="w-3.5 h-3.5" />
+          </a>
         </div>
       </div>
     </div>
@@ -311,11 +553,8 @@ async function handleImportFiles(fileList) {
             </button>
           </div>
 
-          <!-- Bottom: Direct Dropzone for Skill-Generated SVGs -->
+          <!-- Bottom: Direct picker (page-wide drop also works) -->
           <div
-            @dragover.prevent="isDragging = true"
-            @dragleave.prevent="isDragging = false"
-            @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
             @click="fileInput?.click()"
             class="tuff-inset px-5 py-4 cursor-pointer transition-colors flex flex-col sm:flex-row items-center justify-between gap-4"
             :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
@@ -324,7 +563,7 @@ async function handleImportFiles(fileList) {
               ref="fileInput"
               type="file"
               multiple
-              accept=".svg,.zip,.json"
+              accept=".svg,.zip,.json,.ttf,.otf,.woff,.woff2,.css"
               class="hidden"
               @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
             />
@@ -339,21 +578,21 @@ async function handleImportFiles(fileList) {
                 <p class="text-xs sm:text-sm font-medium">
                   {{
                     lang === 'pt'
-                      ? 'Já gerou seus ícones com a skill?'
-                      : 'Already generated icons with the skill?'
+                      ? 'Já tem SVGs, .zip ou webfont?'
+                      : 'Already have SVGs, a .zip, or a webfont?'
                   }}
                 </p>
                 <p class="text-xs" style="color: var(--muted-foreground);">
                   {{
                     lang === 'pt'
-                      ? 'Arraste os SVGs + catalog.json (ou .zip) aqui para compilar direto na library.'
-                      : 'Drop your SVGs + catalog.json (or .zip) here to compile straight into the library.'
+                      ? 'Solte em qualquer lugar desta página (ou clique aqui) — reconhecemos e avançamos para a compilação.'
+                      : 'Drop anywhere on this page (or click here) — we detect the type and advance to compilation.'
                   }}
                 </p>
               </div>
             </div>
             <span class="tuff-btn-secondary shrink-0">
-              {{ lang === 'pt' ? 'Importar SVGs' : 'Import SVGs' }}
+              {{ lang === 'pt' ? 'Escolher arquivos' : 'Choose files' }}
             </span>
           </div>
         </div>

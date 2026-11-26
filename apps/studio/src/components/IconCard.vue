@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue'
 import { Code2, Copy, Download, Check } from 'lucide-vue-next'
+import { prepareSvg } from '@icon-library/core'
 import { useI18n } from '@/i18n'
 
 const { t } = useI18n()
@@ -21,26 +22,12 @@ const props = defineProps({
 const showCheckIcon = ref(false)
 const showImageCheckIcon = ref(false)
 
-function prepareSvg(svgString, color, dimension) {
-  let svg = svgString
-  if (!props.colored) {
-    svg = svg.replace(/fill="currentColor"/gi, `fill="${color}"`)
-    svg = svg.replace(/stroke="currentColor"/gi, `stroke="${color}"`)
-    if (!/fill="/i.test(svg)) {
-      svg = svg.replace('<svg', `<svg fill="${color}"`)
-    }
-  }
-  if (!svg.includes('viewBox')) {
-    const origW = (svg.match(/width="([^"]*)"/) || [])[1] || '24'
-    const origH = (svg.match(/height="([^"]*)"/) || [])[1] || '24'
-    svg = svg.replace('<svg', `<svg viewBox="0 0 ${origW} ${origH}"`)
-  }
-  svg = svg.replace(/\s*(width|height)="[^"]*"/g, '')
-  svg = svg.replace('<svg', `<svg width="${dimension}" height="${dimension}"`)
-  if (!svg.includes('xmlns=')) {
-    svg = svg.replace('<svg', '<svg xmlns="http://www.w3.org/2000/svg"')
-  }
-  return svg
+function bakedSvg(dimension) {
+  return prepareSvg(props.svg, {
+    color: props.color,
+    dimension,
+    colored: props.colored
+  })
 }
 
 function renderGlyphToPngBlob(dimension) {
@@ -50,19 +37,18 @@ function renderGlyphToPngBlob(dimension) {
     canvas.height = dimension
     const ctx = canvas.getContext('2d')
     if (props.svg) {
-      const svg = prepareSvg(props.svg, props.color, dimension)
+      const svg = bakedSvg(dimension)
       const img = new Image()
-      const svgBlob = new Blob([svg], { type: 'image/svg+xml' })
-      const url = URL.createObjectURL(svgBlob)
+      // data: URI is more reliable than blob: for SVG→canvas in Chromium
+      const url = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`
       img.onload = () => {
         ctx.drawImage(img, 0, 0, dimension, dimension)
-        URL.revokeObjectURL(url)
-        canvas.toBlob((blob) => resolve(blob), 'image/png')
+        canvas.toBlob((blob) => {
+          if (blob) resolve(blob)
+          else reject(new Error('PNG encode failed'))
+        }, 'image/png')
       }
-      img.onerror = (e) => {
-        URL.revokeObjectURL(url)
-        reject(e)
-      }
+      img.onerror = (e) => reject(e)
       img.src = url
     } else if (props.char && props.fontFamily) {
       ctx.fillStyle = props.color
@@ -70,7 +56,10 @@ function renderGlyphToPngBlob(dimension) {
       ctx.textAlign = 'center'
       ctx.textBaseline = 'middle'
       ctx.fillText(props.char, dimension / 2, dimension / 2)
-      canvas.toBlob((blob) => resolve(blob), 'image/png')
+      canvas.toBlob((blob) => {
+        if (blob) resolve(blob)
+        else reject(new Error('PNG encode failed'))
+      }, 'image/png')
     } else {
       reject(new Error('No renderable SVG or glyph'))
     }
@@ -92,6 +81,23 @@ async function copyToClipboard(text) {
   }
 }
 
+/** Figma pastes SVG from text/plain; keep that as the primary representation. */
+async function copySvgMarkup(svg) {
+  try {
+    if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
+      await navigator.clipboard.write([
+        new ClipboardItem({
+          'text/plain': new Blob([svg], { type: 'text/plain' })
+        })
+      ])
+      return
+    }
+  } catch {
+    // fall through to writeText
+  }
+  await copyToClipboard(svg)
+}
+
 async function copyCode() {
   try {
     await copyToClipboard(`<i class="${props.icon}"></i>`)
@@ -105,8 +111,7 @@ async function copyCode() {
 async function copyImage() {
   try {
     if (props.downloadFormat === 'svg' && props.svg) {
-      const svg = prepareSvg(props.svg, props.color, props.size)
-      await copyToClipboard(svg)
+      await copySvgMarkup(bakedSvg(props.size))
     } else {
       const blob = await renderGlyphToPngBlob(Math.max(props.size, 32))
       if (typeof ClipboardItem !== 'undefined' && navigator.clipboard?.write) {
@@ -129,8 +134,7 @@ async function downloadIcon() {
     let blob
     let ext = props.downloadFormat
     if (ext === 'svg' && props.svg) {
-      const svg = prepareSvg(props.svg, props.color, props.size)
-      blob = new Blob([svg], { type: 'image/svg+xml' })
+      blob = new Blob([bakedSvg(props.size)], { type: 'image/svg+xml;charset=utf-8' })
     } else {
       ext = 'png'
       blob = await renderGlyphToPngBlob(Math.max(props.size, 32))

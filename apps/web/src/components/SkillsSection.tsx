@@ -7,7 +7,8 @@ import {
   Check,
   ArrowRight,
   BookOpen,
-  Github
+  Github,
+  Server
 } from 'lucide-react'
 import {
   Shell,
@@ -294,6 +295,46 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
           </Panel>
         </Shell>
       </div>
+
+      {/* Self-host callout under Create / Catalog */}
+      <Shell className="mt-4">
+        <Panel className="px-5 py-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div className="flex items-start gap-3 min-w-0">
+            <IconTile>
+              <Server className="w-4 h-4" />
+            </IconTile>
+            <div className="min-w-0 space-y-1">
+              <div className="flex flex-wrap items-center gap-2">
+                <p className="text-sm font-semibold tracking-[-0.015em]">
+                  {isPt ? 'Self-host só da sua library' : 'Self-host only your library'}
+                </p>
+                <Tag>apps/selfhost</Tag>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
+                {isPt
+                  ? 'Depois de gerar ou catalogar os ícones, publique apps/selfhost: pasta icons/ como fonte da verdade, logo própria e build estático — sem demos e sem landing. catalog.json é opcional.'
+                  : 'After generating or cataloging icons, publish apps/selfhost: icons/ as the source of truth, your logo, and a static build — no demos and no landing. catalog.json is optional.'}
+              </p>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            <ActionLink
+              href={`${GITHUB_URL}/tree/main/apps/selfhost`}
+              target="_blank"
+              rel="noopener noreferrer"
+              variant="secondary"
+              size="sm"
+            >
+              <Github className="w-3.5 h-3.5" />
+              <span>apps/selfhost</span>
+            </ActionLink>
+            <ActionButton onClick={() => onOpenDocs('selfhost')} variant="quiet" size="sm">
+              <BookOpen className="w-3.5 h-3.5" />
+              <span>{isPt ? 'Guia de self-host' : 'Self-host guide'}</span>
+            </ActionButton>
+          </div>
+        </Panel>
+      </Shell>
     </section>
   )
 }

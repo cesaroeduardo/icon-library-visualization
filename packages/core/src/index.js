@@ -2,3 +2,4 @@ export { normalizeIconName, isColoredSvg, validateSvgFiles } from './svgValidato
 export { ttfToWoff, generateCss, compileSvgsToWebfont, createBundleZip } from './svgToFont.js'
 export { parseIconCss, extractFilesFromUpload, parseUploadedWebfont } from './webfontParser.js'
 export { parseCatalogJson } from './catalogParser.js'
+export { prepareSvg } from './prepareSvg.js'

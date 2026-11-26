@@ -10,11 +10,10 @@ import {
   ArrowUpRight,
   Check,
   Copy,
-  FileType,
-  FileCode2,
   Sparkles,
   Terminal,
-  BookOpen
+  BookOpen,
+  Server
 } from 'lucide-react'
 import {
   Shell,
@@ -33,6 +32,11 @@ import { BrandLogo } from '@/components/BrandLogo'
 import { GithubStars } from '@/components/GithubStars'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, AGENT_PROMPT, type Lang } from '@/content'
 
+const DOCS_SECTION_BY_HASH: Record<string, string> = {
+  'docs-skills': 'ai-skills',
+  'docs-selfhost': 'selfhost'
+}
+
 export function App() {
   const [lang, setLang] = useState<Lang>(() => {
     const saved = localStorage.getItem('icon-library-lang')
@@ -47,21 +51,20 @@ export function App() {
 
   const [copiedCmd, setCopiedCmd] = useState(false)
   const [copiedPrompt, setCopiedPrompt] = useState(false)
-  const [docsSection, setDocsSection] = useState<string | undefined>(() =>
-    window.location.hash.replace(/^#\/?/, '').toLowerCase() === 'docs-skills'
-      ? 'ai-skills'
-      : undefined
-  )
+  const [docsSection, setDocsSection] = useState<string | undefined>(() => {
+    const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
+    return DOCS_SECTION_BY_HASH[h]
+  })
   const [page, setPage] = useState<'landing' | 'docs'>(() => {
     const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
-    return h === 'docs' || h === 'docs-skills' ? 'docs' : 'landing'
+    return h === 'docs' || h in DOCS_SECTION_BY_HASH ? 'docs' : 'landing'
   })
 
   useEffect(() => {
     const onHash = () => {
       const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
-      if (h === 'docs-skills') {
-        setDocsSection('ai-skills')
+      if (h in DOCS_SECTION_BY_HASH) {
+        setDocsSection(DOCS_SECTION_BY_HASH[h])
         setPage('docs')
       } else if (h === 'docs') {
         setDocsSection(undefined)
@@ -76,7 +79,9 @@ export function App() {
 
   function openDocs(section?: string) {
     setDocsSection(section)
-    window.location.hash = section === 'ai-skills' ? 'docs-skills' : 'docs'
+    if (section === 'ai-skills') window.location.hash = 'docs-skills'
+    else if (section === 'selfhost') window.location.hash = 'docs-selfhost'
+    else window.location.hash = 'docs'
     setPage('docs')
     if (!section) window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -126,9 +131,15 @@ export function App() {
   }
 
   const pillarIcons = {
-    webfont: FileType,
-    svg: FileCode2,
-    skill: Sparkles
+    studio: Layers,
+    skill: Sparkles,
+    selfhost: Server
+  }
+
+  function openDocsFromHref(href?: string) {
+    if (href === '#docs-selfhost') openDocs('selfhost')
+    else if (href === '#docs-skills') openDocs('ai-skills')
+    else openDocs()
   }
 
   return (
@@ -370,7 +381,7 @@ export function App() {
                         'docs' in ql && ql.docs ? (
                           <button
                             key={ql.label}
-                            onClick={openDocs}
+                            onClick={() => openDocsFromHref(ql.href)}
                             className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-foreground/[0.03] hover:bg-foreground/[0.07] text-[0.8125rem] font-medium text-foreground transition-colors cursor-pointer"
                           >
                             <span>{ql.label}</span>
@@ -418,7 +429,7 @@ export function App() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             {t.pillars.items.map((item) => {
-              const IconComp = pillarIcons[item.id]
+              const IconComp = pillarIcons[item.id as keyof typeof pillarIcons] || Layers
               return (
                 <Shell key={item.id} className="flex flex-col">
                   <div className="flex items-center justify-between px-2.5 py-2">
@@ -437,7 +448,7 @@ export function App() {
                     <div>
                       {'docs' in item && item.docs ? (
                         <ActionButton
-                          onClick={openDocs}
+                          onClick={() => openDocsFromHref(item.href)}
                           variant="secondary"
                           size="sm"
                           className="w-full"

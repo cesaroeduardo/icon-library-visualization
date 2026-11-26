@@ -5,11 +5,23 @@ node_modules/
 # Build output
 dist/
 
+# Self-host generated assets (rebuilt by apps/selfhost)
+apps/selfhost/public/library/**
+!apps/selfhost/public/library/.gitkeep
+apps/selfhost/public/brand/**
+!apps/selfhost/public/brand/.gitkeep
+
 # Generated skill zip (rebuilt by pnpm run build / pack:skill)
 # Kept ignored? No, we keep public/demo and rebuild public/skills on build; ignore caches instead
 __pycache__/
 *.pyc
 .icon-work/
+
+# Local agent skill installs (npx skills add) — source of truth is skills/
+.agents/
+.grok/
+.claude/
+skills-lock.json
 
 # Logs & OS
 *.log

@@ -1,21 +1,15 @@
 <script setup>
 import { computed } from 'vue'
+import { prepareSvg } from '@icon-library/core'
 
 const props = defineProps({
   svg: { type: String, required: true },
   size: { type: Number, required: true }
 })
 
-const sizedSvg = computed(() => {
-  let raw = props.svg || ''
-  if (!raw.includes('viewBox')) {
-    const origW = (raw.match(/width="([^"]*)"/) || [])[1] || '24'
-    const origH = (raw.match(/height="([^"]*)"/) || [])[1] || '24'
-    raw = raw.replace('<svg', `<svg viewBox="0 0 ${origW} ${origH}"`)
-  }
-  raw = raw.replace(/\s*(width|height)="[^"]*"/g, '')
-  return raw.replace('<svg', `<svg width="${props.size}" height="${props.size}"`)
-})
+const sizedSvg = computed(() =>
+  prepareSvg(props.svg, { dimension: props.size, colored: true })
+)
 </script>
 
 <template>

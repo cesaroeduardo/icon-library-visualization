@@ -86,7 +86,7 @@ export const docsContent: Record<Lang, DocsLocale> = {
         group: 'gettingStarted',
         nav: 'Como usar cada função',
         title: 'Como usar cada função do sistema',
-        lead: 'O Studio oferece três fluxos independentes na tela inicial (além da Demo interativa com 332 ícones).',
+        lead: 'O Studio público oferece upload de webfont/SVG e skills de IA. Para publicar só a galeria da empresa, use também o self-host em apps/selfhost.',
         subsections: [
           {
             title: 'Subir Webfont',
@@ -116,6 +116,59 @@ export const docsContent: Record<Lang, DocsLocale> = {
               'skills/catalog-icons (catalog-icons.zip): escaneia qualquer pasta de SVGs ou .css de webfont, enriquece com nomes legíveis, grupos e keywords bilíngues (PT/EN), mescla com catálogos existentes (--merge) e valida o schema (--validate).',
               'Arraste os SVGs + catalog.json gerados direto para a Icon Library para buscar, visualizar e compilar em webfont.'
             ]
+          },
+          {
+            title: 'Self-host só da sua library (apps/selfhost)',
+            body: 'Quando você quer publicar a galeria da empresa — sem demos Phosphor/Lucide e sem a landing — use o pacote apps/selfhost: pasta icons/ como fonte da verdade, logo própria e build estático.',
+            bullets: [
+              'Coloque os SVGs em icons/ (catalog.json é opcional e melhora a busca com labels e keywords).',
+              'Configure title, fontName, prefix e logo em selfhost.config.json.',
+              'Rode pnpm --filter @icon-library/selfhost build e publique apps/selfhost/dist/.',
+              'Upload no browser continua disponível só como sandbox local — o deploy sempre reflete a pasta icons/.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'selfhost',
+        group: 'gettingStarted',
+        nav: 'Self-host da sua library',
+        title: 'Self-host facilitado: só a sua Icon Library',
+        lead: 'apps/selfhost é um app estático separado do Studio público. A galeria abre apenas a biblioteca gerada a partir da pasta icons/ — sem demos de terceiros e sem landing page.',
+        paragraphs: [
+          'Use este fluxo quando a Icon Library for um produto interno (design system da empresa): a pasta de SVGs é a fonte da verdade, o build gera webfont + CSS + manifest, e você sobe o dist/ em qualquer host estático.',
+          'O catalog.json dentro de icons/ é opcional. Sem ele a busca usa o nome do arquivo; com ele labels, grupos e keywords bilíngues enriquecem a galeria.'
+        ],
+        callout: {
+          type: 'tip',
+          title: 'Não misture com o monorepo do seu app',
+          body: 'Trate apps/selfhost como um deploy separado (ou copie só essa pasta). Seu produto consome o .css/.woff gerados — não precisa embutir landing, demos ou skills no repositório da aplicação.'
+        },
+        bullets: [
+          'Fonte da verdade: icons/*.svg (+ catalog.json opcional).',
+          'Branding: brand/logo.svg + title em selfhost.config.json.',
+          'Build: gera public/library/ (woff2, woff, ttf, css, catalog, manifest, svg/).',
+          'Alimentar depois: adicione SVGs na pasta → rebuild → redeploy.',
+          'Sandbox de upload no browser não altera icons/ e não entra no deploy.'
+        ],
+        codeTitle: 'Build e deploy',
+        codeLang: 'bash',
+        code: `# Na raiz do monorepo
+pnpm install
+pnpm --filter @icon-library/selfhost build
+
+# Dev local → http://127.0.0.1:5175
+pnpm --filter @icon-library/selfhost dev
+
+# Publique apps/selfhost/dist/ (Cloudflare Pages, Vercel, Netlify, nginx)`,
+        subsections: [
+          {
+            title: 'selfhost.config.json',
+            body: 'Campos principais: title (nome na UI), fontName e prefix (CSS da webfont), base (path do deploy, ex. "/" ou "/icons/"), logo (caminho relativo, padrão brand/logo.svg) e allowUpload (true = botão de experimentar upload no browser).'
+          },
+          {
+            title: 'Fluxo recomendado com as skills',
+            body: 'Gere ou cataloge ícones com create-icons / catalog-icons, copie os SVGs (+ catalog.json) para apps/selfhost/icons/, rode o build e publique. A galeria self-host vira a vitrine permanente do set; o Studio público continua útil para experimentos pontuais.'
           }
         ]
       },
@@ -343,7 +396,7 @@ export function SaveButton() {
         group: 'gettingStarted',
         nav: 'How to use each feature',
         title: 'How to use each feature',
-        lead: 'The Studio provides three independent workflows from the home screen (plus a built-in 332-icon interactive Demo).',
+        lead: 'The public Studio covers webfont/SVG upload and AI skills. To publish only your company gallery, also use self-host via apps/selfhost.',
         subsections: [
           {
             title: 'Upload Webfont',
@@ -373,6 +426,59 @@ export function SaveButton() {
               'skills/catalog-icons (catalog-icons.zip): scans any SVG folder or webfont .css, enriches entries with labels, groups, and bilingual keywords, merges with existing catalogs (--merge), and validates the schema (--validate).',
               'Drop the generated SVGs + catalog.json into the Icon Library app to browse, search, and compile into a webfont.'
             ]
+          },
+          {
+            title: 'Self-host only your library (apps/selfhost)',
+            body: 'When you want to publish your company gallery — without Phosphor/Lucide demos and without the landing page — use apps/selfhost: icons/ as the source of truth, your logo, and a static build.',
+            bullets: [
+              'Put SVGs in icons/ (catalog.json is optional and improves search with labels and keywords).',
+              'Configure title, fontName, prefix, and logo in selfhost.config.json.',
+              'Run pnpm --filter @icon-library/selfhost build and publish apps/selfhost/dist/.',
+              'Browser upload remains available only as a local sandbox — the deploy always mirrors the icons/ folder.'
+            ]
+          }
+        ]
+      },
+      {
+        id: 'selfhost',
+        group: 'gettingStarted',
+        nav: 'Self-host your library',
+        title: 'Facilitated self-host: only your Icon Library',
+        lead: 'apps/selfhost is a separate static app from the public Studio. The gallery opens only the library built from icons/ — no third-party demos and no landing page.',
+        paragraphs: [
+          'Use this flow when the Icon Library is an internal product (your company design system): the SVG folder is the source of truth, the build emits webfont + CSS + manifest, and you ship dist/ to any static host.',
+          'catalog.json inside icons/ is optional. Without it, search uses the filename; with it, labels, groups, and bilingual keywords enrich the gallery.'
+        ],
+        callout: {
+          type: 'tip',
+          title: 'Do not mix this into your app monorepo',
+          body: 'Treat apps/selfhost as a separate deploy (or copy only that folder). Your product consumes the generated .css/.woff — you do not need the landing page, demos, or skills inside the application repository.'
+        },
+        bullets: [
+          'Source of truth: icons/*.svg (+ optional catalog.json).',
+          'Branding: brand/logo.svg + title in selfhost.config.json.',
+          'Build: writes public/library/ (woff2, woff, ttf, css, catalog, manifest, svg/).',
+          'Feed it later: add SVGs to the folder → rebuild → redeploy.',
+          'Browser upload sandbox does not change icons/ and is not part of the deploy.'
+        ],
+        codeTitle: 'Build & deploy',
+        codeLang: 'bash',
+        code: `# From the monorepo root
+pnpm install
+pnpm --filter @icon-library/selfhost build
+
+# Local dev → http://127.0.0.1:5175
+pnpm --filter @icon-library/selfhost dev
+
+# Publish apps/selfhost/dist/ (Cloudflare Pages, Vercel, Netlify, nginx)`,
+        subsections: [
+          {
+            title: 'selfhost.config.json',
+            body: 'Main fields: title (UI name), fontName and prefix (webfont CSS), base (deploy path, e.g. "/" or "/icons/"), logo (relative path, default brand/logo.svg), and allowUpload (true = show the try-upload button in the browser).'
+          },
+          {
+            title: 'Recommended flow with the skills',
+            body: 'Generate or catalog icons with create-icons / catalog-icons, copy the SVGs (+ catalog.json) into apps/selfhost/icons/, run the build, and publish. The self-host gallery becomes the permanent showcase; the public Studio stays useful for one-off experiments.'
           }
         ]
       },

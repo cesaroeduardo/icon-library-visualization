@@ -1,0 +1,26 @@
+[
+  {
+    "name": "home",
+    "label": "Home",
+    "group": "navigation",
+    "keywords": "house início casa"
+  },
+  {
+    "name": "search",
+    "label": "Search",
+    "group": "actions",
+    "keywords": "find buscar lupa"
+  },
+  {
+    "name": "plus",
+    "label": "Add",
+    "group": "actions",
+    "keywords": "add new criar adicionar"
+  },
+  {
+    "name": "check",
+    "label": "Check",
+    "group": "actions",
+    "keywords": "done ok confirmar"
+  }
+]

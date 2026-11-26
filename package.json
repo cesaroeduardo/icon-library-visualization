@@ -8,8 +8,10 @@
     "dev": "node scripts/dev.mjs",
     "dev:web": "npm run dev --prefix apps/web",
     "dev:studio": "npm run dev --prefix apps/studio",
+    "dev:selfhost": "npm run dev --prefix apps/selfhost",
     "pack:skill": "node packages/skill/pack-skill.mjs",
     "build": "node scripts/build-all.mjs",
+    "build:selfhost": "npm run build --prefix apps/selfhost",
     "preview": "npx vite preview --port 4173 --host 127.0.0.1"
   }
 }

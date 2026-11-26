@@ -1,0 +1,29 @@
+{
+  "name": "@icon-library/selfhost",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:library": "node scripts/build-library.mjs",
+    "predev": "node scripts/build-library.mjs",
+    "dev": "vite --port 5175",
+    "prebuild": "node scripts/build-library.mjs",
+    "build": "vite build",
+    "preview": "vite preview --port 4175"
+  },
+  "dependencies": {
+    "@icon-library/core": "workspace:*",
+    "lucide-vue-next": "^0.460.0",
+    "vue": "^3.5.13",
+    "vue3-colorpicker": "^2.3.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.20",
+    "linkedom": "^0.18.12",
+    "postcss": "^8.4.49",
+    "tailwind-gradient-mask-image": "^1.2.0",
+    "tailwindcss": "^3.4.15",
+    "vite": "^6.0.3"
+  }
+}

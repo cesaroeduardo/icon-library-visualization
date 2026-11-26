@@ -36,7 +36,8 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons
 ```text
 ├── apps/
 │   ├── web/            # Open-source Landing Page & TUFFUI Docs (React 19 + Tailwind CSS v4)
-│   └── studio/         # Focused Icon Library app (Vue 3 + Tailwind CSS)
+│   ├── studio/         # Focused Icon Library app (Vue 3 + Tailwind CSS)
+│   └── selfhost/       # Your own library only: icons/ folder → webfont + gallery
 ├── packages/
 │   ├── core/           # Shared browser engine (SVG validator, SVG→TTF/WOFF compiler, Webfont & catalog.json parser)
 │   └── skill/          # Skill packaging utilities
@@ -58,6 +59,9 @@ pnpm run dev:web
 
 # Run Icon Library App (http://localhost:5174)
 pnpm run dev:studio
+
+# Run self-hosted gallery (http://127.0.0.1:5175)
+pnpm run dev:selfhost
 ```
 
 ## Production Build (Static Deploy)
@@ -69,6 +73,16 @@ pnpm run build
 Outputs a unified static site in `dist/` ready for Cloudflare Pages, Vercel, Netlify, or GitHub Pages:
 - `dist/` → Landing Page & Docs (`https://icons.cesaroeduardo.com`)
 - `dist/studio/` → Icon Library Studio (`https://icons.cesaroeduardo.com/studio/`)
+
+## Self-host your own library
+
+[`apps/selfhost`](apps/selfhost) is a separate static app: put SVGs in `icons/`, set your logo in `selfhost.config.json`, and build only that gallery. Demo sets and the landing page are not included. `icons/catalog.json` is optional.
+
+```bash
+pnpm --filter @icon-library/selfhost build
+```
+
+Publish `apps/selfhost/dist/`. Docs: [Self-host guide](https://icons.cesaroeduardo.com/#docs-selfhost) · package README: [apps/selfhost/README.md](apps/selfhost/README.md).
 
 ## Credits
 

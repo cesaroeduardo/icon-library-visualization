@@ -17,7 +17,7 @@ import IconCard from './IconCard.vue'
 import ColoredIcon from './ColoredIcon.vue'
 import { useI18n } from '@/i18n'
 import { isDark } from '@/theme'
-import { createBundleZip } from '@icon-library/core'
+import { createBundleZip, prepareSvg } from '@icon-library/core'
 
 const { lang, t } = useI18n()
 
@@ -101,9 +101,7 @@ function updateFontSize() {
 }
 
 function renderPresetSvg(rawSvg, size) {
-  return (rawSvg || '')
-    .replace(/\s*(width|height)="[^"]*"/g, '')
-    .replace('<svg', `<svg width="${size}" height="${size}"`)
+  return prepareSvg(rawSvg || '', { dimension: size, colored: true })
 }
 
 const filteredIcons = computed(() => {

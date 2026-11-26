@@ -1,0 +1,9 @@
+{
+  "title": "My Icons",
+  "fontName": "my-icons",
+  "prefix": "ic",
+  "base": "/",
+  "iconsDir": "icons",
+  "logo": "brand/logo.svg",
+  "allowUpload": true
+}

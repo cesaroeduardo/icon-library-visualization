@@ -111,6 +111,7 @@ const activeStyle = ref('regular')
 const currentLibrary = ref(null)
 const userLibrary = ref(null)
 const savedRawSvgs = ref([])
+const pendingWebfontFiles = ref([])
 const loadingLibrary = ref(true)
 
 const galleryPresets = computed(() => {
@@ -213,6 +214,7 @@ async function persistUserLibrary(library, rawSvgs = []) {
 
 async function handleWebfontLoaded(library) {
   savedRawSvgs.value = []
+  pendingWebfontFiles.value = []
   await persistUserLibrary(library, [])
   showUserLibrary()
 }
@@ -224,8 +226,25 @@ async function handleSvgsBuilt({ library, rawSvgs }) {
 }
 
 function handleImportFromSkill(svgs) {
+  pendingWebfontFiles.value = []
   savedRawSvgs.value = svgs
   activeView.value = 'svg'
+}
+
+function handleImportWebfont(files) {
+  savedRawSvgs.value = []
+  pendingWebfontFiles.value = files || []
+  activeView.value = 'webfont'
+}
+
+function openUploadMode(mode) {
+  pendingWebfontFiles.value = []
+  activeView.value = mode
+}
+
+function backToCreateOwn() {
+  pendingWebfontFiles.value = []
+  activeView.value = 'create-own'
 }
 
 onMounted(async () => {
@@ -335,20 +354,23 @@ onMounted(async () => {
       <CreateOwnHub
         v-if="activeView === 'create-own'"
         @back="activeView = 'gallery'"
-        @select="(mode) => (activeView = mode)"
+        @select="openUploadMode"
         @import-svgs="handleImportFromSkill"
+        @import-webfont="handleImportWebfont"
       />
 
       <WebfontUpload
         v-else-if="activeView === 'webfont'"
-        @back="activeView = 'create-own'"
+        :initial-files="pendingWebfontFiles"
+        :auto-build="pendingWebfontFiles.length > 0"
+        @back="backToCreateOwn"
         @loaded="handleWebfontLoaded"
       />
 
       <SvgUpload
         v-else-if="activeView === 'svg'"
         :initial-svgs="savedRawSvgs"
-        @back="activeView = 'create-own'"
+        @back="backToCreateOwn"
         @built="handleSvgsBuilt"
       />
 
