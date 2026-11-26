@@ -122,7 +122,7 @@ export function App() {
     <MotionConfig reducedMotion="user">
       <div
         aria-hidden="true"
-        className="site-noise pointer-events-none fixed inset-0 z-40 opacity-10 mix-blend-overlay motion-reduce:hidden"
+        className="site-noise pointer-events-none fixed inset-0 z-40 opacity-[0.04] mix-blend-overlay motion-reduce:hidden"
         style={{ backgroundImage: "url('./noise.webp')" }}
       />
       <div className="min-h-screen flex flex-col bg-background text-foreground">
