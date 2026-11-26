@@ -1,7 +1,8 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, type ComponentType } from 'react'
 import { Check, Sparkles } from 'lucide-react'
 import { Shell, Panel, Inset, StatusPill, Tag } from '@/components/ui/tuff'
 import type { Lang } from '@/content'
+import antigravityIcon from '@/assets/antigravity-icon-full-color.svg'
 
 /** Official Anthropic Claude logo */
 export function ClaudeMark({ className = 'w-4 h-4' }: { className?: string }) {
@@ -30,17 +31,69 @@ export function CursorMark({ className = 'w-4 h-4' }: { className?: string }) {
   )
 }
 
-/** Official Grok (xAI) logo */
-export function GrokMark({ className = 'w-4 h-4' }: { className?: string }) {
+/** Official Google Antigravity full-color icon */
+export function AntigravityMark({ className = 'w-4 h-4' }: { className?: string }) {
   return (
-    <svg viewBox="0 0 24 24" fill="currentColor" className={className} aria-hidden="true">
-      <path
-        fillRule="evenodd"
-        d="M9.27 15.29l7.978-5.897c.391-.29.95-.177 1.137.272.98 2.369.542 5.215-1.41 7.169-1.951 1.954-4.667 2.382-7.149 1.406l-2.711 1.257c3.889 2.661 8.611 2.003 11.562-.953 2.341-2.344 3.066-5.539 2.388-8.42l.006.007c-.983-4.232.242-5.924 2.75-9.383.06-.082.12-.164.179-.248l-3.301 3.305v-.01L9.267 15.292M7.623 16.723c-2.792-2.67-2.31-6.801.071-9.184 1.761-1.763 4.647-2.483 7.166-1.425l2.705-1.25a7.808 7.808 0 00-1.829-1A8.975 8.975 0 005.984 5.83c-2.533 2.536-3.33 6.436-1.962 9.764 1.022 2.487-.653 4.246-2.34 6.022-.599.63-1.199 1.259-1.682 1.925l7.62-6.815"
-      />
-    </svg>
+    <img
+      src={antigravityIcon}
+      alt=""
+      className={className}
+      aria-hidden="true"
+      draggable={false}
+    />
   )
 }
+
+export type AgentId = 'claude' | 'openai' | 'cursor' | 'antigravity'
+
+type AgentMarkProps = { className?: string }
+
+export const AGENT_MODELS: Record<
+  AgentId,
+  {
+    id: AgentId
+    name: string
+    title: string
+    color: string
+    Mark: ComponentType<AgentMarkProps>
+    markClassName: string
+  }
+> = {
+  claude: {
+    id: 'claude',
+    name: 'Claude',
+    title: 'Claude (Anthropic)',
+    color: '#D97757',
+    Mark: ClaudeMark,
+    markClassName: 'text-white'
+  },
+  openai: {
+    id: 'openai',
+    name: 'Codex',
+    title: 'OpenAI / Codex',
+    color: '#10A37F',
+    Mark: OpenAIMark,
+    markClassName: 'text-white'
+  },
+  cursor: {
+    id: 'cursor',
+    name: 'Cursor',
+    title: 'Cursor',
+    color: '#111111',
+    Mark: CursorMark,
+    markClassName: 'text-white'
+  },
+  antigravity: {
+    id: 'antigravity',
+    name: 'Antigravity',
+    title: 'Google Antigravity',
+    color: '#3186FF',
+    Mark: AntigravityMark,
+    markClassName: ''
+  }
+}
+
+export const AGENT_MODEL_ORDER: AgentId[] = ['claude', 'openai', 'cursor', 'antigravity']
 
 const LOOP_MS = 6800
 
@@ -63,8 +116,16 @@ const ANCHOR_NODES = [
   { cx: 120, cy: 144, showAt: 0.725 }
 ]
 
-export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
+export function AgentCanvasShowcase({
+  lang,
+  activeAgent = 'claude'
+}: {
+  lang: Lang
+  activeAgent?: AgentId
+}) {
   const isPt = lang === 'pt'
+  const agent = AGENT_MODELS[activeAgent] ?? AGENT_MODELS.claude
+  const AgentMark = agent.Mark
 
   const stageRef = useRef<HTMLDivElement>(null)
   const roofRef = useRef<SVGPathElement>(null)
@@ -218,8 +279,8 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
       <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
         <div className="flex items-center gap-2">
           <span
-            className="h-2.5 w-2.5 rounded-full animate-pulse"
-            style={{ backgroundColor: '#D97757' }}
+            className="h-2.5 w-2.5 rounded-full animate-pulse transition-colors duration-300"
+            style={{ backgroundColor: agent.color }}
           />
           <span className="text-xs font-medium text-foreground">
             {isPt ? 'Agente desenhando em tempo real' : 'Agent drawing live on canvas'}
@@ -249,8 +310,8 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
 
               {/* Live Area Safe Guide (20x20 inside 24x24) */}
               <div
-                className="absolute inset-7 rounded-lg pointer-events-none"
-                style={{ border: '1px dashed rgba(217, 119, 87, 0.35)' }}
+                className="absolute inset-7 rounded-lg pointer-events-none transition-[border-color] duration-300"
+                style={{ border: `1px dashed ${agent.color}59` }}
               />
               <span className="absolute top-2.5 left-3 font-mono text-[10px] text-muted-foreground/70">
                 viewBox=&quot;0 0 24 24&quot;
@@ -270,7 +331,8 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
                   <path
                     ref={fillRef}
                     d="M50 112 V194 A16 16 0 0 0 66 210 H174 A16 16 0 0 0 190 194 V112 L120 44 Z"
-                    fill="#D97757"
+                    fill={agent.color}
+                    className="transition-[fill] duration-300"
                     style={{ opacity: 0 }}
                   />
 
@@ -302,14 +364,15 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
                   <path
                     ref={doorRef}
                     d="M96 210 V168 A24 24 0 0 1 144 168 V210"
-                    stroke="#D97757"
+                    stroke={agent.color}
                     strokeWidth="13"
                     strokeLinecap="round"
                     strokeLinejoin="round"
+                    className="transition-[stroke] duration-300"
                     style={{ opacity: 0 }}
                   />
 
-                  {/* Vector anchor nodes in Claude terracotta */}
+                  {/* Vector anchor nodes tinted to the active agent */}
                   {ANCHOR_NODES.map((pt, idx) => (
                     <rect
                       key={idx}
@@ -322,8 +385,9 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
                       height="9"
                       rx="2"
                       fill="#0c0c0c"
-                      stroke="#D97757"
+                      stroke={agent.color}
                       strokeWidth="2.5"
+                      className="transition-[stroke] duration-300"
                       style={{ opacity: 0 }}
                     />
                   ))}
@@ -334,20 +398,21 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
                     cx="36"
                     cy="116"
                     r="5.5"
-                    fill="#D97757"
+                    fill={agent.color}
                     stroke="#ffffff"
                     strokeWidth="2"
+                    className="transition-[fill] duration-300"
                     style={{ opacity: 0 }}
                   />
                 </svg>
 
-                {/* Animated Claude Agent Cursor — tip aligned precisely to (x, y) */}
+                {/* Animated agent cursor — tip aligned precisely to (x, y) */}
                 <div
                   ref={cursorRef}
                   className="absolute top-0 left-0 pointer-events-none z-20 will-change-transform"
                   style={{ transform: 'translate3d(36px, 116px, 0)' }}
                 >
-                  {/* Cursor Pointer in Claude Terracotta (#D97757) — tip at (4,3) of 24x24 */}
+                  {/* Cursor pointer — tip at (4,3) of 24x24 */}
                   <svg
                     width="22"
                     height="22"
@@ -357,20 +422,21 @@ export function AgentCanvasShowcase({ lang }: { lang: Lang }) {
                   >
                     <path
                       d="M4 3l15.5 7.2-6.9 2.1-2.6 6.8L4 3z"
-                      fill="#D97757"
+                      fill={agent.color}
                       stroke="#ffffff"
                       strokeWidth="1.6"
                       strokeLinejoin="round"
+                      className="transition-[fill] duration-300"
                     />
                   </svg>
 
-                  {/* Claude Badge attached to cursor */}
+                  {/* Agent badge attached to cursor */}
                   <div
-                    className="ml-3.5 -mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-white shadow-lg"
-                    style={{ backgroundColor: '#D97757' }}
+                    className="ml-3.5 -mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-white shadow-lg transition-colors duration-300"
+                    style={{ backgroundColor: agent.color }}
                   >
-                    <ClaudeMark className="w-3 h-3 text-white" />
-                    <span>Claude</span>
+                    <AgentMark className={`w-3 h-3 ${agent.markClassName}`.trim()} />
+                    <span>{agent.name}</span>
                   </div>
                 </div>
               </div>

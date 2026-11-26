@@ -17,6 +17,7 @@ import SvgUpload from './components/SvgUpload.vue'
 import IconGallery from './components/IconGallery.vue'
 import { isDark, toggleTheme } from './theme'
 import { useI18n } from './i18n'
+import { saveUserLibraryCache, loadUserLibraryCache } from './userLibraryCache'
 
 const { lang, t, toggleLang } = useI18n()
 
@@ -101,20 +102,49 @@ const PRESETS = [
   }
 ]
 
+const USER_LIB_ID = 'user'
+
 const presetCache = new Map()
 const activeView = ref('gallery') // 'gallery' | 'create-own' | 'webfont' | 'svg'
 const activePresetId = ref('phosphor')
 const activeStyle = ref('regular')
 const currentLibrary = ref(null)
+const userLibrary = ref(null)
 const savedRawSvgs = ref([])
 const loadingLibrary = ref(true)
 
+const galleryPresets = computed(() => {
+  if (!userLibrary.value) return PRESETS
+  return [
+    {
+      id: USER_LIB_ID,
+      label: userLibrary.value.fontName || (lang.value === 'pt' ? 'Minha webfont' : 'My webfont')
+    },
+    ...PRESETS
+  ]
+})
+
 const availableStyles = computed(() => {
+  if (activePresetId.value === USER_LIB_ID) return []
   const preset = PRESETS.find((p) => p.id === activePresetId.value)
   return preset ? preset.styles : []
 })
 
+function showUserLibrary() {
+  if (!userLibrary.value) return
+  activePresetId.value = USER_LIB_ID
+  activeStyle.value = 'regular'
+  currentLibrary.value = userLibrary.value
+  activeView.value = 'gallery'
+  loadingLibrary.value = false
+}
+
 async function loadPreset(presetId, style) {
+  if (presetId === USER_LIB_ID) {
+    showUserLibrary()
+    return
+  }
+
   const preset = PRESETS.find((p) => p.id === presetId) || PRESETS[0]
   const fallbackStyle = preset.defaultStyle || preset.styles[0] || 'regular'
   const resolvedStyle = style && preset.styles.includes(style) ? style : fallbackStyle
@@ -168,24 +198,29 @@ async function loadPreset(presetId, style) {
 }
 
 function handleSelectStyle(style) {
-  if (!activePresetId.value) return
+  if (!activePresetId.value || activePresetId.value === USER_LIB_ID) return
   loadPreset(activePresetId.value, style)
 }
 
-function handleWebfontLoaded(library) {
-  activePresetId.value = ''
-  activeStyle.value = 'regular'
-  currentLibrary.value = library
-  savedRawSvgs.value = []
-  activeView.value = 'gallery'
+async function persistUserLibrary(library, rawSvgs = []) {
+  userLibrary.value = library
+  try {
+    await saveUserLibraryCache({ library, rawSvgs })
+  } catch (e) {
+    console.warn('Failed to persist user library:', e)
+  }
 }
 
-function handleSvgsBuilt({ library, rawSvgs }) {
-  activePresetId.value = ''
-  activeStyle.value = 'regular'
-  currentLibrary.value = library
+async function handleWebfontLoaded(library) {
+  savedRawSvgs.value = []
+  await persistUserLibrary(library, [])
+  showUserLibrary()
+}
+
+async function handleSvgsBuilt({ library, rawSvgs }) {
   savedRawSvgs.value = rawSvgs
-  activeView.value = 'gallery'
+  await persistUserLibrary(library, rawSvgs)
+  showUserLibrary()
 }
 
 function handleImportFromSkill(svgs) {
@@ -194,6 +229,12 @@ function handleImportFromSkill(svgs) {
 }
 
 onMounted(async () => {
+  const cached = await loadUserLibraryCache()
+  if (cached?.library) {
+    userLibrary.value = cached.library
+    savedRawSvgs.value = cached.rawSvgs || []
+  }
+
   const hash = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase()
   if (hash === 'create-own') {
     activeView.value = 'create-own'
@@ -212,6 +253,10 @@ onMounted(async () => {
   if (hash.startsWith('lib-')) {
     const target = hash.replace('lib-', '')
     await loadPreset(target, 'regular')
+    return
+  }
+  if (userLibrary.value) {
+    showUserLibrary()
     return
   }
   await loadPreset('phosphor', 'regular')
@@ -319,7 +364,7 @@ onMounted(async () => {
       <IconGallery
         v-else-if="currentLibrary"
         :library="currentLibrary"
-        :presets="PRESETS"
+        :presets="galleryPresets"
         :active-preset-id="activePresetId"
         :available-styles="availableStyles"
         :active-style="activeStyle"

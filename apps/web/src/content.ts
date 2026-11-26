@@ -57,10 +57,10 @@ export const copy = {
       empty: 'Nenhum ícone encontrado para essa busca.'
     },
     pillars: {
-      heading1: 'Tudo o que um',
-      heading2: 'design system precisa.',
+      heading1: 'Um espaço para',
+      heading2: 'compartilhar seus ícones.',
       subtitle:
-        'Organizado em monorepo para separar site, estúdio, engine de compilação e skill de criação de ícones.',
+        'Visualize bibliotecas, busque, inspecione e exporte — um lugar para organizar o set de ícones do seu produto, do upload à webfont pronta para usar.',
       items: [
         {
           id: 'webfont',
@@ -183,10 +183,10 @@ export const copy = {
       empty: 'No icons match that query.'
     },
     pillars: {
-      heading1: 'Everything a modern',
-      heading2: 'design system needs.',
+      heading1: 'A space to',
+      heading2: 'share your icons.',
       subtitle:
-        'Structured as a clean monorepo separating the website, the interactive studio, the font compiler engine, and the AI icon skill.',
+        'Browse libraries, search, inspect, and export — a place to organize your product’s icon set, from upload to a production-ready webfont.',
       items: [
         {
           id: 'webfont',

@@ -21,10 +21,9 @@ import {
 } from '@/components/ui/tuff'
 import {
   AgentCanvasShowcase,
-  ClaudeMark,
-  OpenAIMark,
-  CursorMark,
-  GrokMark
+  AGENT_MODELS,
+  AGENT_MODEL_ORDER,
+  type AgentId
 } from '@/components/AgentCanvasShowcase'
 import { GITHUB_URL, type Lang } from '@/content'
 
@@ -39,7 +38,9 @@ const CMD_CATALOG = 'npx skills add cesaroeduardo/icon-library-visualization --s
 
 export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
+  const [hoveredAgent, setHoveredAgent] = useState<AgentId | null>(null)
   const isPt = lang === 'pt'
+  const activeAgent = hoveredAgent ?? 'claude'
 
   async function handleCopy(key: string, text: string) {
     try {
@@ -71,8 +72,8 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
         </p>
       </div>
 
-      {/* Live Animated Claude Agent Drawing on 24x24 Canvas */}
-      <AgentCanvasShowcase lang={lang} />
+      {/* Live Animated Agent Drawing on 24x24 Canvas */}
+      <AgentCanvasShowcase lang={lang} activeAgent={activeAgent} />
 
       {/* Works With Any Model + Copyable npx skills add Command Strip */}
       <Shell className="mb-4">
@@ -83,32 +84,39 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
             </span>
 
             {/* Overlapping Circular Model Badges */}
-            <div className="flex items-center -space-x-2.5">
-              <span
-                title="Claude (Anthropic)"
-                className="h-10 w-10 rounded-full flex items-center justify-center text-white ring-2 ring-surface-inset z-40"
-                style={{ backgroundColor: '#D97757' }}
-              >
-                <ClaudeMark className="w-5 h-5" />
-              </span>
-              <span
-                title="OpenAI / Codex"
-                className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-30"
-              >
-                <OpenAIMark className="w-5 h-5" />
-              </span>
-              <span
-                title="Cursor"
-                className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-20"
-              >
-                <CursorMark className="w-5 h-5" />
-              </span>
-              <span
-                title="Grok (xAI)"
-                className="h-10 w-10 rounded-full bg-[#F4F4F5] text-[#111111] flex items-center justify-center ring-2 ring-surface-inset z-10"
-              >
-                <GrokMark className="w-5 h-5" />
-              </span>
+            <div
+              className="flex items-center -space-x-2.5"
+              onMouseLeave={() => setHoveredAgent(null)}
+            >
+              {AGENT_MODEL_ORDER.map((id, index) => {
+                const model = AGENT_MODELS[id]
+                const Mark = model.Mark
+                const isHovered = hoveredAgent === id
+                const isClaude = id === 'claude'
+                return (
+                  <button
+                    key={id}
+                    type="button"
+                    title={model.title}
+                    aria-label={model.title}
+                    onMouseEnter={() => setHoveredAgent(id)}
+                    onFocus={() => setHoveredAgent(id)}
+                    onBlur={() => setHoveredAgent(null)}
+                    className={[
+                      'h-10 w-10 rounded-full flex items-center justify-center ring-2 ring-surface-inset',
+                      'transition-transform duration-300 ease-out will-change-transform cursor-pointer',
+                      isHovered ? '-translate-y-1.5 scale-110 shadow-md' : 'translate-y-0 scale-100',
+                      isClaude ? 'text-white' : 'bg-[#F4F4F5] text-[#111111]'
+                    ].join(' ')}
+                    style={{
+                      backgroundColor: isClaude ? model.color : undefined,
+                      zIndex: isHovered ? 50 : 40 - index
+                    }}
+                  >
+                    <Mark className="w-5 h-5" />
+                  </button>
+                )
+              })}
             </div>
 
             {/* Dark Pill Command Box with Copy */}
