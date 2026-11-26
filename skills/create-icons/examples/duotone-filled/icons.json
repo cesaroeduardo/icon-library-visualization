@@ -1,0 +1,458 @@
+{
+  "package": {
+    "name": "@example/icons",
+    "version": "0.1.0"
+  },
+  "framework": "react",
+  "style": "./icon-style.json",
+  "icons": [
+    {
+      "name": "home",
+      "label": "Home",
+      "group": "navigation",
+      "tags": [
+        "house",
+        "start",
+        "dashboard"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "path",
+          "d": "M4 10h16v9a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3z"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M10.7 2.5a2 2 0 0 1 2.6 0l8 6.6c.7.6.3 1.9-.65 1.9H3.35c-.95 0-1.35-1.3-.65-1.9z"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M10 22v-4a2 2 0 0 1 4 0v4z",
+          "illo": "accent"
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "label": "Search",
+      "group": "navigation",
+      "tags": [
+        "find",
+        "magnifier",
+        "lookup"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "circle",
+          "cx": 10.5,
+          "cy": 10.5,
+          "r": 4.7
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M10.5 3a7.5 7.5 0 1 1 0 15a7.5 7.5 0 1 1 0-15zM10.5 5.8a4.7 4.7 0 1 0 0 9.4a4.7 4.7 0 1 0 0-9.4z",
+          "fillRule": "evenodd"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M16.4 16.4l4 4",
+          "bar": 3
+        }
+      ]
+    },
+    {
+      "name": "bell",
+      "label": "Notifications",
+      "group": "navigation",
+      "tags": [
+        "bell",
+        "alert",
+        "reminder"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "path",
+          "d": "M12 3a6.5 6.5 0 0 1 6.5 6.5V12h-13V9.5A6.5 6.5 0 0 1 12 3z"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M5.5 11h13v2.1l1.6 2.6A1.5 1.5 0 0 1 18.8 18H5.2a1.5 1.5 0 0 1-1.3-2.3l1.6-2.6z"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M9.4 19.2h5.2a2.6 2.6 0 0 1-5.2 0z",
+          "illo": "accent2"
+        }
+      ]
+    },
+    {
+      "name": "settings",
+      "label": "Settings",
+      "group": "navigation",
+      "tags": [
+        "gear",
+        "preferences",
+        "cog"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "circle",
+          "cx": 12,
+          "cy": 12,
+          "r": 3.6,
+          "illo": "accent"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M9.86 5.12Q10.51 4.85 10.48 4.16L10.45 3.23Q10.42 2.53 11.12 2.53L12.88 2.53Q13.58 2.53 13.55 3.23L13.52 4.16Q13.49 4.85 14.14 5.12L15.35 5.62Q16 5.89 16.47 5.38L17.1 4.7Q17.58 4.19 18.08 4.68L19.32 5.92Q19.81 6.42 19.3 6.9L18.62 7.53Q18.11 8 18.38 8.65L18.88 9.86Q19.15 10.51 19.84 10.48L20.77 10.45Q21.47 10.42 21.47 11.12L21.47 12.88Q21.47 13.58 20.77 13.55L19.84 13.52Q19.15 13.49 18.88 14.14L18.38 15.35Q18.11 16 18.62 16.47L19.3 17.1Q19.81 17.58 19.32 18.08L18.08 19.32Q17.58 19.81 17.1 19.3L16.47 18.62Q16 18.11 15.35 18.38L14.14 18.88Q13.49 19.15 13.52 19.84L13.55 20.77Q13.58 21.47 12.88 21.47L11.12 21.47Q10.42 21.47 10.45 20.77L10.48 19.84Q10.51 19.15 9.86 18.88L8.65 18.38Q8 18.11 7.53 18.62L6.9 19.3Q6.42 19.81 5.92 19.32L4.68 18.08Q4.19 17.58 4.7 17.1L5.38 16.47Q5.89 16 5.62 15.35L5.12 14.14Q4.85 13.49 4.16 13.52L3.23 13.55Q2.53 13.58 2.53 12.88L2.53 11.12Q2.53 10.42 3.23 10.45L4.16 10.48Q4.85 10.51 5.12 9.86L5.62 8.65Q5.89 8 5.38 7.53L4.7 6.9Q4.19 6.42 4.68 5.92L5.92 4.68Q6.42 4.19 6.9 4.7L7.53 5.38Q8 5.89 8.65 5.62zM8.4 12a3.6 3.6 0 1 0 7.2 0a3.6 3.6 0 1 0 -7.2 0z",
+          "fillRule": "evenodd"
+        }
+      ]
+    },
+    {
+      "name": "user",
+      "label": "Account",
+      "group": "people",
+      "tags": [
+        "person",
+        "profile",
+        "avatar"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "path",
+          "d": "M4 21.2C4 17.2 7.6 14 12 14s8 3.2 8 7.2a.8.8 0 0 1-.8.8H4.8a.8.8 0 0 1-.8-.8z"
+        },
+        {
+          "tone": "detail",
+          "type": "circle",
+          "cx": 12,
+          "cy": 7.5,
+          "r": 4.5
+        }
+      ]
+    },
+    {
+      "name": "calendar",
+      "label": "Calendar",
+      "group": "time",
+      "tags": [
+        "date",
+        "schedule",
+        "agenda"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "rect",
+          "x": 2.5,
+          "y": 4,
+          "width": 19,
+          "height": 18,
+          "rx": 3.5
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M6 4h12a3.5 3.5 0 0 1 3.5 3.5V9.5h-19V7.5A3.5 3.5 0 0 1 6 4z"
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 6.6,
+          "y": 2,
+          "width": 2.2,
+          "height": 4.5,
+          "rx": 1.1
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 15.2,
+          "y": 2,
+          "width": 2.2,
+          "height": 4.5,
+          "rx": 1.1
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 6.5,
+          "y": 13,
+          "width": 3,
+          "height": 3,
+          "rx": 0.9
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 10.5,
+          "y": 13,
+          "width": 3,
+          "height": 3,
+          "rx": 0.9
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 14.5,
+          "y": 17,
+          "width": 3,
+          "height": 3,
+          "rx": 0.9,
+          "illo": "accent2"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "label": "Reports",
+      "group": "data",
+      "tags": [
+        "analytics",
+        "bars",
+        "stats"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "rect",
+          "x": 2.5,
+          "y": 2.5,
+          "width": 19,
+          "height": 19,
+          "rx": 4
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 6.5,
+          "y": 12,
+          "width": 2.6,
+          "height": 6,
+          "rx": 1.3
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 10.7,
+          "y": 8.5,
+          "width": 2.6,
+          "height": 9.5,
+          "rx": 1.3
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 14.9,
+          "y": 6,
+          "width": 2.6,
+          "height": 12,
+          "rx": 1.3,
+          "illo": "accent"
+        }
+      ]
+    },
+    {
+      "name": "mail",
+      "label": "Mail",
+      "group": "communication",
+      "tags": [
+        "email",
+        "envelope",
+        "inbox"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "rect",
+          "x": 2,
+          "y": 4.5,
+          "width": 20,
+          "height": 15,
+          "rx": 3.2
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M5.6 8.6l6.4 4.5 6.4-4.5",
+          "bar": 2.4
+        }
+      ]
+    },
+    {
+      "name": "lock",
+      "label": "Lock",
+      "group": "security",
+      "tags": [
+        "secure",
+        "private",
+        "password"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "rect",
+          "x": 4,
+          "y": 10,
+          "width": 16,
+          "height": 12,
+          "rx": 3.2
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M8 10V7.5a4 4 0 0 1 8 0V10",
+          "bar": 2.4
+        },
+        {
+          "tone": "detail",
+          "type": "circle",
+          "cx": 12,
+          "cy": 15.2,
+          "r": 1.7,
+          "illo": "accent2"
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 11.1,
+          "y": 15.5,
+          "width": 1.8,
+          "height": 3.5,
+          "rx": 0.9,
+          "illo": "accent2"
+        }
+      ]
+    },
+    {
+      "name": "cart",
+      "label": "Cart",
+      "group": "commerce",
+      "tags": [
+        "shopping",
+        "basket",
+        "checkout"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "path",
+          "d": "M6.6 6h13.7a1 1 0 0 1 1 1.25l-1.6 6.4a2.5 2.5 0 0 1-2.4 1.85H8.6z"
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M3.6 3.6h1.1a1.2 1.2 0 0 1 1.17.93l2.3 10.6a1.4 1.4 0 0 0 1.37 1.1H18.4",
+          "bar": 2.2
+        },
+        {
+          "tone": "detail",
+          "type": "circle",
+          "cx": 9.4,
+          "cy": 20,
+          "r": 1.8,
+          "illo": "accent"
+        },
+        {
+          "tone": "detail",
+          "type": "circle",
+          "cx": 17.2,
+          "cy": 20,
+          "r": 1.8,
+          "illo": "accent"
+        }
+      ]
+    },
+    {
+      "name": "trash",
+      "label": "Delete",
+      "group": "actions",
+      "tags": [
+        "trash",
+        "remove",
+        "bin"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "path",
+          "d": "M5.5 7.5h13l-.9 12a2.7 2.7 0 0 1-2.7 2.5H9.1a2.7 2.7 0 0 1-2.7-2.5z"
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 9.5,
+          "y": 2.2,
+          "width": 5,
+          "height": 3.2,
+          "rx": 1.2
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 3.5,
+          "y": 4.6,
+          "width": 17,
+          "height": 2.6,
+          "rx": 1.3
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 9.4,
+          "y": 10.5,
+          "width": 1.8,
+          "height": 7.5,
+          "rx": 0.9
+        },
+        {
+          "tone": "detail",
+          "type": "rect",
+          "x": 12.8,
+          "y": 10.5,
+          "width": 1.8,
+          "height": 7.5,
+          "rx": 0.9
+        }
+      ]
+    },
+    {
+      "name": "check-circle",
+      "label": "Done",
+      "group": "status",
+      "tags": [
+        "success",
+        "complete",
+        "ok"
+      ],
+      "shapes": [
+        {
+          "tone": "body",
+          "type": "circle",
+          "cx": 12,
+          "cy": 12,
+          "r": 10
+        },
+        {
+          "tone": "detail",
+          "type": "path",
+          "d": "M7.8 12.3l2.8 2.8 5.6-5.6",
+          "bar": 2.6,
+          "illo": "accent"
+        }
+      ]
+    }
+  ]
+}

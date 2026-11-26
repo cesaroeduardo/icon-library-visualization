@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-neutral-200 dark:bg-neutral-900 text-neutral-900 dark:text-neutral-100 antialiased;
+}
+
+select,
+input[type='text'],
+input[type='search'] {
+  @apply bg-neutral-100/70 dark:bg-neutral-800/70 dark:text-neutral-200 border border-neutral-300/80 dark:border-neutral-700 placeholder:text-neutral-400 text-sm rounded-lg p-2.5 dark:placeholder:text-neutral-500 outline-none focus:border-neutral-500 dark:focus:border-neutral-400 transition-colors;
+}
+
+.radio-group {
+  @apply flex items-center rounded-md w-full overflow-hidden border border-neutral-300 dark:border-neutral-700;
+}
+
+input[type='radio'].radio {
+  @apply sr-only;
+}
+
+.radio-container {
+  @apply flex justify-center items-center w-full py-2 px-3 overflow-hidden text-xs text-neutral-800 dark:text-neutral-100 transition-colors;
+}
+
+.radio-container:hover {
+  @apply cursor-pointer bg-white/40 dark:bg-black/40;
+}
+
+.radio:checked ~ .radio-container {
+  @apply bg-neutral-900 dark:bg-neutral-100 text-neutral-100 dark:text-neutral-900 font-medium;
+}
+
+.icon-btn {
+  @apply bg-neutral-100/70 dark:bg-neutral-800/70 rounded-lg border border-neutral-300/80 dark:border-neutral-700 hover:bg-white/80 hover:dark:bg-neutral-900/80 h-11 px-3 inline-flex items-center justify-center gap-2 text-neutral-800 dark:text-neutral-200 transition-colors;
+}
+
+/* Custom Color Picker (from icons-gallery) */
+.current-color,
+.vc-color-wrap {
+  @apply !shadow-none !rounded-md !w-full md:!h-9;
+}
+.vc-colorpicker {
+  @apply !bg-white/95 dark:!bg-neutral-800/95 !shadow-lg border border-neutral-200 dark:border-neutral-600 !rounded-lg !text-black dark:!text-white;
+}
+.vc-compact {
+  @apply !shadow-none !w-[110%] -ml-0.5;
+}
+.vc-color-input,
+.vc-color-input input,
+.vc-alpha-input,
+.vc-input-toggle {
+  @apply !text-black !bg-neutral-200 !rounded-sm;
+}
+.vc-display {
+  @apply !gap-1;
+}

@@ -1,2 +1,0 @@
-fonttools>=4.61.0
-lxml>=6.0.0

@@ -1,0 +1,241 @@
+{
+  "name": "app-icon-glossy",
+  "package": {
+    "name": "@starter/app-icon-glossy"
+  },
+  "description": "A squircle with a gradient and gloss, the object in white on top, like a phone app icon. App launchers, feature tiles, marketing.",
+  "style": {
+    "name": "app-icon-glossy",
+    "grid": 24,
+    "live": 24,
+    "paint": "fill",
+    "prefix": "app",
+    "tones": {
+      "glyph": {
+        "fallback": "palette"
+      },
+      "glyph2": {
+        "fallback": "palette"
+      },
+      "bg": {
+        "fallback": "palette"
+      },
+      "gloss": {
+        "fallback": "palette"
+      }
+    },
+    "palette": {
+      "light": {
+        "default": {
+          "bg": {
+            "gradient": [
+              "#6C7BFF",
+              "#2F3CC9"
+            ]
+          },
+          "gloss": {
+            "gradient": [
+              "#FFFFFF73",
+              "#FFFFFF00"
+            ]
+          },
+          "glyph": "#FFFFFF",
+          "glyph2": "#FFFFFFA6"
+        }
+      },
+      "dark": {
+        "default": {
+          "bg": {
+            "gradient": [
+              "#6C7BFF",
+              "#2F3CC9"
+            ]
+          },
+          "gloss": {
+            "gradient": [
+              "#FFFFFF73",
+              "#FFFFFF00"
+            ]
+          },
+          "glyph": "#FFFFFF",
+          "glyph2": "#FFFFFFA6"
+        }
+      }
+    },
+    "primaryCheck": false,
+    "sizes": [
+      48,
+      64,
+      96
+    ],
+    "context": {
+      "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "radius": 10,
+      "brand": "#3D4FE0",
+      "onBrand": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "sidebar": "#F4F5F8",
+      "text": "#1B1F27",
+      "border": "#E3E6EC",
+      "surfaceDark": "#12151C",
+      "sidebarDark": "#181C25",
+      "textDark": "#E6E8EE",
+      "borderDark": "#2A303C"
+    }
+  },
+  "icons": [
+    {
+      "name": "home",
+      "label": "Home",
+      "group": "navigation",
+      "tags": [
+        "house",
+        "start",
+        "dashboard"
+      ],
+      "shapes": [
+        {
+          "tone": "bg",
+          "type": "path",
+          "d": "M12 0C20.6 0 24 3.4 24 12S20.6 24 12 24 0 20.6 0 12 3.4 0 12 0z"
+        },
+        {
+          "tone": "gloss",
+          "type": "path",
+          "d": "M12 .9c7.5 0 10.4 2.6 10.9 9.1-6.9 2.3-14.9 2.3-21.8 0C1.6 3.5 4.5.9 12 .9z"
+        },
+        {
+          "tone": "glyph2",
+          "type": "path",
+          "d": "M7.5 12h9v5.2a1.8 1.8 0 0 1-1.8 1.8H9.3a1.8 1.8 0 0 1-1.8-1.8z"
+        },
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M11.2 5.4a1.2 1.2 0 0 1 1.6 0l5 4.2c.45.4.2 1.2-.4 1.2H6.6c-.6 0-.85-.8-.4-1.2z"
+        }
+      ]
+    },
+    {
+      "name": "bell",
+      "label": "Notifications",
+      "group": "navigation",
+      "tags": [
+        "bell",
+        "alert",
+        "reminder"
+      ],
+      "shapes": [
+        {
+          "tone": "bg",
+          "type": "path",
+          "d": "M12 0C20.6 0 24 3.4 24 12S20.6 24 12 24 0 20.6 0 12 3.4 0 12 0z"
+        },
+        {
+          "tone": "gloss",
+          "type": "path",
+          "d": "M12 .9c7.5 0 10.4 2.6 10.9 9.1-6.9 2.3-14.9 2.3-21.8 0C1.6 3.5 4.5.9 12 .9z"
+        },
+        {
+          "tone": "glyph2",
+          "type": "path",
+          "d": "M12 5.4a4 4 0 0 1 4 4V11H8V9.4a4 4 0 0 1 4-4z"
+        },
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M8 10.4h8v1.6l1 1.6a.9.9 0 0 1-.8 1.4H7.8a.9.9 0 0 1-.8-1.4l1-1.6z"
+        },
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M10.4 16.2h3.2a1.6 1.6 0 0 1-3.2 0z"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "label": "Reports",
+      "group": "data",
+      "tags": [
+        "analytics",
+        "bars",
+        "stats"
+      ],
+      "shapes": [
+        {
+          "tone": "bg",
+          "type": "path",
+          "d": "M12 0C20.6 0 24 3.4 24 12S20.6 24 12 24 0 20.6 0 12 3.4 0 12 0z"
+        },
+        {
+          "tone": "gloss",
+          "type": "path",
+          "d": "M12 .9c7.5 0 10.4 2.6 10.9 9.1-6.9 2.3-14.9 2.3-21.8 0C1.6 3.5 4.5.9 12 .9z"
+        },
+        {
+          "tone": "glyph2",
+          "type": "rect",
+          "x": 7,
+          "y": 11,
+          "width": 2.2,
+          "height": 6.5,
+          "rx": 1.1
+        },
+        {
+          "tone": "glyph2",
+          "type": "rect",
+          "x": 10.9,
+          "y": 8,
+          "width": 2.2,
+          "height": 9.5,
+          "rx": 1.1
+        },
+        {
+          "tone": "glyph",
+          "type": "rect",
+          "x": 14.8,
+          "y": 6,
+          "width": 2.2,
+          "height": 11.5,
+          "rx": 1.1
+        }
+      ]
+    },
+    {
+      "name": "check-circle",
+      "label": "Done",
+      "group": "status",
+      "tags": [
+        "success",
+        "complete",
+        "ok"
+      ],
+      "shapes": [
+        {
+          "tone": "bg",
+          "type": "path",
+          "d": "M12 0C20.6 0 24 3.4 24 12S20.6 24 12 24 0 20.6 0 12 3.4 0 12 0z"
+        },
+        {
+          "tone": "gloss",
+          "type": "path",
+          "d": "M12 .9c7.5 0 10.4 2.6 10.9 9.1-6.9 2.3-14.9 2.3-21.8 0C1.6 3.5 4.5.9 12 .9z"
+        },
+        {
+          "tone": "glyph2",
+          "type": "circle",
+          "cx": 12,
+          "cy": 12,
+          "r": 6.2
+        },
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M9.3 12.1l1.8 1.8 3.6-3.6",
+          "bar": 1.9
+        }
+      ]
+    }
+  ]
+}

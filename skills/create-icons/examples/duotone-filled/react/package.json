@@ -1,0 +1,29 @@
+{
+  "name": "@example/icons",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Icon library generated with generate-icons (duotone-filled style).",
+  "sideEffects": [
+    "*.css"
+  ],
+  "files": [
+    "src",
+    "svg",
+    "sprite.svg",
+    "icons.css",
+    "manifest.json"
+  ],
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./icons/*": "./src/icons/*.tsx",
+    "./icons.css": "./icons.css",
+    "./sprite.svg": "./sprite.svg",
+    "./svg/*": "./svg/*",
+    "./manifest.json": "./manifest.json"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  }
+}

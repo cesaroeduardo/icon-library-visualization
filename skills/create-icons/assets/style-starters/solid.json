@@ -1,0 +1,150 @@
+{
+  "name": "solid",
+  "package": {
+    "name": "@starter/solid"
+  },
+  "description": "One color, filled, details cut out as negative space. Tab bars, small sizes, selected states.",
+  "style": {
+    "name": "solid",
+    "grid": 24,
+    "live": 20,
+    "paint": "fill",
+    "prefix": "ic",
+    "radius": {
+      "outer": 3,
+      "inner": 1.2
+    },
+    "tones": {
+      "glyph": {
+        "fallbackOpacity": 1
+      }
+    },
+    "palette": {
+      "light": {
+        "default": {
+          "glyph": "#5E6676"
+        },
+        "hover": {
+          "glyph": "#2F3542"
+        },
+        "active": {
+          "glyph": "#3D4FE0"
+        },
+        "disabled": {
+          "glyph": "#B4BAC6"
+        }
+      },
+      "dark": {
+        "default": {
+          "glyph": "#A7AFBE"
+        },
+        "hover": {
+          "glyph": "#E2E5EB"
+        },
+        "active": {
+          "glyph": "#B3BEFF"
+        },
+        "disabled": {
+          "glyph": "#5A6273"
+        }
+      }
+    },
+    "sizes": [
+      16,
+      20,
+      24
+    ],
+    "darkMode": "class",
+    "context": {
+      "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "radius": 10,
+      "brand": "#3D4FE0",
+      "onBrand": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "sidebar": "#F4F5F8",
+      "text": "#1B1F27",
+      "border": "#E3E6EC",
+      "surfaceDark": "#12151C",
+      "sidebarDark": "#181C25",
+      "textDark": "#E6E8EE",
+      "borderDark": "#2A303C"
+    }
+  },
+  "icons": [
+    {
+      "name": "home",
+      "label": "Home",
+      "group": "navigation",
+      "tags": [
+        "house",
+        "start",
+        "dashboard"
+      ],
+      "shapes": [
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M13.3 2.9l7.4 6.3c.5.4.8 1 .8 1.6V19a3 3 0 0 1-3 3h-3.5v-5a3 3 0 0 0-6 0v5H5.5a3 3 0 0 1-3-3v-8.2c0-.6.3-1.2.8-1.6l7.4-6.3a2 2 0 0 1 2.6 0z"
+        }
+      ]
+    },
+    {
+      "name": "bell",
+      "label": "Notifications",
+      "group": "navigation",
+      "tags": [
+        "bell",
+        "alert",
+        "reminder"
+      ],
+      "shapes": [
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M12 2.8a6.6 6.6 0 0 1 6.6 6.6v3.7l1.6 2.6a1.5 1.5 0 0 1-1.3 2.3H5.1a1.5 1.5 0 0 1-1.3-2.3l1.6-2.6V9.4A6.6 6.6 0 0 1 12 2.8z"
+        },
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M9.5 19.4h5a2.5 2.5 0 0 1-5 0z"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "label": "Reports",
+      "group": "data",
+      "tags": [
+        "analytics",
+        "bars",
+        "stats"
+      ],
+      "shapes": [
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M6.5 2.5h11a4 4 0 0 1 4 4v11a4 4 0 0 1 -4 4h-11a4 4 0 0 1 -4 -4v-11a4 4 0 0 1 4 -4zM7.8 12h0a1.3 1.3 0 0 1 1.3 1.3v3.4a1.3 1.3 0 0 1 -1.3 1.3h-0a1.3 1.3 0 0 1 -1.3 -1.3v-3.4a1.3 1.3 0 0 1 1.3 -1.3zM12 8.5h0a1.3 1.3 0 0 1 1.3 1.3v6.9a1.3 1.3 0 0 1 -1.3 1.3h-0a1.3 1.3 0 0 1 -1.3 -1.3v-6.9a1.3 1.3 0 0 1 1.3 -1.3zM16.2 6h0a1.3 1.3 0 0 1 1.3 1.3v9.4a1.3 1.3 0 0 1 -1.3 1.3h-0a1.3 1.3 0 0 1 -1.3 -1.3v-9.4a1.3 1.3 0 0 1 1.3 -1.3z",
+          "fillRule": "evenodd"
+        }
+      ]
+    },
+    {
+      "name": "check-circle",
+      "label": "Done",
+      "group": "status",
+      "tags": [
+        "success",
+        "complete",
+        "ok"
+      ],
+      "shapes": [
+        {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M2 12a10 10 0 1 1 20 0a10 10 0 1 1 -20 0zM6.88 13.22L10.6 16.94L17.12 10.42A1.3 1.3 0 0 1 15.28 8.58L10.6 13.26L8.72 11.38A1.3 1.3 0 0 1 6.88 13.22z",
+          "fillRule": "evenodd"
+        }
+      ]
+    }
+  ]
+}

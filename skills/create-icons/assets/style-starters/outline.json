@@ -1,0 +1,185 @@
+{
+  "name": "outline",
+  "package": {
+    "name": "@starter/outline"
+  },
+  "description": "Uniform rounded line (1.5 to 2). Pairs with line sets; dense UI, toolbars.",
+  "style": {
+    "name": "outline",
+    "grid": 24,
+    "live": 20,
+    "paint": "stroke",
+    "prefix": "ic",
+    "stroke": {
+      "width": 1.75,
+      "linecap": "round",
+      "linejoin": "round"
+    },
+    "radius": {
+      "outer": 2.5,
+      "inner": 1
+    },
+    "tones": {
+      "line": {
+        "fallbackOpacity": 1
+      }
+    },
+    "palette": {
+      "light": {
+        "default": {
+          "line": "#5E6676"
+        },
+        "hover": {
+          "line": "#2F3542"
+        },
+        "active": {
+          "line": "#3D4FE0"
+        },
+        "disabled": {
+          "line": "#B4BAC6"
+        }
+      },
+      "dark": {
+        "default": {
+          "line": "#A7AFBE"
+        },
+        "hover": {
+          "line": "#E2E5EB"
+        },
+        "active": {
+          "line": "#B3BEFF"
+        },
+        "disabled": {
+          "line": "#5A6273"
+        }
+      }
+    },
+    "sizes": [
+      16,
+      20,
+      24
+    ],
+    "darkMode": "class",
+    "context": {
+      "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+      "radius": 10,
+      "brand": "#3D4FE0",
+      "onBrand": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "sidebar": "#F4F5F8",
+      "text": "#1B1F27",
+      "border": "#E3E6EC",
+      "surfaceDark": "#12151C",
+      "sidebarDark": "#181C25",
+      "textDark": "#E6E8EE",
+      "borderDark": "#2A303C"
+    }
+  },
+  "icons": [
+    {
+      "name": "home",
+      "label": "Home",
+      "group": "navigation",
+      "tags": [
+        "house",
+        "start",
+        "dashboard"
+      ],
+      "shapes": [
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M3 11.2l8.2-6.9a1.2 1.2 0 0 1 1.6 0l8.2 6.9"
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M5 9.6V19a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9.6"
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M10 21v-4.5a2 2 0 0 1 4 0V21"
+        }
+      ]
+    },
+    {
+      "name": "bell",
+      "label": "Notifications",
+      "group": "navigation",
+      "tags": [
+        "bell",
+        "alert",
+        "reminder"
+      ],
+      "shapes": [
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M6 16.5V10a6 6 0 0 1 12 0v6.5l1.5 2h-15z"
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M10 21.1h4"
+        }
+      ]
+    },
+    {
+      "name": "chart",
+      "label": "Reports",
+      "group": "data",
+      "tags": [
+        "analytics",
+        "bars",
+        "stats"
+      ],
+      "shapes": [
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M4 4v14.5A1.5 1.5 0 0 0 5.5 20H20"
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M9 16v-4"
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M13 16V8"
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M17 16v-6"
+        }
+      ]
+    },
+    {
+      "name": "check-circle",
+      "label": "Done",
+      "group": "status",
+      "tags": [
+        "success",
+        "complete",
+        "ok"
+      ],
+      "shapes": [
+        {
+          "tone": "line",
+          "type": "circle",
+          "cx": 12,
+          "cy": 12,
+          "r": 9
+        },
+        {
+          "tone": "line",
+          "type": "path",
+          "d": "M8.2 12.2l2.6 2.6 5-5"
+        }
+      ]
+    }
+  ]
+}

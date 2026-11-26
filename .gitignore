@@ -1,8 +1,20 @@
-node_modules
+# Dependencies
+node_modules/
+.pnpm-store/
 
+# Build output
+dist/
+
+# Generated skill zip (rebuilt by pnpm run build / pack:skill)
+# Kept ignored? No, we keep public/demo and rebuild public/skills on build; ignore caches instead
+__pycache__/
+*.pyc
+.icon-work/
+
+# Logs & OS
+*.log
 .DS_Store
-
-dist
-#Paths added by Azion CLI
-.edge/
-.vulcan
+Thumbs.db
+.env
+.env.local
+.env.*.local

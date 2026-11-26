@@ -1,0 +1,83 @@
+{
+  "name": "outline",
+  "grid": 24,
+  "live": 20,
+  "paint": "stroke",
+  "prefix": "ic",
+  "stroke": {
+    "width": 1.75,
+    "linecap": "round",
+    "linejoin": "round"
+  },
+  "radius": {
+    "outer": 2.5,
+    "inner": 1
+  },
+  "tones": {
+    "line": {
+      "fallbackOpacity": 1
+    }
+  },
+  "palette": {
+    "light": {
+      "default": {
+        "line": "#5E6676"
+      },
+      "hover": {
+        "line": "#2F3542"
+      },
+      "active": {
+        "line": "#3D4FE0"
+      },
+      "disabled": {
+        "line": "#B4BAC6"
+      }
+    },
+    "dark": {
+      "default": {
+        "line": "#A7AFBE"
+      },
+      "hover": {
+        "line": "#E2E5EB"
+      },
+      "active": {
+        "line": "#B3BEFF"
+      },
+      "disabled": {
+        "line": "#5A6273"
+      }
+    }
+  },
+  "sizes": [
+    16,
+    20,
+    24
+  ],
+  "darkMode": "class",
+  "context": {
+    "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    "radius": 10,
+    "brand": "#3D4FE0",
+    "onBrand": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "sidebar": "#F4F5F8",
+    "text": "#1B1F27",
+    "border": "#E3E6EC",
+    "surfaceDark": "#12151C",
+    "sidebarDark": "#181C25",
+    "textDark": "#E6E8EE",
+    "borderDark": "#2A303C"
+  },
+  "rationale": [
+    {
+      "decision": "outline 1.75",
+      "because": "example library: sits between 1.5 and 2 so it pairs with most line sets",
+      "source": "starter"
+    },
+    {
+      "decision": "round caps and joins",
+      "because": "friendly UI with rounded components",
+      "source": "context.radius"
+    }
+  ]
+}

@@ -1,51 +1,25 @@
-# Icon Library Visualization
-### [https://cesaroeduardo.github.io/icon-library-visualization](https://cesaroeduardo.github.io/icon-library-visualization/)
-![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/0fb66814-d279-4e9f-a77d-3beb44059a16)
+# Icon Library Studio
 
+Aplicação 100% estática no navegador (Vue 3 + Vite + Tailwind CSS) para montar, compilar e criar bibliotecas de ícones.
 
-# Project Setup
-## Installing Dependencies
-```
-npm install
-```
+## Funcionalidades
 
-### Compiling and Hot-Reloading for Development
-```
-npm run serve
-```
+1. **Subir Webfont**: Envie `.ttf`, `.otf`, `.woff`, `.woff2` (com ou sem `.css`) ou um `.zip` para inspecionar glifos, buscar, recolorir, redimensionar (`8px`–`320px`) e baixar em `.svg` ou `.png`.
+2. **Subir SVGs e gerar Webfont**: Envie arquivos `.svg` ou `.zip`, valide problemas comuns de icon font, compile diretamente no navegador para `.ttf` + `.woff` + `.css` + `catalog.json` e baixe o pacote `.zip` pronto. Ícones multicoloridos são detectados automaticamente e renderizados inline.
+3. **Criar meus próprios ícones**: Embute a skill `create-icons` em `skills/create-icons/` com download em `.zip`, instruções para Antigravity / Claude Code / Cursor, preview interativo dos 8 estilos iniciais e importação direta dos SVGs gerados para a galeria.
+4. **Bilíngue (PT-BR / EN)** e **Tema Claro / Escuro**.
 
-### Compiling and Minifying for Production
-```
-npm run build
+## Como rodar localmente
+
+```bash
+pnpm install
+pnpm run dev
 ```
 
+## Build estático (GitHub Pages / Vercel / Netlify)
 
-# How to Add New Icon Libraries
+```bash
+pnpm run build
+```
 
-This project is based on icon libraries that work as fonts.
-
-### Step 1
-Place your font (recommended .woff2 extension) in the `src > assets > icon-fonts` directory.
-
-![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/2d83bd5b-9650-4a75-a881-0f450a8e96c4)
-
-### Step 2
-Declare the import, font-callers, and glyphs in `src > assets > icons.scss`. You can open your icon font file in softwares like FontForge to discover what glyphs your icons using.
-
-![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/7e4e4b01-837d-4274-9354-5bcdfed7d612)
-
-### Step 3
-Declare the icons you want to add to the catalog in `src > icons.json`. The keywords are used to find the icons. (It is recommended to use AI to generate the array based on your Step 2)
-
-![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/8716c287-a381-486c-853a-b39300a78169)
-
-### Step 4 (Optional)
-To activate the downloads in SVG format, place the SVG of each icon in `src > assets > svg-raw`. The file name must match the name declared in `icons.scss`. Again, you can use softwares like FontForge to transform font glyphs into SVG files.
-
-![image](https://github.com/cesaroeduardo/icon-library-visualization/assets/44036260/8423b77f-503c-4218-b776-65ff61693cbd)
-
----
-
-Hope you enjoy the project. o/
-
----
+Os arquivos prontos para deploy ficam em `dist/` (incluindo `dist/skills/create-icons.zip` e `dist/style-gallery.html`).

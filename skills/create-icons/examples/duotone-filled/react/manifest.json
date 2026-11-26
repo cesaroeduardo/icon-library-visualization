@@ -1,0 +1,140 @@
+{
+  "name": "@example/icons",
+  "style": "duotone-filled",
+  "framework": "react",
+  "grid": 24,
+  "icons": [
+    {
+      "name": "home",
+      "label": "Home",
+      "group": "navigation",
+      "tags": [
+        "house",
+        "start",
+        "dashboard"
+      ],
+      "component": "HomeIcon"
+    },
+    {
+      "name": "search",
+      "label": "Search",
+      "group": "navigation",
+      "tags": [
+        "find",
+        "magnifier",
+        "lookup"
+      ],
+      "component": "SearchIcon"
+    },
+    {
+      "name": "bell",
+      "label": "Notifications",
+      "group": "navigation",
+      "tags": [
+        "bell",
+        "alert",
+        "reminder"
+      ],
+      "component": "BellIcon"
+    },
+    {
+      "name": "settings",
+      "label": "Settings",
+      "group": "navigation",
+      "tags": [
+        "gear",
+        "preferences",
+        "cog"
+      ],
+      "component": "SettingsIcon"
+    },
+    {
+      "name": "user",
+      "label": "Account",
+      "group": "people",
+      "tags": [
+        "person",
+        "profile",
+        "avatar"
+      ],
+      "component": "UserIcon"
+    },
+    {
+      "name": "calendar",
+      "label": "Calendar",
+      "group": "time",
+      "tags": [
+        "date",
+        "schedule",
+        "agenda"
+      ],
+      "component": "CalendarIcon"
+    },
+    {
+      "name": "chart",
+      "label": "Reports",
+      "group": "data",
+      "tags": [
+        "analytics",
+        "bars",
+        "stats"
+      ],
+      "component": "ChartIcon"
+    },
+    {
+      "name": "mail",
+      "label": "Mail",
+      "group": "communication",
+      "tags": [
+        "email",
+        "envelope",
+        "inbox"
+      ],
+      "component": "MailIcon"
+    },
+    {
+      "name": "lock",
+      "label": "Lock",
+      "group": "security",
+      "tags": [
+        "secure",
+        "private",
+        "password"
+      ],
+      "component": "LockIcon"
+    },
+    {
+      "name": "cart",
+      "label": "Cart",
+      "group": "commerce",
+      "tags": [
+        "shopping",
+        "basket",
+        "checkout"
+      ],
+      "component": "CartIcon"
+    },
+    {
+      "name": "trash",
+      "label": "Delete",
+      "group": "actions",
+      "tags": [
+        "trash",
+        "remove",
+        "bin"
+      ],
+      "component": "TrashIcon"
+    },
+    {
+      "name": "check-circle",
+      "label": "Done",
+      "group": "status",
+      "tags": [
+        "success",
+        "complete",
+        "ok"
+      ],
+      "component": "CheckCircleIcon"
+    }
+  ]
+}

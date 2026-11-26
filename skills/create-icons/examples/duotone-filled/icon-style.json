@@ -1,0 +1,125 @@
+{
+  "name": "duotone-filled",
+  "grid": 24,
+  "live": 20,
+  "paint": "fill",
+  "minBar": 1.8,
+  "prefix": "ic",
+  "radius": {
+    "outer": 3.2,
+    "inner": 1.2
+  },
+  "tones": {
+    "detail": {
+      "fallbackOpacity": 1,
+      "role": "identifies the icon; must read alone at 16 px"
+    },
+    "body": {
+      "fallbackOpacity": 0.4,
+      "role": "the mass of the object"
+    }
+  },
+  "palette": {
+    "light": {
+      "default": {
+        "detail": "#7C8597",
+        "body": "#C9CED8"
+      },
+      "hover": {
+        "detail": "#5F6878",
+        "body": "#B5BCC9"
+      },
+      "active": {
+        "detail": "#3D4FE0",
+        "body": "#B8C4FF"
+      },
+      "disabled": {
+        "detail": "#B4BAC6",
+        "body": "#E3E6EC"
+      }
+    },
+    "dark": {
+      "default": {
+        "detail": "#9AA3B5",
+        "body": "#3A4252"
+      },
+      "hover": {
+        "detail": "#B8C0CF",
+        "body": "#4A5366"
+      },
+      "active": {
+        "detail": "#B3BEFF",
+        "body": "#34407F"
+      },
+      "disabled": {
+        "detail": "#5A6273",
+        "body": "#2A303C"
+      }
+    }
+  },
+  "illustration": {
+    "sizes": [
+      48,
+      96
+    ],
+    "tones": {
+      "body": [
+        "#EEF0FF",
+        "#C9D0FF"
+      ],
+      "detail": [
+        "#6A79F2",
+        "#3D4FE0"
+      ],
+      "accent": [
+        "#7BEFC4",
+        "#1FC88A"
+      ],
+      "accent2": [
+        "#FFE48A",
+        "#FFBE3D"
+      ]
+    }
+  },
+  "sizes": [
+    16,
+    20,
+    24
+  ],
+  "darkMode": "class",
+  "darkSelector": [
+    ".dark",
+    "[data-theme=\"dark\"]"
+  ],
+  "context": {
+    "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
+    "radius": 10,
+    "brand": "#3D4FE0",
+    "onBrand": "#FFFFFF",
+    "surface": "#FFFFFF",
+    "sidebar": "#F4F5F8",
+    "text": "#1B1F27",
+    "border": "#E3E6EC",
+    "surfaceDark": "#12151C",
+    "sidebarDark": "#181C25",
+    "textDark": "#E6E8EE",
+    "borderDark": "#2A303C"
+  },
+  "rationale": [
+    {
+      "decision": "duotone-filled",
+      "because": "example library: no project scanned; shows the owner-approved filled two-tone style",
+      "source": "starter"
+    },
+    {
+      "decision": "radius 3.2 outer / 1.2 inner",
+      "because": "matches a 10 px UI radius scaled to a 24 grid (10/24*8)",
+      "source": "context.radius"
+    },
+    {
+      "decision": "inactive gray, active indigo",
+      "because": "neutral example brand; replace with the project's brand pair",
+      "source": "assets/style-starters/duotone-filled.json"
+    }
+  ]
+}
