@@ -4,7 +4,7 @@
 
 Open-source, 100% browser-based monorepo for inspecting webfonts, compiling SVGs into production webfonts (`.woff`, `.ttf`, `.css`, `catalog.json`), browsing popular open-source icon sets, and generating/cataloging original icons with AI coding agents.
 
-![Icon Library Studio — Landing Page](docs/assets/landing-hero.png)
+<img width="1200" height="630" alt="image" src="https://github.com/user-attachments/assets/fff2a2e5-58d2-4eee-b064-61a514293016" />
 
 ## Icon Library Gallery
 
