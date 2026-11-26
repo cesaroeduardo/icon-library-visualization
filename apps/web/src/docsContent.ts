@@ -25,6 +25,7 @@ export interface DocSection {
   extraBody?: string
   extraCode?: string
   extraLang?: string
+  showSkillStyles?: boolean
   subsections?: DocSubsection[]
 }
 
@@ -117,6 +118,32 @@ export const docsContent: Record<Lang, DocsLocale> = {
             ]
           }
         ]
+      },
+      {
+        id: 'ai-skills',
+        group: 'guides',
+        nav: 'Skills de IA & 8 Estilos',
+        title: 'Skills de IA: Criação & Catalogação',
+        lead: 'Instale as duas skills oficiais direto do repositório GitHub em qualquer agente compatível com SKILL.md (Antigravity, Claude Code, Cursor, Codex).',
+        codeTitle: 'Instalar via CLI',
+        codeLang: 'bash',
+        code: `# Instalar ambas as skills (create-icons + catalog-icons)
+npx skills add cesaroeduardo/icon-library-visualization
+
+# Ou instalar individualmente:
+npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
+npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
+        subsections: [
+          {
+            title: 'skills/create-icons — Geração de ícones originais',
+            body: 'Lê os tokens CSS/Tailwind, fontes e ícones atuais do seu projeto, gera um style sheet explícito (icon-style.json), prova o estilo em uma amostra de 6–8 ícones e depois desenha o set completo + catalog.json validado.'
+          },
+          {
+            title: 'skills/catalog-icons — Catalogação e keywords bilíngues',
+            body: 'Escaneia qualquer pasta de SVGs ou .css de webfont, gera catalog.json com nomes legíveis, categorias e sinônimos bilíngues (PT/EN), suporta --merge para preservar edições manuais e --validate para checar o schema.'
+          }
+        ],
+        showSkillStyles: true
       },
       {
         id: 'svg-spec',
@@ -344,6 +371,32 @@ export function SaveButton() {
             ]
           }
         ]
+      },
+      {
+        id: 'ai-skills',
+        group: 'guides',
+        nav: 'AI Skills & 8 Styles',
+        title: 'AI Skills: Creation & Cataloging',
+        lead: 'Install both official skills straight from our GitHub repository into any SKILL.md-compatible agent (Antigravity, Claude Code, Cursor, Codex).',
+        codeTitle: 'Install via CLI',
+        codeLang: 'bash',
+        code: `# Install both skills (create-icons + catalog-icons)
+npx skills add cesaroeduardo/icon-library-visualization
+
+# Or install individually:
+npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
+npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
+        subsections: [
+          {
+            title: 'skills/create-icons — Original icon generation',
+            body: 'Scans your project’s CSS/Tailwind tokens, fonts, and current icons, writes an explicit style sheet (icon-style.json), proves the style on a 6–8 icon sample, and outputs the full set + validated catalog.json.'
+          },
+          {
+            title: 'skills/catalog-icons — Cataloging & bilingual keywords',
+            body: 'Scans any SVG folder or webfont .css, produces catalog.json with human labels, groups, and bilingual synonyms, supports --merge to preserve manual curation, and --validate to check the schema.'
+          }
+        ],
+        showSkillStyles: true
       },
       {
         id: 'svg-spec',

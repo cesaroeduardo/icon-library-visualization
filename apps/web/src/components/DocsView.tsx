@@ -1,11 +1,13 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft, Copy, Check, ArrowUpRight, Eye, Lightbulb, Info } from 'lucide-react'
 import { Shell, Panel, Inset, StatusPill, Tag, ActionButton, ActionLink } from '@/components/ui/tuff'
+import { SkillStylesPreview } from '@/components/SkillStylesPreview'
 import { docsContent } from '@/docsContent'
 import type { Lang } from '@/content'
 
 interface DocsViewProps {
   lang: Lang
+  initialSection?: string
   onBack: () => void
 }
 
@@ -65,9 +67,21 @@ function TuffCodeBlock({
   )
 }
 
-export function DocsView({ lang, onBack }: DocsViewProps) {
+export function DocsView({ lang, initialSection, onBack }: DocsViewProps) {
   const doc = docsContent[lang]
-  const [activeId, setActiveId] = useState(doc.sections[0].id)
+  const [activeId, setActiveId] = useState(initialSection || doc.sections[0].id)
+
+  useEffect(() => {
+    if (initialSection) {
+      setActiveId(initialSection)
+      setTimeout(() => {
+        document.getElementById(`tuff-doc-${initialSection}`)?.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start'
+        })
+      }, 60)
+    }
+  }, [initialSection])
 
   const grouped = [
     { key: 'gettingStarted' as const, label: doc.groups.gettingStarted },
@@ -298,6 +312,9 @@ export function DocsView({ lang, onBack }: DocsViewProps) {
                   ))}
                 </div>
               )}
+
+              {/* Embedded Native TUFFUI 8 Starter Styles Preview */}
+              {sec.showSkillStyles && <SkillStylesPreview lang={lang} />}
             </section>
           ))}
         </article>

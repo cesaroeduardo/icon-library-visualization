@@ -30,7 +30,7 @@ import { GITHUB_URL, type Lang } from '@/content'
 
 interface SkillsSectionProps {
   lang: Lang
-  onOpenDocs: () => void
+  onOpenDocs: (section?: string) => void
 }
 
 const CMD_ALL = 'npx skills add cesaroeduardo/icon-library-visualization'
@@ -196,16 +196,14 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
                 <Github className="w-3.5 h-3.5" />
                 <span>{isPt ? 'Ver no GitHub' : 'View on GitHub'}</span>
               </ActionLink>
-              <ActionLink
-                href="./style-gallery.html"
-                target="_blank"
-                rel="noopener noreferrer"
+              <ActionButton
+                onClick={() => onOpenDocs('ai-skills')}
                 variant="quiet"
                 size="sm"
               >
                 <span>{isPt ? 'Preview dos 8 estilos' : 'Preview 8 styles'}</span>
-                <ExternalLink className="w-3.5 h-3.5" />
-              </ActionLink>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </ActionButton>
             </div>
           </Panel>
         </Shell>
@@ -262,7 +260,7 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
                 <Github className="w-3.5 h-3.5" />
                 <span>{isPt ? 'Ver no GitHub' : 'View on GitHub'}</span>
               </ActionLink>
-              <ActionButton onClick={onOpenDocs} variant="quiet" size="sm">
+              <ActionButton onClick={() => onOpenDocs('ai-skills')} variant="quiet" size="sm">
                 <BookOpen className="w-3.5 h-3.5" />
                 <span>{isPt ? 'Ler guia nas Docs' : 'Read guide in Docs'}</span>
               </ActionButton>

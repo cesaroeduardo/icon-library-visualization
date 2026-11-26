@@ -58,14 +58,6 @@ async function main() {
   for (const name of SKILL_NAMES) {
     await packOne(name)
   }
-
-  const styleGallerySrc = join(SKILLS_ROOT, 'create-icons', 'assets', 'style-gallery.html')
-  if (existsSync(styleGallerySrc)) {
-    for (const pubDir of TARGET_PUBLIC_DIRS) {
-      copyFileSync(styleGallerySrc, join(pubDir, 'style-gallery.html'))
-    }
-    console.log('✔ Copied style-gallery.html to public folders')
-  }
 }
 
 main().catch((err) => {

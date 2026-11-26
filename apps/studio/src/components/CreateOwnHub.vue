@@ -230,7 +230,7 @@ async function handleImportFiles(fileList) {
                 <span>skills/catalog-icons</span>
                 <ExternalLink class="w-3.5 h-3.5" />
               </a>
-              <a href="./style-gallery.html" target="_blank" rel="noopener" class="tuff-btn-quiet">
+              <a href="../#docs-skills" class="tuff-btn-quiet">
                 <span>{{ lang === 'pt' ? 'Preview dos 8 estilos' : 'Preview 8 styles' }}</span>
                 <ExternalLink class="w-3.5 h-3.5" />
               </a>

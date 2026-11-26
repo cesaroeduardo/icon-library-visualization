@@ -44,24 +44,38 @@ export function App() {
   })
 
   const [copiedCmd, setCopiedCmd] = useState(false)
-  const [page, setPage] = useState<'landing' | 'docs'>(() =>
-    window.location.hash.replace(/^#\/?/, '').toLowerCase() === 'docs' ? 'docs' : 'landing'
+  const [docsSection, setDocsSection] = useState<string | undefined>(() =>
+    window.location.hash.replace(/^#\/?/, '').toLowerCase() === 'docs-skills'
+      ? 'ai-skills'
+      : undefined
   )
+  const [page, setPage] = useState<'landing' | 'docs'>(() => {
+    const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
+    return h === 'docs' || h === 'docs-skills' ? 'docs' : 'landing'
+  })
 
   useEffect(() => {
     const onHash = () => {
       const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
-      if (h === 'docs') setPage('docs')
-      else if (h === '' || h === 'home') setPage('landing')
+      if (h === 'docs-skills') {
+        setDocsSection('ai-skills')
+        setPage('docs')
+      } else if (h === 'docs') {
+        setDocsSection(undefined)
+        setPage('docs')
+      } else if (h === '' || h === 'home') {
+        setPage('landing')
+      }
     }
     window.addEventListener('hashchange', onHash)
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
 
-  function openDocs() {
-    window.location.hash = 'docs'
+  function openDocs(section?: string) {
+    setDocsSection(section)
+    window.location.hash = section === 'ai-skills' ? 'docs-skills' : 'docs'
     setPage('docs')
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (!section) window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   function openLanding(sectionHash = '') {
@@ -165,7 +179,7 @@ export function App() {
                   {t.nav.faq}
                 </button>
                 <button
-                  onClick={openDocs}
+                  onClick={() => openDocs()}
                   className={`px-3 py-1.5 rounded-full transition-colors cursor-pointer ${
                     page === 'docs'
                       ? 'bg-foreground/[0.08] text-foreground'
@@ -217,7 +231,7 @@ export function App() {
 
         {/* Main View: TUFFUI Docs OR Open Source Landing Page */}
         {page === 'docs' ? (
-          <DocsView lang={lang} onBack={() => openLanding()} />
+          <DocsView lang={lang} initialSection={docsSection} onBack={() => openLanding()} />
         ) : (
           <>
         {/* Hero Section (2-Column Asymmetric Split inspired by pixelarticons.com, styled with TUFFUI) */}
@@ -353,7 +367,7 @@ export function App() {
         <IconExplorer lang={lang} />
 
         {/* Dedicated AI Skills Section right below the Library Demo */}
-        <SkillsSection lang={lang} onOpenDocs={openDocs} />
+        <SkillsSection lang={lang} onOpenDocs={(sec) => openDocs(sec)} />
 
         {/* 3-Pillar Open Source Capabilities (replaces pricing section) */}
         <section id="features" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
@@ -590,9 +604,12 @@ export function App() {
                     </a>
                   </li>
                   <li>
-                    <a href="./style-gallery.html" target="_blank" rel="noopener noreferrer" className="hover:text-foreground">
+                    <button
+                      onClick={() => openDocs('ai-skills')}
+                      className="hover:text-foreground cursor-pointer"
+                    >
                       8 Starter Styles
-                    </a>
+                    </button>
                   </li>
                 </ul>
               </div>
