@@ -25,7 +25,7 @@ run(`"${resolve(ROOT, 'apps/studio', viteBin)}" build`, resolve(ROOT, 'apps/stud
 rmSync(DIST_ROOT, { recursive: true, force: true })
 mkdirSync(DIST_ROOT, { recursive: true })
 cpSync(resolve(ROOT, 'apps/web/dist'), DIST_ROOT, { recursive: true })
-cpSync(resolve(ROOT, 'apps/studio/dist'), resolve(DIST_ROOT, 'studio'), { recursive: true })
+cpSync(resolve(ROOT, 'apps/studio/dist/studio'), resolve(DIST_ROOT, 'studio'), { recursive: true })
 
 console.log('\n✅ Monorepo build complete!')
 console.log('   dist/        -> apps/web (Open Source Landing Page)')

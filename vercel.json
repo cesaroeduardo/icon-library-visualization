@@ -3,13 +3,11 @@
   "services": {
     "studio": {
       "root": "apps/studio",
-      "framework": "vite",
-      "outputDirectory": "dist"
+      "framework": "vite"
     },
     "web": {
       "root": "apps/web",
-      "framework": "vite",
-      "outputDirectory": "dist"
+      "framework": "vite"
     }
   },
   "redirects": [
@@ -21,14 +19,13 @@
   ],
   "rewrites": [
     {
-      "source": "/studio/:path*",
+      "source": "/studio/(.*)",
       "destination": {
-        "service": "studio",
-        "path": "/:path*"
+        "service": "studio"
       }
     },
     {
-      "source": "/:path*",
+      "source": "/(.*)",
       "destination": {
         "service": "web"
       }

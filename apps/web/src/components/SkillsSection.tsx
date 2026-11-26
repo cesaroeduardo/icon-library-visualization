@@ -57,10 +57,6 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
     <section id="skills" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div className="space-y-3">
-          <StatusPill tone="brand" size="md">
-            <Sparkles className="w-3 h-3" />
-            <span>{isPt ? 'Skills para Agentes de IA' : 'AI Coding Agent Skills'}</span>
-          </StatusPill>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.08]">
             <span className="font-mono font-normal text-muted-foreground block sm:inline">
               {isPt ? 'Crie e catalogue.' : 'Generate & catalog.'}{' '}

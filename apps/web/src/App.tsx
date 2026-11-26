@@ -29,6 +29,7 @@ import {
 import { IconExplorer } from '@/components/IconExplorer'
 import { SkillsSection } from '@/components/SkillsSection'
 import { DocsView } from '@/components/DocsView'
+import { BrandLogo } from '@/components/BrandLogo'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, type Lang } from '@/content'
 
 export function App() {
@@ -151,12 +152,10 @@ export function App() {
             <div className="flex items-center gap-6">
               <button
                 onClick={() => openLanding()}
-                className="inline-flex items-center gap-2.5 font-semibold text-sm tracking-[-0.02em] cursor-pointer"
+                className="inline-flex items-center cursor-pointer hover:opacity-90 transition-opacity"
+                aria-label="Icon Library Studio"
               >
-                <IconTile className="h-8 w-8 rounded-lg bg-surface-raised">
-                  <Layers className="w-4 h-4" />
-                </IconTile>
-                <span>Icon Library Studio</span>
+                <BrandLogo className="h-6 sm:h-7 w-auto" />
               </button>
 
               <nav className="hidden md:flex items-center gap-1 text-[0.8125rem] font-medium text-muted-foreground">
@@ -245,11 +244,6 @@ export function App() {
                 transition={{ duration: 0.35 }}
                 className="lg:col-span-6 space-y-6"
               >
-                <StatusPill tone="brand" size="md">
-                  <Sparkles className="w-3 h-3" />
-                  <span>{t.hero.pill}</span>
-                </StatusPill>
-
                 <h1 className="text-4xl sm:text-5xl font-semibold tracking-[-0.035em] leading-[1.06]">
                   <span className="block font-mono font-normal text-muted-foreground">
                     {t.hero.titleLine1}
@@ -507,12 +501,7 @@ export function App() {
             {/* Footer Columns */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 py-12 text-xs">
               <div className="md:col-span-5 space-y-3">
-                <div className="inline-flex items-center gap-2 font-semibold text-sm">
-                  <IconTile className="h-7 w-7 rounded-lg">
-                    <Layers className="w-3.5 h-3.5" />
-                  </IconTile>
-                  <span>Icon Library Studio</span>
-                </div>
+                <BrandLogo className="h-6 w-auto" />
                 <p className="text-muted-foreground leading-relaxed max-w-sm">
                   {t.footer.brandDesc}
                 </p>
