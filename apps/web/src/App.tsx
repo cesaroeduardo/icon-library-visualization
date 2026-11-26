@@ -28,6 +28,7 @@ import {
   ActionLink
 } from '@/components/ui/tuff'
 import { IconExplorer, type DemoIcon } from '@/components/IconExplorer'
+import { DocsView } from '@/components/DocsView'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, type Lang } from '@/content'
 
 const POPULAR_NAMES = [
@@ -59,6 +60,38 @@ export function App() {
   const [demoFamily, setDemoFamily] = useState('')
   const [loadingDemo, setLoadingDemo] = useState(true)
   const [copiedCmd, setCopiedCmd] = useState(false)
+  const [page, setPage] = useState<'landing' | 'docs'>(() =>
+    window.location.hash.replace(/^#\/?/, '').toLowerCase() === 'docs' ? 'docs' : 'landing'
+  )
+
+  useEffect(() => {
+    const onHash = () => {
+      const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
+      if (h === 'docs') setPage('docs')
+      else if (h === '' || h === 'home') setPage('landing')
+    }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  function openDocs() {
+    window.location.hash = 'docs'
+    setPage('docs')
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function openLanding(sectionHash = '') {
+    setPage('landing')
+    if (sectionHash) {
+      window.location.hash = sectionHash
+      setTimeout(() => {
+        document.getElementById(sectionHash)?.scrollIntoView({ behavior: 'smooth' })
+      }, 40)
+    } else {
+      history.replaceState(null, '', window.location.pathname)
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
+  }
 
   const t = copy[lang]
 
@@ -167,26 +200,45 @@ export function App() {
         <header className="sticky top-0 z-30 bg-background/85 backdrop-blur-md border-b border-border">
           <div className="mx-auto max-w-6xl h-14 px-4 sm:px-6 lg:px-8 flex items-center justify-between gap-4">
             <div className="flex items-center gap-6">
-              <a href="#" className="inline-flex items-center gap-2.5 font-semibold text-sm tracking-[-0.02em]">
+              <button
+                onClick={() => openLanding()}
+                className="inline-flex items-center gap-2.5 font-semibold text-sm tracking-[-0.02em] cursor-pointer"
+              >
                 <IconTile className="h-8 w-8 rounded-lg bg-surface-raised">
                   <Layers className="w-4 h-4" />
                 </IconTile>
                 <span>Icon Library Studio</span>
-              </a>
+              </button>
 
               <nav className="hidden md:flex items-center gap-1 text-[0.8125rem] font-medium text-muted-foreground">
-                <a href="#explorer" className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors">
+                <button
+                  onClick={() => openLanding('explorer')}
+                  className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors cursor-pointer"
+                >
                   {t.nav.explorer}
-                </a>
-                <a href="#features" className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors">
+                </button>
+                <button
+                  onClick={() => openLanding('features')}
+                  className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors cursor-pointer"
+                >
                   {t.nav.features}
-                </a>
-                <a href="#faq" className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors">
+                </button>
+                <button
+                  onClick={() => openLanding('faq')}
+                  className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors cursor-pointer"
+                >
                   {t.nav.faq}
-                </a>
-                <a href="./studio/#docs" className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors">
+                </button>
+                <button
+                  onClick={openDocs}
+                  className={`px-3 py-1.5 rounded-full transition-colors cursor-pointer ${
+                    page === 'docs'
+                      ? 'bg-foreground/[0.08] text-foreground'
+                      : 'hover:bg-foreground/[0.06] hover:text-foreground'
+                  }`}
+                >
                   {t.nav.docs}
-                </a>
+                </button>
                 <a href={STUDIO_URL} className="px-3 py-1.5 rounded-full hover:bg-foreground/[0.06] hover:text-foreground transition-colors">
                   {t.nav.studio}
                 </a>
@@ -228,6 +280,11 @@ export function App() {
           </div>
         </header>
 
+        {/* Main View: TUFFUI Docs OR Open Source Landing Page */}
+        {page === 'docs' ? (
+          <DocsView lang={lang} onBack={() => openLanding()} />
+        ) : (
+          <>
         {/* Hero Section (2-Column Asymmetric Split inspired by pixelarticons.com, styled with TUFFUI) */}
         <section className="hero-dot-bg border-b border-border">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 lg:py-24">
@@ -361,19 +418,30 @@ export function App() {
 
                     {/* 2x3 Quick-links grid */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-1.5">
-                      {t.hero.quickLinks.map((ql) => (
-                        <a
-                          key={ql.label}
-                          href={ql.href}
-                          target={'external' in ql && ql.external ? '_blank' : undefined}
-                          rel={'external' in ql && ql.external ? 'noopener noreferrer' : undefined}
-                          download={'download' in ql && ql.download ? 'create-icons.zip' : undefined}
-                          className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-foreground/[0.03] hover:bg-foreground/[0.07] text-[0.8125rem] font-medium text-foreground transition-colors"
-                        >
-                          <span>{ql.label}</span>
-                          <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
-                        </a>
-                      ))}
+                      {t.hero.quickLinks.map((ql) =>
+                        'docs' in ql && ql.docs ? (
+                          <button
+                            key={ql.label}
+                            onClick={openDocs}
+                            className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-foreground/[0.03] hover:bg-foreground/[0.07] text-[0.8125rem] font-medium text-foreground transition-colors cursor-pointer"
+                          >
+                            <span>{ql.label}</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
+                          </button>
+                        ) : (
+                          <a
+                            key={ql.label}
+                            href={ql.href}
+                            target={'external' in ql && ql.external ? '_blank' : undefined}
+                            rel={'external' in ql && ql.external ? 'noopener noreferrer' : undefined}
+                            download={'download' in ql && ql.download ? 'create-icons.zip' : undefined}
+                            className="flex items-center justify-between px-3 py-2.5 rounded-xl bg-foreground/[0.03] hover:bg-foreground/[0.07] text-[0.8125rem] font-medium text-foreground transition-colors"
+                          >
+                            <span>{ql.label}</span>
+                            <ArrowUpRight className="w-3.5 h-3.5 text-muted-foreground" />
+                          </a>
+                        )
+                      )}
                     </div>
                   </Panel>
                 </Shell>
@@ -481,6 +549,8 @@ export function App() {
             </div>
           </div>
         </section>
+          </>
+        )}
 
         {/* Footer CTA + Links */}
         <footer className="mt-auto bg-surface border-t border-border">
@@ -587,10 +657,13 @@ export function App() {
                 </div>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>
-                    <a href="./studio/#docs" className="inline-flex items-center gap-1 hover:text-foreground">
+                    <button
+                      onClick={openDocs}
+                      className="inline-flex items-center gap-1 hover:text-foreground cursor-pointer"
+                    >
                       <BookOpen className="w-3 h-3" />
                       <span>{t.nav.docs}</span>
-                    </a>
+                    </button>
                   </li>
                   <li>
                     <a href="./skills/create-icons.zip" download="create-icons.zip" className="hover:text-foreground">

@@ -36,7 +36,7 @@ export const copy = {
         { label: 'Subir Webfont', href: './studio/#webfont' },
         { label: 'Compilar SVGs', href: './studio/#svg' },
         { label: 'Baixar Skill IA (.zip)', href: './skills/create-icons.zip', download: true },
-        { label: 'Ler Documentação', href: './studio/#docs' },
+        { label: 'Ler Documentação', href: '#docs', docs: true },
         { label: 'Repositório GitHub', href: GITHUB_URL, external: true }
       ]
     },
@@ -164,7 +164,7 @@ export const copy = {
         { label: 'Upload Webfont', href: './studio/#webfont' },
         { label: 'Compile SVGs', href: './studio/#svg' },
         { label: 'Download AI Skill (.zip)', href: './skills/create-icons.zip', download: true },
-        { label: 'Read Docs', href: './studio/#docs' },
+        { label: 'Read Docs', href: '#docs', docs: true },
         { label: 'GitHub Repository', href: GITHUB_URL, external: true }
       ]
     },

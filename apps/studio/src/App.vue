@@ -6,7 +6,6 @@ import WebfontUpload from './components/WebfontUpload.vue'
 import SvgUpload from './components/SvgUpload.vue'
 import CreateIconsGuide from './components/CreateIconsGuide.vue'
 import IconGallery from './components/IconGallery.vue'
-import DocsPage from './components/DocsPage.vue'
 import { isDark, toggleTheme } from './theme'
 import { useI18n } from './i18n'
 import { parseUploadedWebfont } from '@icon-library/core'
@@ -76,7 +75,7 @@ function goHome() {
 
 onMounted(() => {
   const hash = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase()
-  if (hash === 'webfont' || hash === 'svg' || hash === 'create' || hash === 'docs') {
+  if (hash === 'webfont' || hash === 'svg' || hash === 'create') {
     activeView.value = hash
   } else if (hash === 'demo') {
     openDemo()
@@ -104,14 +103,13 @@ onMounted(() => {
         </button>
 
         <div class="flex items-center gap-2">
-          <button
-            @click="activeView = 'docs'"
+          <a
+            href="../#docs"
             class="icon-btn !h-9 text-xs font-medium"
-            :class="activeView === 'docs' ? '!bg-neutral-900 !text-white dark:!bg-white dark:!text-neutral-900' : ''"
           >
             <BookOpen class="w-4 h-4" />
             <span>{{ t.docsNav }}</span>
-          </button>
+          </a>
 
           <button
             @click="openDemo"
@@ -173,13 +171,6 @@ onMounted(() => {
         :library="currentLibrary"
         @back="goHome"
         @edit-svgs="activeView = 'svg'"
-      />
-
-      <DocsPage
-        v-else-if="activeView === 'docs'"
-        @back="goHome"
-        @open-demo="openDemo"
-        @go-svg="activeView = 'svg'"
       />
     </main>
   </div>
