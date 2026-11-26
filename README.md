@@ -10,7 +10,7 @@ Open-source, 100% browser-based monorepo for inspecting webfonts, compiling SVGs
 
 Browse **Phosphor Icons** (6 styles: `thin`, `light`, `regular`, `bold`, `fill`, `duotone`), **Feather Icons**, **Pixelarticons**, and **Hugeicons**, or upload your own webfont / SVGs to search, recolor, resize (`8px`–`320px`), copy HTML/SVG/PNG on hover, and export a complete `.zip` bundle.
 
-![Icon Library Studio — Gallery](docs/assets/studio-gallery.png)
+<img width="1209" height="735" alt="image" src="https://github.com/user-attachments/assets/632dc347-1afc-47f8-a0f5-6f3950a29f65" />
 
 ## AI Agent Skills (`create-icons` & `catalog-icons`)
 
