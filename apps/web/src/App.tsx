@@ -28,6 +28,7 @@ import {
   ActionLink
 } from '@/components/ui/tuff'
 import { IconExplorer, type DemoIcon } from '@/components/IconExplorer'
+import { SkillsSection } from '@/components/SkillsSection'
 import { DocsView } from '@/components/DocsView'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, type Lang } from '@/content'
 
@@ -451,13 +452,16 @@ export function App() {
           </div>
         </section>
 
-        {/* Interactive Demo Icon Explorer */}
+        {/* Interactive Demo Icon Explorer (Phosphor, Feather, Pixelarticons, Hugeicons + Demo Webfont) */}
         <IconExplorer
           lang={lang}
-          icons={demoIcons}
-          fontFamily={demoFamily}
-          loading={loadingDemo}
+          demoFontIcons={demoIcons}
+          demoFontFamily={demoFamily}
+          loadingDemoFont={loadingDemo}
         />
+
+        {/* Dedicated AI Skills Section right below the Library Demo */}
+        <SkillsSection lang={lang} onOpenDocs={openDocs} />
 
         {/* 3-Pillar Open Source Capabilities (replaces pricing section) */}
         <section id="features" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">

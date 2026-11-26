@@ -9,7 +9,8 @@ import {
   MoreVertical,
   X,
   Smile,
-  Plus
+  Plus,
+  ExternalLink
 } from 'lucide-vue-next'
 import IconCard from './IconCard.vue'
 import ColoredIcon from './ColoredIcon.vue'
@@ -17,13 +18,15 @@ import { useI18n } from '@/i18n'
 import { isDark } from '@/theme'
 import { createBundleZip } from '@icon-library/core'
 
-const { t } = useI18n()
+const { lang, t } = useI18n()
 
 const props = defineProps({
-  library: { type: Object, required: true }
+  library: { type: Object, required: true },
+  presets: { type: Array, default: () => [] },
+  activePresetId: { type: String, default: '' }
 })
 
-const emit = defineEmits(['back', 'edit-svgs'])
+const emit = defineEmits(['back', 'edit-svgs', 'select-preset', 'create-own'])
 
 const searchQuery = ref('')
 const activeFilter = ref('all')
@@ -57,6 +60,12 @@ function updateFontSize() {
   window.requestAnimationFrame(() => {
     selectedFontSize.value = fontSizeValues[Number(sliderValue.value)]
   })
+}
+
+function renderPresetSvg(rawSvg, size) {
+  return (rawSvg || '')
+    .replace(/\s*(width|height)="[^"]*"/g, '')
+    .replace('<svg', `<svg width="${size}" height="${size}"`)
 }
 
 const filteredIcons = computed(() => {
@@ -183,6 +192,33 @@ async function downloadBundle() {
 
     <!-- Main Content -->
     <div class="flex flex-col py-6 pb-16 w-full max-w-[1536px]">
+      <!-- Library Switcher Pills -->
+      <div
+        v-if="presets.length > 0"
+        class="px-4 md:px-8 mb-5 flex flex-wrap items-center justify-between gap-2"
+      >
+        <div class="flex flex-wrap items-center gap-1.5">
+          <button
+            v-for="preset in presets"
+            :key="preset.id"
+            @click="emit('select-preset', preset.id)"
+            class="h-8 px-3.5 rounded-full text-xs font-medium transition-colors"
+            :style="
+              activePresetId === preset.id
+                ? 'background-color: var(--foreground); color: var(--background);'
+                : 'background-color: var(--fg-tint-6); color: var(--muted-foreground);'
+            "
+          >
+            {{ preset.label }}
+          </button>
+        </div>
+
+        <button @click="emit('create-own')" class="tuff-btn-primary !h-8 text-xs">
+          <Plus class="w-3.5 h-3.5" />
+          <span>{{ lang === 'pt' ? 'Criar minha própria' : 'Create my own' }}</span>
+        </button>
+      </div>
+
       <!-- Meta bar -->
       <div
         class="px-4 md:px-8 mb-4 flex flex-wrap items-center justify-between gap-2 text-xs"
@@ -232,7 +268,7 @@ async function downloadBundle() {
                 :size="selectedFontSize"
               />
               <span
-                v-else
+                v-else-if="icon.char && library.runtimeFamily"
                 class="leading-none select-none"
                 :style="{
                   fontFamily: `'${library.runtimeFamily}'`,
@@ -242,10 +278,49 @@ async function downloadBundle() {
               >
                 {{ icon.char }}
               </span>
+              <span
+                v-else-if="icon.svg"
+                class="inline-flex items-center justify-center leading-none"
+                :style="{
+                  width: `${selectedFontSize}px`,
+                  height: `${selectedFontSize}px`,
+                  color: iconsColor
+                }"
+                v-html="renderPresetSvg(icon.svg, selectedFontSize)"
+              ></span>
             </IconCard>
           </ul>
 
+          <!-- Library Credits Footer -->
+          <div v-if="library.credits" class="tuff-shell w-full">
+            <div
+              class="tuff-panel px-4 py-3.5 flex flex-wrap items-center justify-between gap-2 text-xs"
+              style="color: var(--muted-foreground);"
+            >
+              <div class="flex flex-wrap items-center gap-2">
+                <span>
+                  {{ lang === 'pt' ? 'Créditos:' : 'Credits:' }}
+                  <strong class="font-medium" style="color: var(--foreground);">
+                    {{ library.credits.name }}
+                  </strong>
+                </span>
+                <span class="tuff-tag">{{ library.credits.license }}</span>
+              </div>
+              <a
+                :href="library.credits.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="inline-flex items-center gap-1 font-medium hover:underline"
+                style="color: var(--brand);"
+              >
+                <span>{{ lang === 'pt' ? 'Visitar site oficial' : 'Visit official site' }}</span>
+                <ExternalLink class="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+
           <div
+            v-if="filteredIcons.length === 0"
             class="tuff-shell w-full"
           >
             <div

@@ -6,11 +6,11 @@ import {
   Languages,
   Layers,
   BookOpen,
-  FileType,
-  FileCode2,
+  Plus,
   ArrowLeft,
   Loader2
 } from 'lucide-vue-next'
+import CreateOwnHub from './components/CreateOwnHub.vue'
 import WebfontUpload from './components/WebfontUpload.vue'
 import SvgUpload from './components/SvgUpload.vue'
 import IconGallery from './components/IconGallery.vue'
@@ -20,55 +20,164 @@ import { parseUploadedWebfont } from '@icon-library/core'
 
 const { lang, t, toggleLang } = useI18n()
 
-const activeView = ref('gallery')
+const PRESETS = [
+  {
+    id: 'phosphor',
+    label: 'Phosphor',
+    name: 'Phosphor Icons',
+    url: 'https://phosphoricons.com/',
+    license: 'MIT',
+    jsonPath: './demo/libraries/phosphor.json'
+  },
+  {
+    id: 'feather',
+    label: 'Feather',
+    name: 'Feather Icons',
+    url: 'https://feathericons.com/',
+    license: 'MIT',
+    jsonPath: './demo/libraries/feather.json'
+  },
+  {
+    id: 'pixelarticons',
+    label: 'Pixelarticons (Free)',
+    name: 'Pixelarticons (Free)',
+    url: 'https://pixelarticons.com/',
+    license: 'MIT',
+    jsonPath: './demo/libraries/pixelarticons.json'
+  },
+  {
+    id: 'hugeicons',
+    label: 'Hugeicons (Free)',
+    name: 'Hugeicons (Free)',
+    url: 'https://hugeicons.com/',
+    license: 'MIT (Free)',
+    jsonPath: './demo/libraries/hugeicons.json'
+  },
+  {
+    id: 'demo',
+    label: 'Demo Webfont',
+    name: 'Demo Webfont (WOFF2/TTF)',
+    url: 'https://github.com/cesaroeduardo/icon-library-visualization',
+    license: 'MIT'
+  }
+]
+
+const presetCache = new Map()
+const activeView = ref('gallery') // 'gallery' | 'create-own' | 'webfont' | 'svg'
+const activePresetId = ref('phosphor')
 const currentLibrary = ref(null)
 const savedRawSvgs = ref([])
 const loadingLibrary = ref(true)
 
-async function loadDefaultDemo() {
+async function loadPreset(presetId) {
+  const preset = PRESETS.find((p) => p.id === presetId) || PRESETS[0]
+  activePresetId.value = preset.id
+  activeView.value = 'gallery'
+
+  if (presetCache.has(preset.id)) {
+    currentLibrary.value = presetCache.get(preset.id)
+    loadingLibrary.value = false
+    return
+  }
+
   loadingLibrary.value = true
   try {
-    const [ttfRes, woff2Res] = await Promise.all([
-      fetch('./demo/demo-icons.ttf'),
-      fetch('./demo/demo-icons.woff2')
-    ])
-    if (!ttfRes.ok) throw new Error('Failed to load demo font')
-    const ttfBuffer = await ttfRes.arrayBuffer()
-    const fonts = [{ name: 'demo-icons.ttf', ext: '.ttf', buffer: ttfBuffer }]
-    if (woff2Res.ok) {
-      fonts.push({ name: 'demo-icons.woff2', ext: '.woff2', buffer: await woff2Res.arrayBuffer() })
+    if (preset.id === 'demo') {
+      const [ttfRes, woff2Res] = await Promise.all([
+        fetch('./demo/demo-icons.ttf'),
+        fetch('./demo/demo-icons.woff2')
+      ])
+      if (!ttfRes.ok) throw new Error('Failed to load demo font')
+      const ttfBuffer = await ttfRes.arrayBuffer()
+      const fonts = [{ name: 'demo-icons.ttf', ext: '.ttf', buffer: ttfBuffer }]
+      if (woff2Res.ok) {
+        fonts.push({ name: 'demo-icons.woff2', ext: '.woff2', buffer: await woff2Res.arrayBuffer() })
+      }
+      const lib = await parseUploadedWebfont({
+        fonts,
+        cssFiles: [],
+        customFontName: 'demo-icons',
+        customPrefix: 'ic'
+      })
+      lib.credits = { name: preset.name, url: preset.url, license: preset.license }
+      presetCache.set(preset.id, lib)
+      currentLibrary.value = lib
+    } else if (preset.jsonPath) {
+      const res = await fetch(preset.jsonPath)
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+      const lib = {
+        sourceType: 'preset',
+        fontName: data.meta?.name || preset.name,
+        runtimeFamily: '',
+        prefix: data.meta?.prefix || 'ic',
+        icons: (data.icons || []).map((i) => ({ ...i, colored: false })),
+        monoCount: (data.icons || []).length,
+        coloredCount: 0,
+        credits: {
+          name: preset.name,
+          url: preset.url,
+          license: preset.license
+        },
+        artifacts: {
+          catalogJson: JSON.stringify(
+            (data.icons || []).map(({ name, icon, keywords }) => ({ name, icon, keywords })),
+            null,
+            2
+          )
+        }
+      }
+      presetCache.set(preset.id, lib)
+      currentLibrary.value = lib
     }
-    currentLibrary.value = await parseUploadedWebfont({
-      fonts,
-      cssFiles: [],
-      customFontName: 'demo-icons',
-      customPrefix: 'ic'
-    })
   } catch (e) {
-    console.error('Failed to load default library:', e)
+    console.error('Failed to load preset:', presetId, e)
   } finally {
     loadingLibrary.value = false
   }
 }
 
 function handleWebfontLoaded(library) {
+  activePresetId.value = ''
   currentLibrary.value = library
   savedRawSvgs.value = []
   activeView.value = 'gallery'
 }
 
 function handleSvgsBuilt({ library, rawSvgs }) {
+  activePresetId.value = ''
   currentLibrary.value = library
   savedRawSvgs.value = rawSvgs
   activeView.value = 'gallery'
 }
 
+function handleImportFromSkill(svgs) {
+  savedRawSvgs.value = svgs
+  activeView.value = 'svg'
+}
+
 onMounted(async () => {
   const hash = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase()
+  if (hash === 'create-own') {
+    activeView.value = 'create-own'
+    loadPreset('phosphor').then(() => {
+      activeView.value = 'create-own'
+    })
+    return
+  }
   if (hash === 'webfont' || hash === 'svg') {
     activeView.value = hash
+    loadPreset('phosphor').then(() => {
+      activeView.value = hash
+    })
+    return
   }
-  await loadDefaultDemo()
+  if (hash.startsWith('lib-')) {
+    const target = hash.replace('lib-', '')
+    await loadPreset(target)
+    return
+  }
+  await loadPreset('phosphor')
 })
 </script>
 
@@ -106,21 +215,11 @@ onMounted(async () => {
 
         <div class="flex items-center gap-1.5">
           <button
-            @click="activeView = activeView === 'webfont' ? 'gallery' : 'webfont'"
-            class="tuff-btn-quiet"
-            :class="activeView === 'webfont' ? 'tuff-btn-quiet-active' : ''"
+            @click="activeView = activeView === 'create-own' ? 'gallery' : 'create-own'"
+            class="tuff-btn-primary !h-8 text-xs"
           >
-            <FileType class="w-3.5 h-3.5" />
-            <span class="hidden sm:inline">{{ t.cards.webfont.title }}</span>
-          </button>
-
-          <button
-            @click="activeView = activeView === 'svg' ? 'gallery' : 'svg'"
-            class="tuff-btn-quiet"
-            :class="activeView === 'svg' ? 'tuff-btn-quiet-active' : ''"
-          >
-            <FileCode2 class="w-3.5 h-3.5" />
-            <span class="hidden sm:inline">{{ lang === 'pt' ? 'Compilar SVGs' : 'Compile SVGs' }}</span>
+            <Plus class="w-3.5 h-3.5" />
+            <span class="hidden sm:inline">{{ lang === 'pt' ? 'Criar minha própria' : 'Create my own' }}</span>
           </button>
 
           <a href="../#docs" class="tuff-btn-quiet">
@@ -151,16 +250,23 @@ onMounted(async () => {
 
     <!-- Main Library Area -->
     <main class="flex-1 w-full">
-      <WebfontUpload
-        v-if="activeView === 'webfont'"
+      <CreateOwnHub
+        v-if="activeView === 'create-own'"
         @back="activeView = 'gallery'"
+        @select="(mode) => (activeView = mode)"
+        @import-svgs="handleImportFromSkill"
+      />
+
+      <WebfontUpload
+        v-else-if="activeView === 'webfont'"
+        @back="activeView = 'create-own'"
         @loaded="handleWebfontLoaded"
       />
 
       <SvgUpload
         v-else-if="activeView === 'svg'"
         :initial-svgs="savedRawSvgs"
-        @back="activeView = 'gallery'"
+        @back="activeView = 'create-own'"
         @built="handleSvgsBuilt"
       />
 
@@ -176,7 +282,11 @@ onMounted(async () => {
       <IconGallery
         v-else-if="currentLibrary"
         :library="currentLibrary"
-        @back="activeView = 'webfont'"
+        :presets="PRESETS"
+        :active-preset-id="activePresetId"
+        @select-preset="loadPreset"
+        @create-own="activeView = 'create-own'"
+        @back="activeView = 'create-own'"
         @edit-svgs="activeView = 'svg'"
       />
     </main>

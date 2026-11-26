@@ -1,24 +1,86 @@
-import { useMemo, useState } from 'react'
-import { Search, X, Check, ArrowUpRight, Code2, Copy, Download } from 'lucide-react'
-import { Shell, Panel, StatusPill, ActionButton, ActionLink } from '@/components/ui/tuff'
+import { useEffect, useMemo, useState } from 'react'
+import {
+  Search,
+  X,
+  Check,
+  ArrowUpRight,
+  Code2,
+  Copy,
+  Download,
+  Plus,
+  ExternalLink
+} from 'lucide-react'
+import { Shell, Panel, StatusPill, Tag, ActionButton, ActionLink } from '@/components/ui/tuff'
 import { copy, type Lang } from '@/content'
 
 export interface DemoIcon {
   name: string
   icon: string
   keywords: string
-  char: string
+  char?: string
   svg?: string
 }
 
+export interface LibraryPreset {
+  id: 'phosphor' | 'feather' | 'pixelarticons' | 'hugeicons' | 'demo'
+  label: string
+  name: string
+  url: string
+  license: string
+  jsonPath?: string
+}
+
+export const DEMO_LIBRARIES: LibraryPreset[] = [
+  {
+    id: 'phosphor',
+    label: 'Phosphor',
+    name: 'Phosphor Icons',
+    url: 'https://phosphoricons.com/',
+    license: 'MIT',
+    jsonPath: './demo/libraries/phosphor.json'
+  },
+  {
+    id: 'feather',
+    label: 'Feather',
+    name: 'Feather Icons',
+    url: 'https://feathericons.com/',
+    license: 'MIT',
+    jsonPath: './demo/libraries/feather.json'
+  },
+  {
+    id: 'pixelarticons',
+    label: 'Pixelarticons (Free)',
+    name: 'Pixelarticons (Free)',
+    url: 'https://pixelarticons.com/',
+    license: 'MIT',
+    jsonPath: './demo/libraries/pixelarticons.json'
+  },
+  {
+    id: 'hugeicons',
+    label: 'Hugeicons (Free)',
+    name: 'Hugeicons (Free)',
+    url: 'https://hugeicons.com/',
+    license: 'MIT (Free)',
+    jsonPath: './demo/libraries/hugeicons.json'
+  },
+  {
+    id: 'demo',
+    label: 'Demo Webfont',
+    name: 'Demo Webfont (WOFF2/TTF)',
+    url: 'https://github.com/cesaroeduardo/icon-library-visualization',
+    license: 'MIT'
+  }
+]
+
 interface IconExplorerProps {
   lang: Lang
-  icons: DemoIcon[]
-  fontFamily: string
-  loading: boolean
+  demoFontIcons: DemoIcon[]
+  demoFontFamily: string
+  loadingDemoFont: boolean
 }
 
 const PAGE_SIZE = 60
+const libraryCache = new Map<string, DemoIcon[]>()
 
 function prepareSvg(raw: string, dimension: number) {
   let svg = raw
@@ -33,26 +95,75 @@ function prepareSvg(raw: string, dimension: number) {
   return svg
 }
 
-export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerProps) {
+export function IconExplorer({
+  lang,
+  demoFontIcons,
+  demoFontFamily,
+  loadingDemoFont
+}: IconExplorerProps) {
   const t = copy[lang].explorer
+  const [selectedLibId, setSelectedLibId] = useState<LibraryPreset['id']>('phosphor')
+  const [loadedIcons, setLoadedIcons] = useState<DemoIcon[]>([])
+  const [loadingLib, setLoadingLib] = useState(true)
   const [query, setQuery] = useState('')
   const [sort, setSort] = useState<'default' | 'az'>('default')
   const [size, setSize] = useState<16 | 24 | 48>(24)
   const [page, setPage] = useState(1)
   const [feedback, setFeedback] = useState<{ key: string; label: string } | null>(null)
 
+  const currentLib = DEMO_LIBRARIES.find((l) => l.id === selectedLibId) || DEMO_LIBRARIES[0]
+
+  useEffect(() => {
+    let active = true
+    if (selectedLibId === 'demo') {
+      setLoadedIcons(demoFontIcons)
+      setLoadingLib(loadingDemoFont)
+      return
+    }
+
+    const cached = libraryCache.get(selectedLibId)
+    if (cached) {
+      setLoadedIcons(cached)
+      setLoadingLib(false)
+      return
+    }
+
+    const preset = DEMO_LIBRARIES.find((l) => l.id === selectedLibId)
+    if (!preset?.jsonPath) return
+
+    setLoadingLib(true)
+    fetch(preset.jsonPath)
+      .then((res) => res.json())
+      .then((data) => {
+        if (!active) return
+        const list: DemoIcon[] = data.icons || []
+        libraryCache.set(selectedLibId, list)
+        setLoadedIcons(list)
+      })
+      .catch((e) => {
+        console.error('Failed to load library:', selectedLibId, e)
+      })
+      .finally(() => {
+        if (active) setLoadingLib(false)
+      })
+
+    return () => {
+      active = false
+    }
+  }, [selectedLibId, demoFontIcons, loadingDemoFont])
+
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
     const base = q
-      ? icons.filter(
+      ? loadedIcons.filter(
           (i) => i.name.toLowerCase().includes(q) || i.keywords.toLowerCase().includes(q)
         )
-      : icons
+      : loadedIcons
     if (sort === 'az') {
       return [...base].sort((a, b) => a.name.localeCompare(b.name))
     }
     return base
-  }, [icons, query, sort])
+  }, [loadedIcons, query, sort])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
@@ -124,9 +235,39 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
 
       {/* TUFFUI Layered Shell -> Panel Explorer */}
       <Shell>
-        {/* Top Toolbar inside Shell bezel */}
+        {/* Library Switcher Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-2 px-2 pt-2 pb-1">
+          <div className="flex flex-wrap items-center gap-1">
+            {DEMO_LIBRARIES.map((lib) => {
+              const active = lib.id === selectedLibId
+              return (
+                <button
+                  key={lib.id}
+                  onClick={() => {
+                    setSelectedLibId(lib.id)
+                    setPage(1)
+                    setQuery('')
+                  }}
+                  className={`h-8 px-3.5 rounded-full text-xs font-medium transition-colors cursor-pointer ${
+                    active
+                      ? 'bg-foreground text-background'
+                      : 'bg-foreground/[0.05] text-muted-foreground hover:bg-foreground/[0.09] hover:text-foreground'
+                  }`}
+                >
+                  {lib.label}
+                </button>
+              )
+            })}
+          </div>
+
+          <ActionLink href="./studio/#create-own" variant="primary" size="sm">
+            <Plus className="w-3.5 h-3.5" />
+            <span>{lang === 'pt' ? 'Criar minha própria' : 'Create my own'}</span>
+          </ActionLink>
+        </div>
+
+        {/* Search & Controls Toolbar */}
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-2.5 p-2">
-          {/* Borderless TUFFUI SearchField */}
           <div className="relative flex-1 max-w-md">
             <Search className="w-4 h-4 text-muted-foreground absolute left-3.5 top-1/2 -translate-y-1/2 pointer-events-none" />
             <input
@@ -136,7 +277,11 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
                 setQuery(e.target.value)
                 setPage(1)
               }}
-              placeholder={t.searchPlaceholder.replace('{count}', String(icons.length || 332))}
+              placeholder={
+                lang === 'pt'
+                  ? `Buscar em ${loadedIcons.length} ícones de ${currentLib.name}...`
+                  : `Search ${loadedIcons.length} icons in ${currentLib.name}...`
+              }
               className="w-full h-9 rounded-full pl-9 pr-9 text-sm bg-foreground/[0.06] hover:bg-foreground/[0.08] focus-visible:bg-foreground/[0.1] text-foreground placeholder:text-muted-foreground outline-none focus-visible:ring-2 focus-visible:ring-brand/55 transition-colors"
             />
             {query && (
@@ -153,9 +298,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
             )}
           </div>
 
-          {/* Right Controls: Sort + Size + Open Studio */}
           <div className="flex flex-wrap items-center gap-2">
-            {/* Sort segmented pills */}
             <div className="inline-flex items-center rounded-full bg-foreground/[0.05] p-0.5">
               <button
                 onClick={() => setSort('default')}
@@ -179,7 +322,6 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
               </button>
             </div>
 
-            {/* Size segmented pills */}
             <div className="inline-flex items-center rounded-full bg-foreground/[0.05] p-0.5 font-mono">
               {([16, 24, 48] as const).map((px) => (
                 <button
@@ -196,7 +338,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
               ))}
             </div>
 
-            <ActionLink href="./studio/" variant="secondary" size="sm">
+            <ActionLink href={`./studio/#lib-${selectedLibId}`} variant="secondary" size="sm">
               <span>{t.openFull}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </ActionLink>
@@ -214,7 +356,7 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
             </div>
           )}
 
-          {loading ? (
+          {loadingLib ? (
             <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2.5">
               {Array.from({ length: 24 }).map((_, idx) => (
                 <div key={idx} className="h-28 rounded-2xl bg-foreground/[0.04] animate-pulse" />
@@ -239,15 +381,23 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
                       {item.name}
                     </span>
 
-                    <span
-                      className="leading-none text-foreground pt-3 transition-transform group-hover:scale-105"
-                      style={{
-                        fontFamily: fontFamily ? `'${fontFamily}'` : undefined,
-                        fontSize: `${size}px`
-                      }}
-                    >
-                      {item.char}
-                    </span>
+                    {selectedLibId === 'demo' && item.char ? (
+                      <span
+                        className="leading-none text-foreground pt-3 transition-transform group-hover:scale-105"
+                        style={{
+                          fontFamily: demoFontFamily ? `'${demoFontFamily}'` : undefined,
+                          fontSize: `${size}px`
+                        }}
+                      >
+                        {item.char}
+                      </span>
+                    ) : item.svg ? (
+                      <span
+                        className="inline-flex items-center justify-center text-foreground pt-3 transition-transform group-hover:scale-105"
+                        style={{ width: `${size}px`, height: `${size}px` }}
+                        dangerouslySetInnerHTML={{ __html: prepareSvg(item.svg, size) }}
+                      />
+                    ) : null}
 
                     {/* Hover Action Pill Bar: Copy Code, Copy SVG, Download SVG */}
                     <div className="absolute bottom-2 right-2 flex items-center gap-0.5 p-1 rounded-full bg-surface-raised opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">
@@ -288,18 +438,34 @@ export function IconExplorer({ lang, icons, fontFamily, loading }: IconExplorerP
           )}
         </Panel>
 
-        {/* Pagination Footer inside Shell */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-2.5 text-xs text-muted-foreground">
-          <span className="font-mono">
-            {filtered.length === 0
-              ? '0'
-              : t.showing
-                  .replace('{from}', String(sliceStart + 1))
-                  .replace('{to}', String(Math.min(sliceStart + PAGE_SIZE, filtered.length)))
-                  .replace('{total}', String(filtered.length))}
-          </span>
+        {/* Credits + Pagination Footer inside Shell */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-3 py-2.5 text-xs text-muted-foreground">
+          <div className="flex flex-wrap items-center gap-2">
+            <span>
+              {lang === 'pt' ? 'Créditos:' : 'Credits:'}{' '}
+              <strong className="text-foreground font-medium">{currentLib.name}</strong>
+            </span>
+            <Tag>{currentLib.license}</Tag>
+            <a
+              href={currentLib.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-brand hover:underline font-medium"
+            >
+              <span>{lang === 'pt' ? 'Visitar site oficial' : 'Visit official site'}</span>
+              <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
 
-          <div className="flex items-center gap-1.5">
+          <div className="flex items-center gap-1.5 flex-wrap">
+            <span className="font-mono mr-2">
+              {filtered.length === 0
+                ? '0'
+                : t.showing
+                    .replace('{from}', String(sliceStart + 1))
+                    .replace('{to}', String(Math.min(sliceStart + PAGE_SIZE, filtered.length)))
+                    .replace('{total}', String(filtered.length))}
+            </span>
             <ActionButton
               variant="quiet"
               size="sm"
