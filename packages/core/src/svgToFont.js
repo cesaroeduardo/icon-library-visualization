@@ -3,6 +3,7 @@ import svgpath from 'svgpath'
 import pako from 'pako'
 import JSZip from 'jszip'
 import { compress as compressWoff2 } from 'woff2-encoder'
+import { analyzeStrokeLibrary } from './svgValidator.js'
 
 const UNITS_PER_EM = 1000
 const ASCENDER = 850
@@ -401,14 +402,19 @@ export async function compileSvgsToWebfont({
     formats: formats.length ? formats : ['woff', 'ttf']
   })
 
+  const icons = [...monoCatalog, ...coloredCatalog]
+  const strokeMeta = analyzeStrokeLibrary(icons)
+
   return {
     sourceType: 'svg-build',
     fontName: safeFontName,
     runtimeFamily,
     prefix: safePrefix,
-    icons: [...monoCatalog, ...coloredCatalog],
+    icons,
     monoCount: monoCatalog.length,
     coloredCount: coloredCatalog.length,
+    strokeBased: strokeMeta.strokeBased,
+    defaultStrokeWidth: strokeMeta.defaultStrokeWidth,
     artifacts: {
       ttfBuffer,
       woffBytes,

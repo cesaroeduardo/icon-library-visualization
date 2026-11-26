@@ -82,16 +82,16 @@ Source shapes:
 
 ```json
 [
-  {"tone": "body", "type": "path", "d": "M12 3a6.5 6.5 0 0 1 6.5 6.5V12h-13V9.5A6.5 6.5 0 0 1 12 3z"},
-  {"tone": "detail", "type": "path", "d": "M5.5 11h13v2.1l1.6 2.6A1.5 1.5 0 0 1 18.8 18H5.2a1.5 1.5 0 0 1-1.3-2.3l1.6-2.6z"},
-  {"tone": "detail", "type": "path", "d": "M9.4 19.2h5.2a2.6 2.6 0 0 1-5.2 0z", "illo": "accent2"}
+  {"tone": "body", "type": "path", "d": "M5.5 14h13l1.6 2.4A1.5 1.5 0 0 1 18.8 19H5.2a1.5 1.5 0 0 1-1.3-2.6L5.5 14z"},
+  {"tone": "detail", "type": "path", "d": "M12 3a6.5 6.5 0 0 1 6.5 6.5V14H5.5V9.5A6.5 6.5 0 0 1 12 3z"},
+  {"tone": "detail", "type": "path", "d": "M9.4 19.5h5.2a2.6 2.6 0 0 1-5.2 0z", "illo": "accent2"}
 ]
 ```
 
 Rendered (light, default state):
 
 ```svg
-<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a6.5 6.5 0 0 1 6.5 6.5V12h-13V9.5A6.5 6.5 0 0 1 12 3z" stroke="none" fill="#C9CED8"/><path d="M5.5 11h13v2.1l1.6 2.6A1.5 1.5 0 0 1 18.8 18H5.2a1.5 1.5 0 0 1-1.3-2.3l1.6-2.6z" stroke="none" fill="#7C8597"/><path d="M9.4 19.2h5.2a2.6 2.6 0 0 1-5.2 0z" stroke="none" fill="#7C8597"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 14h13l1.6 2.4A1.5 1.5 0 0 1 18.8 19H5.2a1.5 1.5 0 0 1-1.3-2.6L5.5 14z" stroke="none" fill="#C9CED8"/><path d="M12 3a6.5 6.5 0 0 1 6.5 6.5V14H5.5V9.5A6.5 6.5 0 0 1 12 3z" stroke="none" fill="#7C8597"/><path d="M9.4 19.5h5.2a2.6 2.6 0 0 1-5.2 0z" stroke="none" fill="#7C8597"/></svg>
 ```
 
 ### 3. chart

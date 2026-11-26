@@ -1,4 +1,11 @@
-export { normalizeIconName, isColoredSvg, validateSvgFiles } from './svgValidator.js'
+export {
+  normalizeIconName,
+  isColoredSvg,
+  isStrokeSvg,
+  inferStrokeWidth,
+  analyzeStrokeLibrary,
+  validateSvgFiles
+} from './svgValidator.js'
 export { ttfToWoff, generateCss, compileSvgsToWebfont, createBundleZip } from './svgToFont.js'
 export { parseIconCss, extractFilesFromUpload, parseUploadedWebfont } from './webfontParser.js'
 export { parseCatalogJson } from './catalogParser.js'

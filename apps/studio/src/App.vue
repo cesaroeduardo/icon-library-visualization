@@ -18,6 +18,7 @@ import IconGallery from './components/IconGallery.vue'
 import { isDark, toggleTheme } from './theme'
 import { useI18n } from './i18n'
 import { saveUserLibraryCache, loadUserLibraryCache } from './userLibraryCache'
+import { analyzeStrokeLibrary } from '@icon-library/core'
 
 const { lang, t, toggleLang } = useI18n()
 
@@ -168,6 +169,7 @@ async function loadPreset(presetId, style) {
     if (!res.ok) throw new Error(`HTTP ${res.status}`)
     const data = await res.json()
     const baseIcons = (data.icons || []).map((i) => ({ ...i, colored: false }))
+    const strokeMeta = analyzeStrokeLibrary(baseIcons)
     const lib = {
       sourceType: 'preset',
       fontName: data.meta?.name || preset.name,
@@ -176,6 +178,8 @@ async function loadPreset(presetId, style) {
       icons: baseIcons,
       monoCount: baseIcons.length,
       coloredCount: 0,
+      strokeBased: strokeMeta.strokeBased,
+      defaultStrokeWidth: strokeMeta.defaultStrokeWidth,
       credits: {
         name: preset.name,
         url: preset.url,

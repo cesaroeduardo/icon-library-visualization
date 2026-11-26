@@ -1,3 +1,5 @@
+import { analyzeStrokeLibrary } from '@icon-library/core'
+
 const DB_NAME = 'icon-library-studio'
 const DB_VERSION = 1
 const STORE = 'userLibrary'
@@ -46,6 +48,9 @@ export function serializeUserLibrary(library) {
     icons: library.icons || [],
     monoCount: library.monoCount || 0,
     coloredCount: library.coloredCount || 0,
+    strokeBased: Boolean(library.strokeBased),
+    defaultStrokeWidth:
+      library.defaultStrokeWidth == null ? null : Number(library.defaultStrokeWidth),
     notice: library.notice || '',
     credits: library.credits || null,
     artifacts: {
@@ -121,6 +126,11 @@ export async function loadUserLibraryCache() {
 
     if (!record?.library) return null
     const library = await registerRuntimeFont({ ...record.library })
+    if (library.strokeBased == null) {
+      const strokeMeta = analyzeStrokeLibrary(library.icons || [])
+      library.strokeBased = strokeMeta.strokeBased
+      library.defaultStrokeWidth = strokeMeta.defaultStrokeWidth
+    }
     return {
       library,
       rawSvgs: Array.isArray(record.rawSvgs) ? record.rawSvgs : [],

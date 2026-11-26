@@ -115,8 +115,8 @@ export function SkillStylesPreview({ lang }: { lang: Lang }) {
                 >
                   {(surfaceMode === 'both' || surfaceMode === 'dark') && (
                     <div
-                      className="rounded-xl px-4 py-3 flex items-center justify-around gap-3"
-                      style={{ backgroundColor: '#14171E', ...darkStyle }}
+                      className="rounded-xl px-4 py-3 flex items-center justify-around gap-3 bg-[#191919]"
+                      style={darkStyle}
                     >
                       {st.icons.map((ic) => (
                         <div key={ic.name} className="flex flex-col items-center gap-1">
@@ -128,7 +128,7 @@ export function SkillStylesPreview({ lang }: { lang: Lang }) {
                             className="block"
                             dangerouslySetInnerHTML={{ __html: ic.body }}
                           />
-                          <span className="text-[9px] font-mono text-[#8A92A3]">{ic.name}</span>
+                          <span className="text-[9px] font-mono text-[#98989b]">{ic.name}</span>
                         </div>
                       ))}
                     </div>
@@ -136,8 +136,8 @@ export function SkillStylesPreview({ lang }: { lang: Lang }) {
 
                   {(surfaceMode === 'both' || surfaceMode === 'light') && (
                     <div
-                      className="rounded-xl px-4 py-3 flex items-center justify-around gap-3 border border-black/5"
-                      style={{ backgroundColor: '#FFFFFF', ...lightStyle }}
+                      className="rounded-xl px-4 py-3 flex items-center justify-around gap-3 border border-border bg-[#ededef]"
+                      style={lightStyle}
                     >
                       {st.icons.map((ic) => (
                         <div key={ic.name} className="flex flex-col items-center gap-1">
@@ -149,7 +149,7 @@ export function SkillStylesPreview({ lang }: { lang: Lang }) {
                             className="block"
                             dangerouslySetInnerHTML={{ __html: ic.body }}
                           />
-                          <span className="text-[9px] font-mono text-[#6B7385]">{ic.name}</span>
+                          <span className="text-[9px] font-mono text-[#636368]">{ic.name}</span>
                         </div>
                       ))}
                     </div>

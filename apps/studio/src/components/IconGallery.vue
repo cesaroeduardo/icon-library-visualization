@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import {
   Search,
   SlidersHorizontal,
@@ -11,7 +11,8 @@ import {
   Smile,
   Plus,
   ExternalLink,
-  Sparkles
+  Sparkles,
+  PenLine
 } from 'lucide-vue-next'
 import IconCard from './IconCard.vue'
 import ColoredIcon from './ColoredIcon.vue'
@@ -55,6 +56,11 @@ function syncSearchToUrl(value) {
 }
 
 const searchQuery = ref(readSearchFromUrl())
+const searchInputRef = ref(null)
+const isMac =
+  typeof navigator !== 'undefined' &&
+  (/Mac|iPhone|iPad|iPod/i.test(navigator.platform) || /Mac OS/i.test(navigator.userAgent))
+const searchShortcutLabel = isMac ? '⌘K' : 'Ctrl+K'
 const activeFilter = ref('all')
 const defaultColor = () => (isDark.value ? '#f5f5f5' : '#161618')
 const iconsColor = ref(defaultColor())
@@ -63,9 +69,55 @@ const userPickedColor = ref(false)
 const fontSizeValues = [8, 12, 16, 24, 32, 48, 64, 96, 128, 192, 256, 320]
 const sliderValue = ref(3) // 24px default
 const selectedFontSize = ref(24)
+const strokeWidthValues = [0.5, 1, 1.25, 1.5, 1.75, 2, 2.25, 2.5, 3]
+const strokeSliderValue = ref(5) // 2 default (Feather / Lucide)
+const selectedStrokeWidth = ref(2)
 const downloadFormat = ref('svg')
 const openBottombar = ref(false)
 const exporting = ref(false)
+
+const supportsStrokeWidth = computed(() => Boolean(props.library?.strokeBased))
+
+function closestStrokeIndex(width) {
+  const target = Number(width)
+  if (!Number.isFinite(target)) return 5
+  let bestIdx = 5
+  let bestDist = Infinity
+  strokeWidthValues.forEach((value, idx) => {
+    const dist = Math.abs(value - target)
+    if (dist < bestDist) {
+      bestDist = dist
+      bestIdx = idx
+    }
+  })
+  return bestIdx
+}
+
+function syncStrokeFromLibrary() {
+  if (!supportsStrokeWidth.value) return
+  const idx = closestStrokeIndex(props.library?.defaultStrokeWidth ?? 2)
+  strokeSliderValue.value = idx
+  selectedStrokeWidth.value = strokeWidthValues[idx]
+}
+
+function updateStrokeWidth() {
+  window.requestAnimationFrame(() => {
+    selectedStrokeWidth.value = strokeWidthValues[Number(strokeSliderValue.value)]
+  })
+}
+
+function focusSearch() {
+  const el = searchInputRef.value
+  if (!el) return
+  el.focus()
+  el.select()
+}
+
+function onSearchHotkey(event) {
+  if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== 'k') return
+  event.preventDefault()
+  focusSearch()
+}
 
 onMounted(() => {
   const fromUrl = readSearchFromUrl()
@@ -73,11 +125,24 @@ onMounted(() => {
     searchQuery.value = fromUrl
   }
   syncSearchToUrl(searchQuery.value)
+  syncStrokeFromLibrary()
+  window.addEventListener('keydown', onSearchHotkey)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onSearchHotkey)
 })
 
 watch(searchQuery, (value) => {
   syncSearchToUrl(value)
 })
+
+watch(
+  () => [props.library?.fontName, props.library?.strokeBased, props.library?.defaultStrokeWidth, props.activeStyle],
+  () => {
+    syncStrokeFromLibrary()
+  }
+)
 
 watch(pureColor, (newVal) => {
   iconsColor.value = newVal
@@ -101,7 +166,19 @@ function updateFontSize() {
 }
 
 function renderPresetSvg(rawSvg, size) {
-  return prepareSvg(rawSvg || '', { dimension: size, colored: true })
+  return prepareSvg(rawSvg || '', {
+    dimension: size,
+    colored: true,
+    strokeWidth: supportsStrokeWidth.value ? selectedStrokeWidth.value : undefined
+  })
+}
+
+function preferSvgRender(icon) {
+  if (!icon?.svg) return false
+  if (icon.colored) return true
+  // Stroke libraries must render as SVG so live stroke-width works
+  if (supportsStrokeWidth.value) return true
+  return !(icon.char && props.library.runtimeFamily)
 }
 
 const filteredIcons = computed(() => {
@@ -151,11 +228,14 @@ async function downloadBundle() {
             style="color: var(--muted-foreground);"
           />
           <input
+            ref="searchInputRef"
             v-model="searchQuery"
             type="text"
             autofocus
-            class="tuff-input w-full !pl-10 !pr-9"
+            class="tuff-input w-full !pl-10"
+            :class="searchQuery ? '!pr-9' : '!pr-[4.5rem]'"
             :placeholder="t.gallery.searchPlaceholder.replace('{count}', String(library.icons.length))"
+            :aria-keyshortcuts="isMac ? 'Meta+K' : 'Control+K'"
           />
           <button
             v-if="searchQuery"
@@ -166,6 +246,13 @@ async function downloadBundle() {
           >
             <X class="w-3.5 h-3.5" />
           </button>
+          <kbd
+            v-else
+            class="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none select-none inline-flex items-center h-5 px-1.5 rounded-md text-[10px] font-medium font-mono tracking-wide"
+            style="color: var(--muted-foreground); background-color: var(--fg-tint-6); border: 1px solid var(--border);"
+          >
+            {{ searchShortcutLabel }}
+          </kbd>
         </div>
 
         <!-- Filter pills when both mono and colored exist -->
@@ -309,12 +396,23 @@ async function downloadBundle() {
               :colored="icon.colored"
               :char="icon.char"
               :font-family="library.runtimeFamily"
+              :stroke-width="supportsStrokeWidth ? selectedStrokeWidth : null"
             >
               <ColoredIcon
                 v-if="icon.colored"
                 :svg="icon.svg"
                 :size="selectedFontSize"
               />
+              <span
+                v-else-if="preferSvgRender(icon)"
+                class="inline-flex items-center justify-center leading-none"
+                :style="{
+                  width: `${selectedFontSize}px`,
+                  height: `${selectedFontSize}px`,
+                  color: iconsColor
+                }"
+                v-html="renderPresetSvg(icon.svg, selectedFontSize)"
+              ></span>
               <span
                 v-else-if="icon.char && library.runtimeFamily"
                 class="leading-none select-none"
@@ -326,16 +424,6 @@ async function downloadBundle() {
               >
                 {{ icon.char }}
               </span>
-              <span
-                v-else-if="icon.svg"
-                class="inline-flex items-center justify-center leading-none"
-                :style="{
-                  width: `${selectedFontSize}px`,
-                  height: `${selectedFontSize}px`,
-                  color: iconsColor
-                }"
-                v-html="renderPresetSvg(icon.svg, selectedFontSize)"
-              ></span>
             </IconCard>
           </ul>
 
@@ -374,6 +462,28 @@ async function downloadBundle() {
                   @input="updateFontSize"
                   class="w-full slider-input"
                   :style="{ '--thumb-color': pureColor }"
+                />
+              </div>
+
+              <!-- Stroke width (Feather / Lucide / Tabler outline / …) -->
+              <div v-if="supportsStrokeWidth" class="tuff-inset p-3 space-y-2">
+                <div class="flex items-center justify-between text-xs" style="color: var(--muted-foreground);">
+                  <span class="inline-flex items-center gap-1.5 font-medium">
+                    <PenLine class="w-3.5 h-3.5" />
+                    {{ t.gallery.strokeWidth }}
+                  </span>
+                  <span class="font-mono" style="color: var(--foreground);">{{ selectedStrokeWidth }}</span>
+                </div>
+                <input
+                  type="range"
+                  v-model="strokeSliderValue"
+                  min="0"
+                  :max="strokeWidthValues.length - 1"
+                  step="1"
+                  @input="updateStrokeWidth"
+                  class="w-full slider-input"
+                  :style="{ '--thumb-color': pureColor }"
+                  :aria-label="t.gallery.strokeWidth"
                 />
               </div>
 
@@ -451,6 +561,22 @@ async function downloadBundle() {
             class="w-full slider-input"
           />
           <p class="w-11 text-right text-xs font-mono">{{ selectedFontSize }}px</p>
+        </div>
+
+        <div v-if="supportsStrokeWidth" class="tuff-inset p-3 flex items-center gap-3">
+          <PenLine class="w-4 h-4 shrink-0" style="color: var(--muted-foreground);" />
+          <input
+            type="range"
+            v-model="strokeSliderValue"
+            min="0"
+            :max="strokeWidthValues.length - 1"
+            step="1"
+            @input="updateStrokeWidth"
+            :style="{ '--thumb-color': pureColor }"
+            class="w-full slider-input"
+            :aria-label="t.gallery.strokeWidth"
+          />
+          <p class="w-11 text-right text-xs font-mono">{{ selectedStrokeWidth }}</p>
         </div>
 
         <div class="tuff-inset p-3 flex items-center gap-3">

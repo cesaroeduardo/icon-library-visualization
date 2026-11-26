@@ -34,8 +34,8 @@
           "wash": "#DDE1E8"
         },
         "active": {
-          "ink": "#3D4FE0",
-          "wash": "#D5DBFF"
+          "ink": "#8A4FDB",
+          "wash": "#E8D9FF"
         },
         "disabled": {
           "ink": "#B4BAC6",
@@ -69,7 +69,7 @@
     "context": {
       "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       "radius": 10,
-      "brand": "#3D4FE0",
+      "brand": "#8A4FDB",
       "onBrand": "#FFFFFF",
       "surface": "#FFFFFF",
       "sidebar": "#F4F5F8",
@@ -186,7 +186,7 @@
       ]
     },
     {
-      "name": "check-circle",
+      "name": "check",
       "label": "Done",
       "group": "status",
       "tags": [

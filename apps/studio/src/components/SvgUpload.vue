@@ -31,7 +31,7 @@ const emit = defineEmits(['back', 'built'])
 const isDragging = ref(false)
 const building = ref(false)
 const errorMsg = ref('')
-const svgItems = ref([.props.initialSvgs])
+const svgItems = ref([...props.initialSvgs])
 const catalogMap = ref(new Map())
 const fontName = ref('custom-icons')
 const prefix = ref('ic')
@@ -43,7 +43,7 @@ watch(
   () => props.initialSvgs,
   (val) => {
     if (val && val.length > 0 && svgItems.value.length === 0) {
-      svgItems.value = [.val]
+      svgItems.value = [...val]
     }
   }
 )
@@ -63,7 +63,7 @@ const processedItems = computed(() => {
       catalogMap.value.get(baseName.toLowerCase()) ||
       null
     return {
-      .item,
+      ...item,
       name: uniqueName,
       colored,
       keywords: item.keywords || meta?.keywords || '',
@@ -114,7 +114,7 @@ async function handleFiles(fileList) {
   }
 
   if (added.length > 0) {
-    svgItems.value = [.svgItems.value, .added]
+    svgItems.value = [...svgItems.value, ...added]
   }
 }
 
@@ -289,8 +289,8 @@ async function compile() {
             >
               <div
                 v-for="(item, idx) in [
-                  .validation.issues.placeholder,
-                  .validation.issues.noPath
+                  ...validation.issues.placeholder,
+                  ...validation.issues.noPath
                 ]"
                 :key="'e-' + idx"
                 class="truncate"
@@ -301,11 +301,11 @@ async function compile() {
               </div>
               <div
                 v-for="(item, idx) in [
-                  .validation.issues.stroke,
-                  .validation.issues.fillBlack,
-                  .validation.issues.clipPath,
-                  .validation.issues.nonSquareViewBox,
-                  .validation.issues.filenameSpace
+                  ...validation.issues.stroke,
+                  ...validation.issues.fillBlack,
+                  ...validation.issues.clipPath,
+                  ...validation.issues.nonSquareViewBox,
+                  ...validation.issues.filenameSpace
                 ]"
                 :key="'w-' + idx"
                 class="truncate"

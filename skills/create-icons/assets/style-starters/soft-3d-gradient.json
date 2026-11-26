@@ -29,14 +29,14 @@
         "default": {
           "body": {
             "gradient": [
-              "#F1F3FF",
-              "#C7CEFF"
+              "#F5EEFF",
+              "#E0CCFF"
             ]
           },
           "detail": {
             "gradient": [
-              "#7987F5",
-              "#3442D6"
+              "#A87AE8",
+              "#6B35C4"
             ]
           },
           "accent": {
@@ -57,14 +57,14 @@
         "default": {
           "body": {
             "gradient": [
-              "#4A56A8",
-              "#2C3570"
+              "#5A3A8A",
+              "#3A2460"
             ]
           },
           "detail": {
             "gradient": [
-              "#AEB8FF",
-              "#6F7EF0"
+              "#D1A8FF",
+              "#A87AE8"
             ]
           },
           "accent": {
@@ -92,7 +92,7 @@
     "context": {
       "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       "radius": 10,
-      "brand": "#3D4FE0",
+      "brand": "#8A4FDB",
       "onBrand": "#FFFFFF",
       "surface": "#FFFFFF",
       "sidebar": "#F4F5F8",
@@ -150,17 +150,17 @@
         {
           "tone": "body",
           "type": "path",
-          "d": "M12 3a6.5 6.5 0 0 1 6.5 6.5V12h-13V9.5A6.5 6.5 0 0 1 12 3z"
+          "d": "M5.5 14h13l1.6 2.4A1.5 1.5 0 0 1 18.8 19H5.2a1.5 1.5 0 0 1-1.3-2.6L5.5 14z"
         },
         {
           "tone": "detail",
           "type": "path",
-          "d": "M5.5 11h13v2.1l1.6 2.6A1.5 1.5 0 0 1 18.8 18H5.2a1.5 1.5 0 0 1-1.3-2.3l1.6-2.6z"
+          "d": "M12 3a6.5 6.5 0 0 1 6.5 6.5V14H5.5V9.5A6.5 6.5 0 0 1 12 3z"
         },
         {
           "tone": "detail",
           "type": "path",
-          "d": "M9.4 19.2h5.2a2.6 2.6 0 0 1-5.2 0z"
+          "d": "M9.4 19.5h5.2a2.6 2.6 0 0 1-5.2 0z"
         },
         {
           "tone": "shine",
@@ -223,7 +223,7 @@
       ]
     },
     {
-      "name": "check-circle",
+      "name": "check",
       "label": "Done",
       "group": "status",
       "tags": [

@@ -6,17 +6,37 @@
  * strips dimensions from child `<rect>` / `<image>` elements — which makes
  * Figma report "Unable to convert SVG" on paste.
  *
+ * `strokeWidth` rewrites every `stroke-width` attribute / CSS declaration so
+ * stroke-based sets (Feather, Lucide, Tabler outline, etc.) can be live-tuned.
+ *
  * @param {string} svgString
- * @param {{ color?: string, dimension?: number|string, colored?: boolean }} [options]
+ * @param {{ color?: string, dimension?: number|string, colored?: boolean, strokeWidth?: number|string }} [options]
  * @returns {string}
  */
-export function prepareSvg(svgString, { color, dimension, colored = false } = {}) {
+export function prepareSvg(
+  svgString,
+  { color, dimension, colored = false, strokeWidth } = {}
+) {
   let svg = String(svgString || '')
   if (!svg) return ''
 
   if (!colored && color) {
     svg = svg.replace(/fill="currentColor"/gi, `fill="${color}"`)
     svg = svg.replace(/stroke="currentColor"/gi, `stroke="${color}"`)
+  }
+
+  if (strokeWidth != null && strokeWidth !== '') {
+    const width = String(strokeWidth)
+    if (/\bstroke-width=/i.test(svg)) {
+      svg = svg.replace(/\bstroke-width="[^"]*"/gi, `stroke-width="${width}"`)
+    } else if (/\bstroke=/i.test(svg)) {
+      // Stroke-only markup without an explicit width — stamp it on the root.
+      svg = svg.replace(/<svg\b([^>]*)>/i, (full, attrs) => {
+        if (/\bstroke-width=/i.test(attrs)) return full
+        return `<svg${attrs} stroke-width="${width}">`
+      })
+    }
+    svg = svg.replace(/\bstroke-width\s*:\s*[^;"]+/gi, `stroke-width: ${width}`)
   }
 
   const openMatch = svg.match(/<svg\b([^>]*)>/i)

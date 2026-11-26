@@ -29,8 +29,8 @@
         "default": {
           "bg": {
             "gradient": [
-              "#6C7BFF",
-              "#2F3CC9"
+              "#A87AE8",
+              "#6B35C4"
             ]
           },
           "gloss": {
@@ -47,8 +47,8 @@
         "default": {
           "bg": {
             "gradient": [
-              "#6C7BFF",
-              "#2F3CC9"
+              "#A87AE8",
+              "#6B35C4"
             ]
           },
           "gloss": {
@@ -71,7 +71,7 @@
     "context": {
       "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       "radius": 10,
-      "brand": "#3D4FE0",
+      "brand": "#8A4FDB",
       "onBrand": "#FFFFFF",
       "surface": "#FFFFFF",
       "sidebar": "#F4F5F8",
@@ -137,19 +137,19 @@
           "d": "M12 .9c7.5 0 10.4 2.6 10.9 9.1-6.9 2.3-14.9 2.3-21.8 0C1.6 3.5 4.5.9 12 .9z"
         },
         {
+          "tone": "glyph",
+          "type": "path",
+          "d": "M12 5.4a4 4 0 0 1 4 4V12.2H8V9.4a4 4 0 0 1 4-4z"
+        },
+        {
           "tone": "glyph2",
           "type": "path",
-          "d": "M12 5.4a4 4 0 0 1 4 4V11H8V9.4a4 4 0 0 1 4-4z"
+          "d": "M8 12h8l.9 1.4a.9.9 0 0 1-.8 1.4H7.9a.9.9 0 0 1-.8-1.4L8 12z"
         },
         {
           "tone": "glyph",
           "type": "path",
-          "d": "M8 10.4h8v1.6l1 1.6a.9.9 0 0 1-.8 1.4H7.8a.9.9 0 0 1-.8-1.4l1-1.6z"
-        },
-        {
-          "tone": "glyph",
-          "type": "path",
-          "d": "M10.4 16.2h3.2a1.6 1.6 0 0 1-3.2 0z"
+          "d": "M10.4 16.4h3.2a1.6 1.6 0 0 1-3.2 0z"
         }
       ]
     },
@@ -203,7 +203,7 @@
       ]
     },
     {
-      "name": "check-circle",
+      "name": "check",
       "label": "Done",
       "group": "status",
       "tags": [

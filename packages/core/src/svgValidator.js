@@ -41,6 +41,81 @@ export function isColoredSvg(content) {
   return false
 }
 
+/**
+ * True for outline / stroke-based icons (Feather, Lucide, Tabler outline, …).
+ * Fill-first sets like Phosphor / Remix return false.
+ */
+export function isStrokeSvg(content) {
+  const svg = String(content || '')
+  if (!svg) return false
+
+  const strokePaints = [...svg.matchAll(/\bstroke="([^"]*)"/gi)]
+    .map((m) => m[1].trim().toLowerCase())
+    .filter((v) => v && v !== 'none')
+  if (strokePaints.length === 0) return false
+
+  if (/\bstroke-width=/i.test(svg) || /\bstroke-width\s*:/i.test(svg)) return true
+  if (/fill="none"/i.test(svg)) return true
+  return false
+}
+
+export function inferStrokeWidth(content) {
+  const svg = String(content || '')
+  const attr = svg.match(/\bstroke-width="([^"]+)"/i)
+  if (attr) {
+    const n = parseFloat(attr[1])
+    if (Number.isFinite(n)) return n
+  }
+  const css = svg.match(/\bstroke-width\s*:\s*([^;"]+)/i)
+  if (css) {
+    const n = parseFloat(css[1])
+    if (Number.isFinite(n)) return n
+  }
+  return null
+}
+
+/**
+ * Sample a library's SVG icons and decide whether stroke-width controls apply.
+ *
+ * @param {Array<{ svg?: string }>} icons
+ * @param {{ sampleSize?: number }} [options]
+ * @returns {{ strokeBased: boolean, defaultStrokeWidth: number|null }}
+ */
+export function analyzeStrokeLibrary(icons, { sampleSize = 24 } = {}) {
+  const withSvg = (icons || []).filter((icon) => icon?.svg)
+  if (!withSvg.length) {
+    return { strokeBased: false, defaultStrokeWidth: null }
+  }
+
+  const sample = withSvg.slice(0, Math.min(sampleSize, withSvg.length))
+  let strokeHits = 0
+  const widthCounts = new Map()
+
+  for (const icon of sample) {
+    if (!isStrokeSvg(icon.svg)) continue
+    strokeHits += 1
+    const width = inferStrokeWidth(icon.svg)
+    if (width != null) {
+      widthCounts.set(width, (widthCounts.get(width) || 0) + 1)
+    }
+  }
+
+  if (strokeHits / sample.length < 0.5) {
+    return { strokeBased: false, defaultStrokeWidth: null }
+  }
+
+  let defaultStrokeWidth = 2
+  let best = 0
+  for (const [width, count] of widthCounts) {
+    if (count > best) {
+      best = count
+      defaultStrokeWidth = width
+    }
+  }
+
+  return { strokeBased: true, defaultStrokeWidth }
+}
+
 export function validateSvgFiles(svgItems) {
   const issues = {
     placeholder: [],

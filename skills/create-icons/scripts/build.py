@@ -340,10 +340,10 @@ table.why{border-collapse:collapse;margin:8px 0 0;font-size:13px}table.why td{pa
 .rows{display:grid;gap:10px}
 .row{display:grid;grid-template-columns:180px 1fr 1fr;gap:10px;align-items:stretch}
 .name{padding:12px;background:#fff;border-radius:12px;border:1px solid #E3E6EC}.name b{display:block;font-size:13px}.name code{font-size:11px;color:#6B7385}
-.panel{display:flex;gap:14px;align-items:flex-end;padding:12px 14px;border-radius:12px;border:1px solid #E3E6EC;background:#fff;overflow-x:auto}
-.panel.gi-dark{background:#14171E;border-color:#262B36;color:#C9CED8}
-.cell{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;color:#8A92A3;min-width:34px}
-.cell svg{display:block}.sep{width:1px;align-self:stretch;background:#E3E6EC}.gi-dark .sep{background:#2C3240}
+.panel{display:flex;gap:14px;align-items:flex-end;padding:12px 14px;border-radius:12px;border:1px solid #E3E6EC;background:#ededef;overflow-x:auto}
+.panel.gi-dark{background:#191919;border-color:#2a2a2a;color:#f5f5f5}
+.cell{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:10px;color:#636368;min-width:34px}
+.cell svg{display:block}.sep{width:1px;align-self:stretch;background:#E3E6EC}.gi-dark .sep{background:#2a2a2a}.gi-dark .cell{color:#98989b}
 .grid-px .cell svg{background-image:linear-gradient(to right,rgba(127,127,127,.18) 1px,transparent 1px),linear-gradient(to bottom,rgba(127,127,127,.18) 1px,transparent 1px);outline:1px dashed rgba(127,127,127,.35)}
 .detail-only [data-tone]:not([data-tone="__DETAIL__"]){opacity:0}
 .ctx{display:grid;grid-template-columns:1fr 1fr;gap:16px}
@@ -393,7 +393,7 @@ def context_preview(icons, style):
     for theme in ("light", "dark"):
         if theme == "dark" and "dark" not in style["palette"]:
             continue
-        surface = ctx.get("surface" if theme == "light" else "surfaceDark", "#FFFFFF" if theme == "light" else "#14171E")
+        surface = ctx.get("surface" if theme == "light" else "surfaceDark", "#ededef" if theme == "light" else "#191919")
         side = ctx.get("sidebar" if theme == "light" else "sidebarDark", "#F3F4F7" if theme == "light" else "#1A1E27")
         text = ctx.get("text" if theme == "light" else "textDark", "#1B1F27" if theme == "light" else "#E6E8EE")
         border = ctx.get("border" if theme == "light" else "borderDark", "#E3E6EC" if theme == "light" else "#2A303C")

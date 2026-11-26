@@ -16,7 +16,8 @@ const props = defineProps({
   svg: { type: String, default: '' },
   colored: { type: Boolean, default: false },
   char: { type: String, default: '' },
-  fontFamily: { type: String, default: '' }
+  fontFamily: { type: String, default: '' },
+  strokeWidth: { type: Number, default: null }
 })
 
 const showCheckIcon = ref(false)
@@ -26,7 +27,8 @@ function bakedSvg(dimension) {
   return prepareSvg(props.svg, {
     color: props.color,
     dimension,
-    colored: props.colored
+    colored: props.colored,
+    strokeWidth: props.strokeWidth == null ? undefined : props.strokeWidth
   })
 }
 

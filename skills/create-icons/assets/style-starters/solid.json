@@ -28,7 +28,7 @@
           "glyph": "#2F3542"
         },
         "active": {
-          "glyph": "#3D4FE0"
+          "glyph": "#8A4FDB"
         },
         "disabled": {
           "glyph": "#B4BAC6"
@@ -58,7 +58,7 @@
     "context": {
       "font": "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif",
       "radius": 10,
-      "brand": "#3D4FE0",
+      "brand": "#8A4FDB",
       "onBrand": "#FFFFFF",
       "surface": "#FFFFFF",
       "sidebar": "#F4F5F8",
@@ -129,7 +129,7 @@
       ]
     },
     {
-      "name": "check-circle",
+      "name": "check",
       "label": "Done",
       "group": "status",
       "tags": [

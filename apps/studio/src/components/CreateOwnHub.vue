@@ -173,7 +173,7 @@ async function buildSvgPayload(fileList) {
   return svgs.map((item) => {
     const base = item.fileName.replace(/\.svg$/i, '').toLowerCase()
     const meta = metaMap.get(base)
-    return meta ? { .item, keywords: meta.keywords, label: meta.label, group: meta.group } : item
+    return meta ? { ...item, keywords: meta.keywords, label: meta.label, group: meta.group } : item
   })
 }
 
