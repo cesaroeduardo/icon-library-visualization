@@ -1,25 +1,42 @@
 # Icon Library Studio
 
-Aplicação 100% estática no navegador (Vue 3 + Vite + Tailwind CSS) para montar, compilar e criar bibliotecas de ícones.
+Open-source monorepo for inspecting webfonts, compiling SVGs into webfonts, and generating original icon libraries with AI coding agents — 100% static in the browser.
 
-## Funcionalidades
+## Monorepo Structure
 
-1. **Subir Webfont**: Envie `.ttf`, `.otf`, `.woff`, `.woff2` (com ou sem `.css`) ou um `.zip` para inspecionar glifos, buscar, recolorir, redimensionar (`8px`–`320px`) e baixar em `.svg` ou `.png`.
-2. **Subir SVGs e gerar Webfont**: Envie arquivos `.svg` ou `.zip`, valide problemas comuns de icon font, compile diretamente no navegador para `.ttf` + `.woff` + `.css` + `catalog.json` e baixe o pacote `.zip` pronto. Ícones multicoloridos são detectados automaticamente e renderizados inline.
-3. **Criar meus próprios ícones**: Embute a skill `create-icons` em `skills/create-icons/` com download em `.zip`, instruções para Antigravity / Claude Code / Cursor, preview interativo dos 8 estilos iniciais e importação direta dos SVGs gerados para a galeria.
-4. **Bilíngue (PT-BR / EN)** e **Tema Claro / Escuro**.
+```text
+├── apps/
+│   ├── web/            # Open-source Landing Page (React 19 + Tailwind CSS v4 + TUFFUI)
+│   └── studio/         # Icon Library Studio app (Vue 3 + Tailwind CSS + Docs)
+├── packages/
+│   ├── core/           # Shared browser engine (SVG validator, SVG→TTF/WOFF compiler, Webfont & catalog.json parser)
+│   └── skill/          # AI agent skill (create-icons + pack-skill.mjs)
+└── scripts/
+    └── build-all.mjs   # Unified static build -> dist/ (web) + dist/studio/ (studio)
+```
 
-## Como rodar localmente
+## Development
 
 ```bash
 pnpm install
-pnpm run dev
+
+# Run Landing Page (http://localhost:5173)
+pnpm run dev:web
+
+# Run Icon Library Studio (http://localhost:5174)
+pnpm run dev:studio
 ```
 
-## Build estático (GitHub Pages / Vercel / Netlify)
+## Production Build (Static Deploy)
 
 ```bash
 pnpm run build
 ```
 
-Os arquivos prontos para deploy ficam em `dist/` (incluindo `dist/skills/create-icons.zip` e `dist/style-gallery.html`).
+Outputs a unified static site in `dist/`:
+- `dist/` → Landing Page (`apps/web`)
+- `dist/studio/` → Icon Library Studio (`apps/studio`)
+
+## License
+
+MIT

@@ -12,9 +12,13 @@ import {
   Plus
 } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
-import { normalizeIconName, isColoredSvg, validateSvgFiles } from '@/utils/svgValidator'
-import { compileSvgsToWebfont } from '@/utils/svgToFont'
-import { parseCatalogJson } from '@/utils/catalogParser'
+import {
+  normalizeIconName,
+  isColoredSvg,
+  validateSvgFiles,
+  compileSvgsToWebfont,
+  parseCatalogJson
+} from '@icon-library/core'
 
 const { t } = useI18n()
 

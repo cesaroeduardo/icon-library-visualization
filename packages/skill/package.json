@@ -1,0 +1,12 @@
+{
+  "name": "@icon-library/skill",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "pack": "node pack-skill.mjs"
+  },
+  "dependencies": {
+    "jszip": "^3.10.1"
+  }
+}

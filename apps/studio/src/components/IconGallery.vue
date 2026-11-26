@@ -15,7 +15,7 @@ import {
 import IconCard from './IconCard.vue'
 import ColoredIcon from './ColoredIcon.vue'
 import { useI18n } from '@/i18n'
-import { createBundleZip } from '@/utils/svgToFont'
+import { createBundleZip } from '@icon-library/core'
 
 const { t } = useI18n()
 

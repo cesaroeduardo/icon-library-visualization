@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { UploadCloud, FileType, FileCode, X, ArrowLeft, AlertCircle, CheckCircle2 } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
-import { extractFilesFromUpload, parseUploadedWebfont } from '@/utils/webfontParser'
+import { extractFilesFromUpload, parseUploadedWebfont } from '@icon-library/core'
 
 const { t } = useI18n()
 const emit = defineEmits(['back', 'loaded'])

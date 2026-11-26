@@ -13,7 +13,7 @@ import {
   CheckCircle2
 } from 'lucide-vue-next'
 import { useI18n } from '@/i18n'
-import { parseCatalogJson } from '@/utils/catalogParser'
+import { parseCatalogJson } from '@icon-library/core'
 
 const { t } = useI18n()
 const emit = defineEmits(['back', 'import-svgs'])

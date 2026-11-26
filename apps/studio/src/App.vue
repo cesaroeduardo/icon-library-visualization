@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Sun, Moon, Languages, Layers, Eye, Loader2, BookOpen } from 'lucide-vue-next'
 import HomeSelector from './components/HomeSelector.vue'
 import WebfontUpload from './components/WebfontUpload.vue'
@@ -9,7 +9,7 @@ import IconGallery from './components/IconGallery.vue'
 import DocsPage from './components/DocsPage.vue'
 import { isDark, toggleTheme } from './theme'
 import { useI18n } from './i18n'
-import { parseUploadedWebfont } from './utils/webfontParser'
+import { parseUploadedWebfont } from '@icon-library/core'
 
 const { lang, t, toggleLang } = useI18n()
 
@@ -73,6 +73,15 @@ function handleImportFromSkill(svgs) {
 function goHome() {
   activeView.value = 'home'
 }
+
+onMounted(() => {
+  const hash = (window.location.hash || '').replace(/^#\/?/, '').toLowerCase()
+  if (hash === 'webfont' || hash === 'svg' || hash === 'create' || hash === 'docs') {
+    activeView.value = hash
+  } else if (hash === 'demo') {
+    openDemo()
+  }
+})
 </script>
 
 <template>
