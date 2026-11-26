@@ -222,6 +222,34 @@ async function downloadBundle() {
         </button>
       </div>
 
+      <!-- Library Credits Strip right below the library selector -->
+      <div v-if="library.credits" class="px-4 md:px-8 mb-4">
+        <div
+          class="tuff-inset px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 text-xs"
+          style="color: var(--muted-foreground);"
+        >
+          <div class="flex flex-wrap items-center gap-2">
+            <span>
+              {{ lang === 'pt' ? 'Créditos:' : 'Credits:' }}
+              <strong class="font-medium" style="color: var(--foreground);">
+                {{ library.credits.name }}
+              </strong>
+            </span>
+            <span class="tuff-tag">{{ library.credits.license }}</span>
+          </div>
+          <a
+            :href="library.credits.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center gap-1 font-medium hover:underline"
+            style="color: var(--brand);"
+          >
+            <span>{{ lang === 'pt' ? 'Visitar site oficial' : 'Visit official site' }}</span>
+            <ExternalLink class="w-3.5 h-3.5" />
+          </a>
+        </div>
+      </div>
+
       <!-- Meta bar -->
       <div
         class="px-4 md:px-8 mb-4 flex flex-wrap items-center justify-between gap-2 text-xs"
@@ -293,34 +321,6 @@ async function downloadBundle() {
               ></span>
             </IconCard>
           </ul>
-
-          <!-- Library Credits Footer -->
-          <div v-if="library.credits" class="tuff-shell w-full">
-            <div
-              class="tuff-panel px-4 py-3.5 flex flex-wrap items-center justify-between gap-2 text-xs"
-              style="color: var(--muted-foreground);"
-            >
-              <div class="flex flex-wrap items-center gap-2">
-                <span>
-                  {{ lang === 'pt' ? 'Créditos:' : 'Credits:' }}
-                  <strong class="font-medium" style="color: var(--foreground);">
-                    {{ library.credits.name }}
-                  </strong>
-                </span>
-                <span class="tuff-tag">{{ library.credits.license }}</span>
-              </div>
-              <a
-                :href="library.credits.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="inline-flex items-center gap-1 font-medium hover:underline"
-                style="color: var(--brand);"
-              >
-                <span>{{ lang === 'pt' ? 'Visitar site oficial' : 'Visit official site' }}</span>
-                <ExternalLink class="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
 
           <div
             v-if="filteredIcons.length === 0"
