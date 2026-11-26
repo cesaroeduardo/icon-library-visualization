@@ -72,6 +72,16 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  p {
+    text-wrap: balance;
+  }
+}
+
 /* TUFFUI Primary Silver Button */
 .tuff-btn-primary {
   background: var(--primary-grad);
