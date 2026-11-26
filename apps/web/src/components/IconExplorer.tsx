@@ -22,12 +22,12 @@ export interface DemoIcon {
 }
 
 export interface LibraryPreset {
-  id: 'phosphor' | 'feather' | 'pixelarticons' | 'hugeicons' | 'demo'
+  id: 'phosphor' | 'feather' | 'pixelarticons' | 'hugeicons'
   label: string
   name: string
   url: string
   license: string
-  jsonPath?: string
+  jsonPath: string
 }
 
 export const DEMO_LIBRARIES: LibraryPreset[] = [
@@ -62,21 +62,11 @@ export const DEMO_LIBRARIES: LibraryPreset[] = [
     url: 'https://hugeicons.com/',
     license: 'MIT',
     jsonPath: './demo/libraries/hugeicons.json'
-  },
-  {
-    id: 'demo',
-    label: 'Demo Webfont',
-    name: 'Demo Webfont (WOFF2/TTF)',
-    url: 'https://github.com/cesaroeduardo/icon-library-visualization',
-    license: 'MIT'
   }
 ]
 
 interface IconExplorerProps {
   lang: Lang
-  demoFontIcons: DemoIcon[]
-  demoFontFamily: string
-  loadingDemoFont: boolean
 }
 
 const PAGE_SIZE = 60
@@ -95,12 +85,7 @@ function prepareSvg(raw: string, dimension: number) {
   return svg
 }
 
-export function IconExplorer({
-  lang,
-  demoFontIcons,
-  demoFontFamily,
-  loadingDemoFont
-}: IconExplorerProps) {
+export function IconExplorer({ lang }: IconExplorerProps) {
   const t = copy[lang].explorer
   const [selectedLibId, setSelectedLibId] = useState<LibraryPreset['id']>('phosphor')
   const [loadedIcons, setLoadedIcons] = useState<DemoIcon[]>([])
@@ -115,12 +100,6 @@ export function IconExplorer({
 
   useEffect(() => {
     let active = true
-    if (selectedLibId === 'demo') {
-      setLoadedIcons(demoFontIcons)
-      setLoadingLib(loadingDemoFont)
-      return
-    }
-
     const cached = libraryCache.get(selectedLibId)
     if (cached) {
       setLoadedIcons(cached)
@@ -150,7 +129,7 @@ export function IconExplorer({
     return () => {
       active = false
     }
-  }, [selectedLibId, demoFontIcons, loadingDemoFont])
+  }, [selectedLibId])
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -381,23 +360,13 @@ export function IconExplorer({
                       {item.name}
                     </span>
 
-                    {selectedLibId === 'demo' && item.char ? (
-                      <span
-                        className="leading-none text-foreground pt-3 transition-transform group-hover:scale-105"
-                        style={{
-                          fontFamily: demoFontFamily ? `'${demoFontFamily}'` : undefined,
-                          fontSize: `${size}px`
-                        }}
-                      >
-                        {item.char}
-                      </span>
-                    ) : item.svg ? (
+                    {item.svg && (
                       <span
                         className="inline-flex items-center justify-center text-foreground pt-3 transition-transform group-hover:scale-105"
                         style={{ width: `${size}px`, height: `${size}px` }}
                         dangerouslySetInnerHTML={{ __html: prepareSvg(item.svg, size) }}
                       />
-                    ) : null}
+                    )}
 
                     {/* Hover Action Pill Bar: Copy Code, Copy SVG, Download SVG */}
                     <div className="absolute bottom-2 right-2 flex items-center gap-0.5 p-1 rounded-full bg-surface-raised opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity duration-150">

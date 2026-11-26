@@ -16,7 +16,6 @@ import SvgUpload from './components/SvgUpload.vue'
 import IconGallery from './components/IconGallery.vue'
 import { isDark, toggleTheme } from './theme'
 import { useI18n } from './i18n'
-import { parseUploadedWebfont } from '@icon-library/core'
 
 const { lang, t, toggleLang } = useI18n()
 
@@ -61,14 +60,6 @@ const PRESETS = [
     license: 'MIT',
     styles: ['thin', 'light', 'regular', 'bold'],
     jsonPath: './demo/libraries/hugeicons.json'
-  },
-  {
-    id: 'demo',
-    label: 'Demo Webfont',
-    name: 'Demo Webfont (WOFF2/TTF)',
-    url: 'https://github.com/cesaroeduardo/icon-library-visualization',
-    license: 'MIT',
-    styles: ['regular']
   }
 ]
 
@@ -123,58 +114,36 @@ async function loadPreset(presetId, style = 'regular') {
 
   loadingLibrary.value = true
   try {
-    if (preset.id === 'demo') {
-      const [ttfRes, woff2Res] = await Promise.all([
-        fetch('./demo/demo-icons.ttf'),
-        fetch('./demo/demo-icons.woff2')
-      ])
-      if (!ttfRes.ok) throw new Error('Failed to load demo font')
-      const ttfBuffer = await ttfRes.arrayBuffer()
-      const fonts = [{ name: 'demo-icons.ttf', ext: '.ttf', buffer: ttfBuffer }]
-      if (woff2Res.ok) {
-        fonts.push({ name: 'demo-icons.woff2', ext: '.woff2', buffer: await woff2Res.arrayBuffer() })
+    const url = preset.styleJsonTemplate ? preset.styleJsonTemplate(resolvedStyle) : preset.jsonPath
+    const res = await fetch(url)
+    if (!res.ok) throw new Error(`HTTP ${res.status}`)
+    const data = await res.json()
+    const baseIcons = (data.icons || []).map((i) => ({ ...i, colored: false }))
+    const lib = {
+      sourceType: 'preset',
+      fontName: data.meta?.name || preset.name,
+      runtimeFamily: '',
+      prefix: data.meta?.prefix || 'ic',
+      icons: baseIcons,
+      monoCount: baseIcons.length,
+      coloredCount: 0,
+      credits: {
+        name: preset.name,
+        url: preset.url,
+        license: preset.license
+      },
+      artifacts: {
+        catalogJson: JSON.stringify(
+          baseIcons.map(({ name, icon, keywords }) => ({ name, icon, keywords })),
+          null,
+          2
+        )
       }
-      const lib = await parseUploadedWebfont({
-        fonts,
-        cssFiles: [],
-        customFontName: 'demo-icons',
-        customPrefix: 'ic'
-      })
-      lib.credits = { name: preset.name, url: preset.url, license: preset.license }
-      presetCache.set(cacheKey, lib)
-      currentLibrary.value = lib
-    } else {
-      const url = preset.styleJsonTemplate ? preset.styleJsonTemplate(resolvedStyle) : preset.jsonPath
-      const res = await fetch(url)
-      if (!res.ok) throw new Error(`HTTP ${res.status}`)
-      const data = await res.json()
-      const baseIcons = (data.icons || []).map((i) => ({ ...i, colored: false }))
-      const lib = {
-        sourceType: 'preset',
-        fontName: data.meta?.name || preset.name,
-        runtimeFamily: '',
-        prefix: data.meta?.prefix || 'ic',
-        icons: baseIcons,
-        monoCount: baseIcons.length,
-        coloredCount: 0,
-        credits: {
-          name: preset.name,
-          url: preset.url,
-          license: preset.license
-        },
-        artifacts: {
-          catalogJson: JSON.stringify(
-            baseIcons.map(({ name, icon, keywords }) => ({ name, icon, keywords })),
-            null,
-            2
-          )
-        }
-      }
-      presetCache.set(cacheKey, lib)
-      currentLibrary.value = STROKE_WEIGHTS[preset.id]
-        ? { ...lib, icons: applyStrokeStyle(lib.icons, preset.id, resolvedStyle) }
-        : lib
     }
+    presetCache.set(cacheKey, lib)
+    currentLibrary.value = STROKE_WEIGHTS[preset.id]
+      ? { ...lib, icons: applyStrokeStyle(lib.icons, preset.id, resolvedStyle) }
+      : lib
   } catch (e) {
     console.error('Failed to load preset:', presetId, e)
   } finally {

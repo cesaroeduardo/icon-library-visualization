@@ -16,7 +16,6 @@ import {
   Terminal,
   BookOpen
 } from 'lucide-react'
-import { parseUploadedWebfont } from '@icon-library/core'
 import {
   Shell,
   Panel,
@@ -27,7 +26,7 @@ import {
   ActionButton,
   ActionLink
 } from '@/components/ui/tuff'
-import { IconExplorer, type DemoIcon } from '@/components/IconExplorer'
+import { IconExplorer } from '@/components/IconExplorer'
 import { SkillsSection } from '@/components/SkillsSection'
 import { DocsView } from '@/components/DocsView'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, type Lang } from '@/content'
@@ -44,9 +43,6 @@ export function App() {
     return saved ? saved === 'dark' : true // TUFFUI dark default
   })
 
-  const [demoIcons, setDemoIcons] = useState<DemoIcon[]>([])
-  const [demoFamily, setDemoFamily] = useState('')
-  const [loadingDemo, setLoadingDemo] = useState(true)
   const [copiedCmd, setCopiedCmd] = useState(false)
   const [page, setPage] = useState<'landing' | 'docs'>(() =>
     window.location.hash.replace(/^#\/?/, '').toLowerCase() === 'docs' ? 'docs' : 'landing'
@@ -91,55 +87,6 @@ export function App() {
   useEffect(() => {
     localStorage.setItem('icon-library-lang', lang)
   }, [lang])
-
-  useEffect(() => {
-    let active = true
-    async function loadDemo() {
-      try {
-        const [ttfRes, woff2Res] = await Promise.all([
-          fetch('./demo/demo-icons.ttf'),
-          fetch('./demo/demo-icons.woff2')
-        ])
-        if (!ttfRes.ok) return
-        const ttfBuffer = await ttfRes.arrayBuffer()
-        const fonts: Array<{ name: string; ext: string; buffer: ArrayBuffer }> = [
-          { name: 'demo-icons.ttf', ext: '.ttf', buffer: ttfBuffer }
-        ]
-        if (woff2Res.ok) {
-          fonts.push({
-            name: 'demo-icons.woff2',
-            ext: '.woff2',
-            buffer: await woff2Res.arrayBuffer()
-          })
-        }
-        const lib = await parseUploadedWebfont({
-          fonts,
-          cssFiles: [],
-          customFontName: 'demo-icons',
-          customPrefix: 'ic'
-        })
-        if (!active) return
-        setDemoFamily(lib.runtimeFamily)
-        setDemoIcons(
-          lib.icons.map((i: DemoIcon) => ({
-            name: i.name,
-            icon: i.icon,
-            keywords: i.keywords,
-            char: i.char,
-            svg: i.svg || ''
-          }))
-        )
-      } catch (e) {
-        console.error('Failed to load demo icons:', e)
-      } finally {
-        if (active) setLoadingDemo(false)
-      }
-    }
-    loadDemo()
-    return () => {
-      active = false
-    }
-  }, [])
 
   async function copyCloneCmd() {
     try {
@@ -402,13 +349,8 @@ export function App() {
           </div>
         </section>
 
-        {/* Interactive Demo Icon Explorer (Phosphor, Feather, Pixelarticons, Hugeicons + Demo Webfont) */}
-        <IconExplorer
-          lang={lang}
-          demoFontIcons={demoIcons}
-          demoFontFamily={demoFamily}
-          loadingDemoFont={loadingDemo}
-        />
+        {/* Interactive Demo Icon Explorer (Phosphor, Feather, Pixelarticons, Hugeicons) */}
+        <IconExplorer lang={lang} />
 
         {/* Dedicated AI Skills Section right below the Library Demo */}
         <SkillsSection lang={lang} onOpenDocs={openDocs} />
