@@ -5,9 +5,9 @@
   "description": "Open-source monorepo for Icon Library Studio (apps/web landing page, apps/studio web app, packages/core engine, packages/skill AI skill).",
   "type": "module",
   "scripts": {
-    "dev": "pnpm --filter @icon-library/web dev",
-    "dev:web": "pnpm --filter @icon-library/web dev",
-    "dev:studio": "pnpm --filter @icon-library/studio dev",
+    "dev": "npm run dev --prefix apps/web",
+    "dev:web": "npm run dev --prefix apps/web",
+    "dev:studio": "npm run dev --prefix apps/studio",
     "pack:skill": "node packages/skill/pack-skill.mjs",
     "build": "node scripts/build-all.mjs",
     "preview": "npx vite preview --port 4173 --host 127.0.0.1"

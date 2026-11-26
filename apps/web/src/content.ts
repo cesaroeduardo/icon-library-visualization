@@ -2,6 +2,11 @@ export const GITHUB_URL = 'https://github.com/cesaroeduardo/icon-library-visuali
 export const CLONE_CMD = 'git clone https://github.com/cesaroeduardo/icon-library-visualization.git'
 export const STUDIO_URL = '/studio/'
 
+export const AGENT_PROMPT = {
+  pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Depois use a skill create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais), gerar um set de ícones SVG originais 24×24 no mesmo estilo e criar o catalog.json com a skill catalog-icons. No final, me entregue os SVGs + catalog.json em uma pasta (ou .zip) para eu importar em https://icons.cesaroeduardo.com/studio/#create-own.`,
+  en: `Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Then use the create-icons skill to analyze my project's design system (tokens, fonts and current icons), generate a set of original 24×24 SVG icons in the same style, and build catalog.json with the catalog-icons skill. Finally, give me the SVGs + catalog.json in a folder (or .zip) so I can import them at https://icons.cesaroeduardo.com/studio/#create-own.`
+}
+
 export type Lang = 'pt' | 'en'
 
 export const copy = {
@@ -44,8 +49,6 @@ export const copy = {
       heading2: 'Um único estúdio.',
       desc: 'Teste a busca instantânea com a webfont de demonstração (332 ícones). Clique em qualquer ícone para copiar o HTML ou abra o Studio completo para subir seus próprios arquivos.',
       searchPlaceholder: 'Buscar em {count} ícones da demo...',
-      sortDefault: 'Padrão',
-      sortAlpha: 'A–Z',
       openFull: 'Abrir no Studio',
       copiedToast: 'Copiado: {snippet}',
       showing: '{from}–{to} de {total} ícones',
@@ -172,8 +175,6 @@ export const copy = {
       heading2: 'One focused studio.',
       desc: 'Try instant search across the built-in 332-icon demo webfont. Click any icon to copy its HTML snippet, or launch the full Studio to upload your own files.',
       searchPlaceholder: 'Search {count} demo icons...',
-      sortDefault: 'Default',
-      sortAlpha: 'A–Z',
       openFull: 'Open in Studio',
       copiedToast: 'Copied: {snippet}',
       showing: '{from}–{to} of {total} icons',

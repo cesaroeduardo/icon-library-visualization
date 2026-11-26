@@ -2,6 +2,7 @@ import opentype from 'opentype.js'
 import svgpath from 'svgpath'
 import pako from 'pako'
 import JSZip from 'jszip'
+import { compress as compressWoff2 } from 'woff2-encoder'
 
 const UNITS_PER_EM = 1000
 const ASCENDER = 850
@@ -226,12 +227,22 @@ export function ttfToWoff(ttfBuffer) {
   return out
 }
 
-export function generateCss({ fontName, prefix, codepoints }) {
+export function generateCss({ fontName, prefix, codepoints, formats = ['woff2', 'woff', 'ttf'] }) {
+  const formatMap = {
+    woff2: `url('./${fontName}.woff2') format('woff2')`,
+    woff: `url('./${fontName}.woff') format('woff')`,
+    ttf: `url('./${fontName}.ttf') format('truetype')`,
+    otf: `url('./${fontName}.otf') format('opentype')`
+  }
+  const srcLines = formats.filter((f) => formatMap[f]).map((f) => formatMap[f])
+  const src = srcLines.length
+    ? srcLines.join(',\n       ')
+    : `url('./${fontName}.woff') format('woff'),\n       url('./${fontName}.ttf') format('truetype')`
+
   const lines = [
     `@font-face {`,
     `  font-family: '${fontName}';`,
-    `  src: url('./${fontName}.woff') format('woff'),`,
-    `       url('./${fontName}.ttf') format('truetype');`,
+    `  src: ${src};`,
     `  font-weight: normal;`,
     `  font-style: normal;`,
     `  font-display: block;`,
@@ -263,13 +274,32 @@ export function generateCss({ fontName, prefix, codepoints }) {
 }
 
 /**
- * Compiles monochrome SVGs into an in-memory TTF + WOFF webfont, registers it in the browser,
- * and returns the complete gallery dataset + exportable bundle artifacts.
+ * Compiles monochrome SVGs into an in-memory TTF / WOFF / WOFF2 webfont, optionally registers
+ * it in the browser, and returns the complete gallery dataset + exportable bundle artifacts.
  */
+function hasFontArtifacts(artifacts) {
+  return Boolean(
+    artifacts?.ttfBuffer ||
+      artifacts?.otfBuffer ||
+      artifacts?.woffBytes ||
+      artifacts?.woff2Buffer
+  )
+}
+
+function listFontFormats(artifacts) {
+  const formats = []
+  if (artifacts?.woff2Buffer) formats.push('woff2')
+  if (artifacts?.woffBytes) formats.push('woff')
+  if (artifacts?.ttfBuffer) formats.push('ttf')
+  if (artifacts?.otfBuffer) formats.push('otf')
+  return formats
+}
+
 export async function compileSvgsToWebfont({
   svgItems,
   fontName = 'custom-icons',
-  prefix = 'ic'
+  prefix = 'ic',
+  registerRuntime = true
 }) {
   const safeFontName = fontName.trim().replace(/[^a-zA-Z0-9_-]/g, '-') || 'custom-icons'
   const safePrefix = prefix.trim().replace(/[^a-zA-Z0-9_-]/g, '') || 'ic'
@@ -334,6 +364,7 @@ export async function compileSvgsToWebfont({
 
   let ttfBuffer = null
   let woffBytes = null
+  let woff2Buffer = null
   let runtimeFamily = `${safeFontName}-${Date.now()}`
 
   if (monoItems.length > 0) {
@@ -349,16 +380,25 @@ export async function compileSvgsToWebfont({
     ttfBuffer = font.toArrayBuffer()
     woffBytes = ttfToWoff(ttfBuffer)
 
-    // Register runtime font in document.fonts
-    const fontFace = new FontFace(runtimeFamily, ttfBuffer)
-    await fontFace.load()
-    document.fonts.add(fontFace)
+    try {
+      woff2Buffer = await compressWoff2(ttfBuffer)
+    } catch (e) {
+      console.warn('Failed to compress WOFF2:', e)
+    }
+
+    if (registerRuntime && typeof FontFace !== 'undefined' && typeof document !== 'undefined') {
+      const fontFace = new FontFace(runtimeFamily, ttfBuffer)
+      await fontFace.load()
+      document.fonts.add(fontFace)
+    }
   }
 
+  const formats = listFontFormats({ ttfBuffer, woffBytes, woff2Buffer })
   const cssContent = generateCss({
     fontName: safeFontName,
     prefix: safePrefix,
-    codepoints
+    codepoints,
+    formats: formats.length ? formats : ['woff', 'ttf']
   })
 
   return {
@@ -372,6 +412,7 @@ export async function compileSvgsToWebfont({
     artifacts: {
       ttfBuffer,
       woffBytes,
+      woff2Buffer,
       cssContent,
       catalogJson: JSON.stringify(
         monoCatalog.map(({ name, icon, keywords }) => ({ name, icon, keywords })),
@@ -393,18 +434,108 @@ export async function compileSvgsToWebfont({
   }
 }
 
-export async function createBundleZip(libraryData) {
-  const zip = new JSZip()
-  const { fontName, prefix, artifacts, icons } = libraryData
+async function deriveMissingFontFormats(artifacts) {
+  const next = { ...artifacts }
+  const sfntSource = next.ttfBuffer || next.otfBuffer
 
-  if (artifacts?.ttfBuffer) {
-    zip.file(`${fontName}.ttf`, artifacts.ttfBuffer)
+  if (sfntSource && !next.woffBytes) {
+    try {
+      next.woffBytes = ttfToWoff(sfntSource)
+    } catch (e) {
+      console.warn('Failed to derive WOFF from font:', e)
+    }
+  }
+
+  if (sfntSource && !next.woff2Buffer) {
+    try {
+      next.woff2Buffer = await compressWoff2(sfntSource)
+    } catch (e) {
+      console.warn('Failed to derive WOFF2 from font:', e)
+    }
+  }
+
+  return next
+}
+
+async function ensureBundleArtifacts(libraryData) {
+  let artifacts = await deriveMissingFontFormats({ ...(libraryData.artifacts || {}) })
+
+  if (hasFontArtifacts(artifacts)) {
+    if (libraryData.sourceType === 'svg-build' || libraryData.sourceType === 'preset') {
+      const codepoints = {}
+      for (const icon of libraryData.icons || []) {
+        if (!icon.colored && icon.unicode != null) {
+          codepoints[icon.name] = icon.unicode
+        }
+      }
+      if (Object.keys(codepoints).length) {
+        artifacts.cssContent = generateCss({
+          fontName: libraryData.fontName,
+          prefix: libraryData.prefix,
+          codepoints,
+          formats: listFontFormats(artifacts)
+        })
+      }
+    }
+    return { ...libraryData, artifacts }
+  }
+
+  const svgItems = (libraryData.icons || [])
+    .filter((icon) => icon.svg)
+    .map((icon) => ({
+      name: icon.name,
+      content: icon.svg,
+      colored: Boolean(icon.colored),
+      keywords: icon.keywords,
+      label: icon.label,
+      group: icon.group
+    }))
+
+  if (!svgItems.some((item) => !item.colored)) {
+    return { ...libraryData, artifacts }
+  }
+
+  const compiled = await compileSvgsToWebfont({
+    svgItems,
+    fontName: libraryData.fontName || 'icons',
+    prefix: libraryData.prefix || 'ic',
+    registerRuntime: false
+  })
+
+  artifacts = {
+    ...artifacts,
+    ...compiled.artifacts,
+    catalogJson: artifacts.catalogJson || compiled.artifacts.catalogJson,
+    colorCatalogJson: artifacts.colorCatalogJson || compiled.artifacts.colorCatalogJson
+  }
+
+  return {
+    ...libraryData,
+    artifacts
+  }
+}
+
+export async function createBundleZip(libraryData) {
+  const prepared = await ensureBundleArtifacts(libraryData)
+  const zip = new JSZip()
+  const { fontName, prefix, artifacts, icons } = prepared
+  const fontFiles = []
+
+  if (artifacts?.woff2Buffer) {
+    zip.file(`${fontName}.woff2`, artifacts.woff2Buffer)
+    fontFiles.push(`${fontName}.woff2`)
   }
   if (artifacts?.woffBytes) {
     zip.file(`${fontName}.woff`, artifacts.woffBytes)
+    fontFiles.push(`${fontName}.woff`)
   }
-  if (artifacts?.woff2Buffer) {
-    zip.file(`${fontName}.woff2`, artifacts.woff2Buffer)
+  if (artifacts?.ttfBuffer) {
+    zip.file(`${fontName}.ttf`, artifacts.ttfBuffer)
+    fontFiles.push(`${fontName}.ttf`)
+  }
+  if (artifacts?.otfBuffer) {
+    zip.file(`${fontName}.otf`, artifacts.otfBuffer)
+    fontFiles.push(`${fontName}.otf`)
   }
   if (artifacts?.cssContent) {
     zip.file(`${fontName}.css`, artifacts.cssContent)
@@ -412,7 +543,7 @@ export async function createBundleZip(libraryData) {
   if (artifacts?.catalogJson) {
     zip.file('catalog.json', artifacts.catalogJson)
   }
-  if (artifacts?.colorCatalogJson && libraryData.coloredCount > 0) {
+  if (artifacts?.colorCatalogJson && prepared.coloredCount > 0) {
     zip.file('color-catalog.json', artifacts.colorCatalogJson)
   }
 
@@ -422,6 +553,16 @@ export async function createBundleZip(libraryData) {
       svgFolder.file(`${icon.name}.svg`, icon.svg)
     }
   }
+
+  const contents = []
+  if (fontFiles.length) {
+    contents.push(`- ${fontFiles.map((f) => `\`${f}\``).join(' / ')} — Webfont files`)
+  }
+  if (artifacts?.cssContent) {
+    contents.push(`- \`${fontName}.css\` — CSS classes (\`.${prefix}\`)`)
+  }
+  contents.push(`- \`catalog.json\` — Icon metadata (${icons.length} icons)`)
+  contents.push(`- \`svg/\` — Standalone SVG files`)
 
   const readme = `# ${fontName}
 
@@ -435,10 +576,7 @@ Generated by **Icon Library Studio**.
 \`\`\`
 
 ## Contents
-- \`${fontName}.woff\` / \`${fontName}.ttf\` — Webfont files
-- \`${fontName}.css\` — CSS classes (\`.${prefix}\`)
-- \`catalog.json\` — Icon metadata (${icons.length} icons)
-- \`svg/\` — Standalone SVG files
+${contents.join('\n')}
 `
   zip.file('README.md', readme)
 

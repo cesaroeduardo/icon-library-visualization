@@ -1,5 +1,6 @@
 import opentype from 'opentype.js'
 import JSZip from 'jszip'
+import decompressWoff2 from 'woff2-encoder/decompress'
 import { generateCss } from './svgToFont'
 import { parseCatalogJson } from './catalogParser'
 
@@ -140,7 +141,7 @@ export async function extractFilesFromUpload(fileList) {
         }
       }
     } else if (FONT_EXTENSIONS.includes(ext)) {
-      const buffer = await file.arraybuffer()
+      const buffer = await file.arrayBuffer()
       fonts.push({ name: file.name, ext, buffer })
     } else if (ext === '.css') {
       const text = await file.text()
@@ -174,13 +175,28 @@ export async function parseUploadedWebfont({
     for (const [k, v] of parsed.entries()) catalogMap.set(k, v)
   }
 
-  // Prefer TTF/OTF/WOFF for opentype.js glyph inspection, fallback to WOFF2
-  const parseableFont =
-    fonts.find((f) => f.ext === '.ttf') ||
-    fonts.find((f) => f.ext === '.otf') ||
-    fonts.find((f) => f.ext === '.woff')
+  // Prefer TTF/OTF/WOFF for opentype.js glyph inspection, or decompress WOFF2 client-side
+  let parseableBuffer =
+    (
+      fonts.find((f) => f.ext === '.ttf') ||
+      fonts.find((f) => f.ext === '.otf') ||
+      fonts.find((f) => f.ext === '.woff')
+    )?.buffer || null
 
-  const displayFont = fonts.find((f) => f.ext === '.woff2') || parseableFont || fonts[0]
+  const woff2Font = fonts.find((f) => f.ext === '.woff2')
+  if (!parseableBuffer && woff2Font) {
+    try {
+      const ttfBytes = await decompressWoff2(woff2Font.buffer.slice(0))
+      parseableBuffer = ttfBytes.buffer.slice(
+        ttfBytes.byteOffset,
+        ttfBytes.byteOffset + ttfBytes.byteLength
+      )
+    } catch (e) {
+      console.warn('Failed to decompress WOFF2 with woff2-encoder:', e)
+    }
+  }
+
+  const displayFont = woff2Font || fonts[0]
 
   const combinedCss = cssFiles.map((c) => c.text).join('\n')
   const cssInfo = combinedCss ? parseIconCss(combinedCss) : null
@@ -199,8 +215,8 @@ export async function parseUploadedWebfont({
   const codepoints = {}
   let notice = ''
 
-  if (parseableFont) {
-    const otFont = opentype.parse(parseableFont.buffer.slice(0))
+  if (parseableBuffer) {
+    const otFont = opentype.parse(parseableBuffer.slice(0))
     const unitsPerEm = otFont.unitsPerEm || 1000
     const ascender = otFont.ascender || 850
 
@@ -276,9 +292,11 @@ export async function parseUploadedWebfont({
   }
 
   const ttfFile = fonts.find((f) => f.ext === '.ttf')
+  const otfFile = fonts.find((f) => f.ext === '.otf')
   const woffFile = fonts.find((f) => f.ext === '.woff')
   const woff2File = fonts.find((f) => f.ext === '.woff2')
   if (ttfFile) artifacts.ttfBuffer = ttfFile.buffer
+  if (otfFile) artifacts.otfBuffer = otfFile.buffer
   if (woffFile) artifacts.woffBytes = new Uint8Array(woffFile.buffer)
   if (woff2File) artifacts.woff2Buffer = woff2File.buffer
 

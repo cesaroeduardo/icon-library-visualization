@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import {
   Search,
   SlidersHorizontal,
@@ -31,7 +31,30 @@ const props = defineProps({
 
 const emit = defineEmits(['back', 'edit-svgs', 'select-preset', 'select-style', 'create-own'])
 
-const searchQuery = ref('')
+function readSearchFromUrl() {
+  try {
+    return new URLSearchParams(window.location.search).get('q') || ''
+  } catch {
+    return ''
+  }
+}
+
+function syncSearchToUrl(value) {
+  const url = new URL(window.location.href)
+  const trimmed = value.trim()
+  if (trimmed) {
+    url.searchParams.set('q', trimmed)
+  } else {
+    url.searchParams.delete('q')
+  }
+  const next = `${url.pathname}${url.search}${url.hash}`
+  const current = `${window.location.pathname}${window.location.search}${window.location.hash}`
+  if (next !== current) {
+    window.history.replaceState(null, '', next)
+  }
+}
+
+const searchQuery = ref(readSearchFromUrl())
 const activeFilter = ref('all')
 const defaultColor = () => (isDark.value ? '#f5f5f5' : '#161618')
 const iconsColor = ref(defaultColor())
@@ -43,6 +66,18 @@ const selectedFontSize = ref(24)
 const downloadFormat = ref('svg')
 const openBottombar = ref(false)
 const exporting = ref(false)
+
+onMounted(() => {
+  const fromUrl = readSearchFromUrl()
+  if (fromUrl && fromUrl !== searchQuery.value) {
+    searchQuery.value = fromUrl
+  }
+  syncSearchToUrl(searchQuery.value)
+})
+
+watch(searchQuery, (value) => {
+  syncSearchToUrl(value)
+})
 
 watch(pureColor, (newVal) => {
   iconsColor.value = newVal

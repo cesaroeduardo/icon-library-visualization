@@ -127,3 +127,33 @@ body {
   background-size: 128px 128px;
   background-repeat: repeat;
 }
+
+/* Demo explorer size slider */
+.demo-size-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  background-color: color-mix(in srgb, var(--foreground) 12%, transparent);
+  cursor: pointer;
+}
+
+.demo-size-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: grab;
+  background-color: var(--brand);
+  border: 2px solid var(--surface-inset);
+}
+
+.demo-size-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  cursor: grab;
+  border: 2px solid var(--surface-inset);
+  background-color: var(--brand);
+}

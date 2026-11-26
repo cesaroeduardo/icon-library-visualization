@@ -38,6 +38,22 @@ async function copyInstall() {
   }
 }
 
+const copiedPrompt = ref(false)
+const AGENT_PROMPT = {
+  pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Depois use a skill create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais), gerar um set de ícones SVG originais 24×24 no mesmo estilo e criar o catalog.json com a skill catalog-icons. No final, me entregue os SVGs + catalog.json em uma pasta (ou .zip) para eu importar em https://icons.cesaroeduardo.com/studio/#create-own.`,
+  en: `Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Then use the create-icons skill to analyze my project's design system (tokens, fonts and current icons), generate a set of original 24×24 SVG icons in the same style, and build catalog.json with the catalog-icons skill. Finally, give me the SVGs + catalog.json in a folder (or .zip) so I can import them at https://icons.cesaroeduardo.com/studio/#create-own.`
+}
+
+async function copyPrompt() {
+  try {
+    await navigator.clipboard.writeText(AGENT_PROMPT[lang.value] || AGENT_PROMPT.en)
+    copiedPrompt.value = true
+    setTimeout(() => (copiedPrompt.value = false), 1500)
+  } catch {
+    // ignore
+  }
+}
+
 async function handleImportFiles(fileList) {
   if (!fileList || fileList.length === 0) return
   const svgs = []
@@ -82,7 +98,6 @@ async function handleImportFiles(fileList) {
     </button>
 
     <div class="max-w-2xl space-y-2">
-      <span class="tuff-tag">ICON LIBRARY STUDIO</span>
       <h1 class="text-3xl md:text-4xl font-semibold tracking-[-0.03em]">
         {{ lang === 'pt' ? 'Crie a sua própria Icon Library' : 'Create your own Icon Library' }}
       </h1>
@@ -162,7 +177,7 @@ async function handleImportFiles(fileList) {
 
     <!-- Row 2: Full-Width Featured Horizontal Layout for Create My Own Icons -->
     <div class="tuff-shell">
-      <div class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+      <div class="flex flex-wrap items-center gap-2 px-3 py-2">
         <div class="flex items-center gap-2.5">
           <span
             class="h-8 w-8 rounded-xl flex items-center justify-center"
@@ -174,7 +189,6 @@ async function handleImportFiles(fileList) {
             {{ t.cards.create.title }}
           </span>
         </div>
-        <span class="tuff-tag">AI SKILLS · CREATE + CATALOG · 8 STYLES</span>
       </div>
 
       <div class="tuff-panel p-6 md:p-7 space-y-6">
@@ -261,50 +275,87 @@ async function handleImportFiles(fileList) {
           </div>
         </div>
 
-        <!-- Bottom: Direct Dropzone for Skill-Generated SVGs -->
-        <div
-          @dragover.prevent="isDragging = true"
-          @dragleave.prevent="isDragging = false"
-          @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
-          @click="fileInput?.click()"
-          class="tuff-inset px-5 py-4 cursor-pointer transition-colors flex flex-col sm:flex-row items-center justify-between gap-4"
-          :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
-        >
-          <input
-            ref="fileInput"
-            type="file"
-            multiple
-            accept=".svg,.zip,.json"
-            class="hidden"
-            @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
-          />
-          <div class="flex items-center gap-3.5">
-            <span
-              class="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
-              style="background-color: var(--fg-tint-6);"
-            >
-              <UploadCloud class="w-5 h-5" style="color: var(--brand);" />
-            </span>
-            <div class="text-left">
-              <p class="text-xs sm:text-sm font-medium">
-                {{
-                  lang === 'pt'
-                    ? 'Já gerou seus ícones com a skill?'
-                    : 'Already generated icons with the skill?'
-                }}
-              </p>
-              <p class="text-xs" style="color: var(--muted-foreground);">
-                {{
-                  lang === 'pt'
-                    ? 'Arraste os SVGs + catalog.json (ou .zip) aqui para compilar direto na library.'
-                    : 'Drop your SVGs + catalog.json (or .zip) here to compile straight into the library.'
-                }}
-              </p>
+        <div class="space-y-2">
+          <!-- Copyable AI Agent Prompt Banner -->
+          <div class="tuff-inset px-5 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3.5 min-w-0">
+              <span
+                class="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
+                style="background-color: var(--fg-tint-6);"
+              >
+                <Sparkles class="w-5 h-5" style="color: var(--brand);" />
+              </span>
+              <div class="text-left min-w-0">
+                <p class="text-xs sm:text-sm font-medium">
+                  {{ lang === 'pt' ? 'Quer que o agente faça tudo?' : 'Want your agent to do it all?' }}
+                </p>
+                <p class="text-xs" style="color: var(--muted-foreground);">
+                  {{
+                    lang === 'pt'
+                      ? 'Copie o prompt: ele baixa o projeto, instala as skills e gera seus ícones + catalog.json.'
+                      : 'Copy the prompt: it downloads the project, installs the skills and generates your icons + catalog.json.'
+                  }}
+                </p>
+              </div>
             </div>
+            <button @click="copyPrompt" class="tuff-btn-secondary shrink-0">
+              <Check v-if="copiedPrompt" class="w-3.5 h-3.5" style="color: var(--positive);" />
+              <Copy v-else class="w-3.5 h-3.5" />
+              <span>
+                {{
+                  copiedPrompt
+                    ? (lang === 'pt' ? 'Prompt copiado' : 'Prompt copied')
+                    : (lang === 'pt' ? 'Copiar prompt' : 'Copy prompt')
+                }}
+              </span>
+            </button>
           </div>
-          <span class="tuff-btn-secondary shrink-0">
-            {{ lang === 'pt' ? 'Importar SVGs' : 'Import SVGs' }}
-          </span>
+
+          <!-- Bottom: Direct Dropzone for Skill-Generated SVGs -->
+          <div
+            @dragover.prevent="isDragging = true"
+            @dragleave.prevent="isDragging = false"
+            @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
+            @click="fileInput?.click()"
+            class="tuff-inset px-5 py-4 cursor-pointer transition-colors flex flex-col sm:flex-row items-center justify-between gap-4"
+            :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
+          >
+            <input
+              ref="fileInput"
+              type="file"
+              multiple
+              accept=".svg,.zip,.json"
+              class="hidden"
+              @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
+            />
+            <div class="flex items-center gap-3.5">
+              <span
+                class="h-10 w-10 rounded-xl flex items-center justify-center shrink-0"
+                style="background-color: var(--fg-tint-6);"
+              >
+                <UploadCloud class="w-5 h-5" style="color: var(--brand);" />
+              </span>
+              <div class="text-left">
+                <p class="text-xs sm:text-sm font-medium">
+                  {{
+                    lang === 'pt'
+                      ? 'Já gerou seus ícones com a skill?'
+                      : 'Already generated icons with the skill?'
+                  }}
+                </p>
+                <p class="text-xs" style="color: var(--muted-foreground);">
+                  {{
+                    lang === 'pt'
+                      ? 'Arraste os SVGs + catalog.json (ou .zip) aqui para compilar direto na library.'
+                      : 'Drop your SVGs + catalog.json (or .zip) here to compile straight into the library.'
+                  }}
+                </p>
+              </div>
+            </div>
+            <span class="tuff-btn-secondary shrink-0">
+              {{ lang === 'pt' ? 'Importar SVGs' : 'Import SVGs' }}
+            </span>
+          </div>
         </div>
       </div>
     </div>

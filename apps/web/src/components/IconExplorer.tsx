@@ -7,7 +7,7 @@ import {
   Code2,
   Copy,
   Download,
-  Plus,
+  Upload,
   ExternalLink
 } from 'lucide-react'
 import { Shell, Panel, StatusPill, Tag, ActionButton, ActionLink } from '@/components/ui/tuff'
@@ -110,6 +110,8 @@ interface IconExplorerProps {
 }
 
 const PAGE_SIZE = 60
+const ICON_SIZES = [12, 16, 20, 24, 28, 32, 40, 48] as const
+const DEFAULT_SIZE_INDEX = 3 // 24px
 const libraryCache = new Map<string, DemoIcon[]>()
 
 function prepareSvg(raw: string, dimension: number) {
@@ -131,8 +133,8 @@ export function IconExplorer({ lang }: IconExplorerProps) {
   const [loadedIcons, setLoadedIcons] = useState<DemoIcon[]>([])
   const [loadingLib, setLoadingLib] = useState(true)
   const [query, setQuery] = useState('')
-  const [sort, setSort] = useState<'default' | 'az'>('default')
-  const [size, setSize] = useState<16 | 24 | 48>(24)
+  const [sizeIndex, setSizeIndex] = useState(DEFAULT_SIZE_INDEX)
+  const size = ICON_SIZES[sizeIndex] ?? 24
   const [page, setPage] = useState(1)
   const [feedback, setFeedback] = useState<{ key: string; label: string } | null>(null)
 
@@ -173,16 +175,11 @@ export function IconExplorer({ lang }: IconExplorerProps) {
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
-    const base = q
-      ? loadedIcons.filter(
-          (i) => i.name.toLowerCase().includes(q) || i.keywords.toLowerCase().includes(q)
-        )
-      : loadedIcons
-    if (sort === 'az') {
-      return [...base].sort((a, b) => a.name.localeCompare(b.name))
-    }
-    return base
-  }, [loadedIcons, query, sort])
+    if (!q) return loadedIcons
+    return loadedIcons.filter(
+      (i) => i.name.toLowerCase().includes(q) || i.keywords.toLowerCase().includes(q)
+    )
+  }, [loadedIcons, query])
 
   const totalPages = Math.max(1, Math.ceil(filtered.length / PAGE_SIZE))
   const safePage = Math.min(page, totalPages)
@@ -279,8 +276,8 @@ export function IconExplorer({ lang }: IconExplorerProps) {
           </div>
 
           <ActionLink href="/studio/#create-own" variant="primary" size="sm">
-            <Plus className="w-3.5 h-3.5" />
-            <span>{lang === 'pt' ? 'Criar minha própria' : 'Create my own'}</span>
+            <Upload className="w-3.5 h-3.5" />
+            <span>{lang === 'pt' ? 'Enviar meus ícones' : 'Upload my own icons'}</span>
           </ActionLink>
         </div>
 
@@ -317,46 +314,27 @@ export function IconExplorer({ lang }: IconExplorerProps) {
           </div>
 
           <div className="flex flex-wrap items-center gap-2">
-            <div className="inline-flex items-center rounded-full bg-foreground/[0.05] p-0.5">
-              <button
-                onClick={() => setSort('default')}
-                className={`h-7 px-3 rounded-full text-xs font-medium transition-colors cursor-pointer ${
-                  sort === 'default'
-                    ? 'bg-surface-raised text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {t.sortDefault}
-              </button>
-              <button
-                onClick={() => setSort('az')}
-                className={`h-7 px-3 rounded-full text-xs font-medium transition-colors cursor-pointer ${
-                  sort === 'az'
-                    ? 'bg-surface-raised text-foreground'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-              >
-                {t.sortAlpha}
-              </button>
+            <div className="flex items-center gap-2.5 h-9 px-3.5 rounded-full bg-foreground/[0.05] min-w-[160px]">
+              <input
+                type="range"
+                min={0}
+                max={ICON_SIZES.length - 1}
+                step={1}
+                value={sizeIndex}
+                onChange={(e) => setSizeIndex(Number(e.target.value))}
+                aria-label={lang === 'pt' ? 'Tamanho do ícone' : 'Icon size'}
+                className="demo-size-slider w-24 sm:w-28"
+              />
+              <span className="font-mono text-[11px] text-foreground tabular-nums w-8 text-right">
+                {size}px
+              </span>
             </div>
 
-            <div className="inline-flex items-center rounded-full bg-foreground/[0.05] p-0.5 font-mono">
-              {([16, 24, 48] as const).map((px) => (
-                <button
-                  key={px}
-                  onClick={() => setSize(px)}
-                  className={`h-7 px-2.5 rounded-full text-[11px] font-medium transition-colors cursor-pointer ${
-                    size === px
-                      ? 'bg-surface-raised text-foreground'
-                      : 'text-muted-foreground hover:text-foreground'
-                  }`}
-                >
-                  {px}px
-                </button>
-              ))}
-            </div>
-
-            <ActionLink href={`/studio/#lib-${selectedLibId}`} variant="secondary" size="sm">
+            <ActionLink
+              href={`/studio/${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}#lib-${selectedLibId}`}
+              variant="secondary"
+              size="sm"
+            >
               <span>{t.openFull}</span>
               <ArrowUpRight className="w-3.5 h-3.5" />
             </ActionLink>

@@ -30,7 +30,8 @@ import { IconExplorer } from '@/components/IconExplorer'
 import { SkillsSection } from '@/components/SkillsSection'
 import { DocsView } from '@/components/DocsView'
 import { BrandLogo } from '@/components/BrandLogo'
-import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, type Lang } from '@/content'
+import { GithubStars } from '@/components/GithubStars'
+import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, AGENT_PROMPT, type Lang } from '@/content'
 
 export function App() {
   const [lang, setLang] = useState<Lang>(() => {
@@ -45,6 +46,7 @@ export function App() {
   })
 
   const [copiedCmd, setCopiedCmd] = useState(false)
+  const [copiedPrompt, setCopiedPrompt] = useState(false)
   const [docsSection, setDocsSection] = useState<string | undefined>(() =>
     window.location.hash.replace(/^#\/?/, '').toLowerCase() === 'docs-skills'
       ? 'ai-skills'
@@ -103,6 +105,16 @@ export function App() {
     localStorage.setItem('icon-library-lang', lang)
   }, [lang])
 
+  async function copyAgentPrompt() {
+    try {
+      await navigator.clipboard.writeText(AGENT_PROMPT[lang])
+      setCopiedPrompt(true)
+      setTimeout(() => setCopiedPrompt(false), 1500)
+    } catch {
+      // ignore
+    }
+  }
+
   async function copyCloneCmd() {
     try {
       await navigator.clipboard.writeText(CLONE_CMD)
@@ -155,7 +167,7 @@ export function App() {
                 className="inline-flex items-center cursor-pointer hover:opacity-90 transition-opacity"
                 aria-label="Icon Library Studio"
               >
-                <BrandLogo className="h-6 sm:h-7 w-auto" />
+                <BrandLogo className="h-[19px] sm:h-[22px] w-auto" />
               </button>
 
               <nav className="hidden md:flex items-center gap-1 text-[0.8125rem] font-medium text-muted-foreground">
@@ -220,9 +232,11 @@ export function App() {
                 rel="noopener noreferrer"
                 variant="primary"
                 size="sm"
+                className="items-stretch"
               >
-                <Github className="w-3.5 h-3.5" />
-                <span className="hidden sm:inline">{t.nav.github}</span>
+                <Github className="w-3.5 h-3.5 self-center" />
+                <span className="hidden sm:inline self-center">{t.nav.github}</span>
+                <GithubStars />
               </ActionLink>
             </div>
           </div>
@@ -262,10 +276,11 @@ export function App() {
                     rel="noopener noreferrer"
                     variant="primary"
                     size="md"
+                    className="items-stretch"
                   >
-                    <Github className="w-4 h-4" />
-                    <span>{t.hero.ctaPrimary}</span>
-                    <ArrowUpRight className="w-4 h-4" />
+                    <Github className="w-4 h-4 self-center" />
+                    <span className="self-center">{t.hero.ctaPrimary}</span>
+                    <GithubStars />
                   </ActionLink>
 
                   <ActionLink href={STUDIO_URL} variant="secondary" size="md">
@@ -321,6 +336,32 @@ export function App() {
                         )}
                         <span className="text-xs">{copiedCmd ? t.hero.copied : t.hero.copy}</span>
                       </ActionButton>
+                    </Inset>
+
+                    {/* Copyable AI agent prompt */}
+                    <Inset className="px-3 py-2.5 space-y-2">
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="inline-flex items-center gap-1.5 text-xs font-medium text-foreground">
+                          <Sparkles className="w-3.5 h-3.5 text-brand" />
+                          {lang === 'pt' ? 'Prompt para o seu agente de IA' : 'Prompt for your AI agent'}
+                        </span>
+                        <ActionButton
+                          variant="quiet"
+                          size="sm"
+                          className="h-7 px-2.5 shrink-0"
+                          onClick={copyAgentPrompt}
+                        >
+                          {copiedPrompt ? (
+                            <Check className="w-3.5 h-3.5 text-positive" />
+                          ) : (
+                            <Copy className="w-3.5 h-3.5" />
+                          )}
+                          <span className="text-xs">{copiedPrompt ? t.hero.copied : t.hero.copy}</span>
+                        </ActionButton>
+                      </div>
+                      <p className="font-mono text-[11px] leading-5 text-muted-foreground line-clamp-3">
+                        {AGENT_PROMPT[lang]}
+                      </p>
                     </Inset>
 
                     {/* 2x3 Quick-links grid */}
@@ -487,9 +528,11 @@ export function App() {
                   rel="noopener noreferrer"
                   variant="primary"
                   size="md"
+                  className="items-stretch"
                 >
-                  <Github className="w-4 h-4" />
-                  <span>{t.footer.ctaBtn}</span>
+                  <Github className="w-4 h-4 self-center" />
+                  <span className="self-center">{t.footer.ctaBtn}</span>
+                  <GithubStars />
                 </ActionLink>
                 <ActionLink href={STUDIO_URL} variant="secondary" size="md">
                   <span>{t.hero.ctaSecondary}</span>
@@ -501,7 +544,7 @@ export function App() {
             {/* Footer Columns */}
             <div className="grid grid-cols-1 md:grid-cols-12 gap-8 py-12 text-xs">
               <div className="md:col-span-5 space-y-3">
-                <BrandLogo className="h-6 w-auto" />
+                <BrandLogo className="h-[19px] w-auto" />
                 <p className="text-muted-foreground leading-relaxed max-w-sm">
                   {t.footer.brandDesc}
                 </p>

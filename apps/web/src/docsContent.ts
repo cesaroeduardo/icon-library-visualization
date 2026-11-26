@@ -135,6 +135,10 @@ npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
 npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
         subsections: [
           {
+            title: 'Prompt pronto para o seu agente',
+            body: 'Copie e cole no Antigravity, Claude Code, Cursor ou Codex: «Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com `npx skills add cesaroeduardo/icon-library-visualization` (create-icons + catalog-icons). Depois use a skill create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais), gerar um set de ícones SVG originais 24×24 no mesmo estilo e criar o catalog.json com a skill catalog-icons. No final, me entregue os SVGs + catalog.json em uma pasta (ou .zip) para eu importar em https://icons.cesaroeduardo.com/studio/#create-own.»'
+          },
+          {
             title: 'skills/create-icons — Geração de ícones originais',
             body: 'Inspirada na skill generate-icons de @banhosdev (github.com/sergiobanhos/generate-icons). Lê os tokens CSS/Tailwind, fontes e ícones atuais do seu projeto, gera um style sheet explícito (icon-style.json), prova o estilo em uma amostra de 6–8 ícones e depois desenha o set completo + catalog.json validado.'
           },
@@ -387,6 +391,10 @@ npx skills add cesaroeduardo/icon-library-visualization
 npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
 npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
         subsections: [
+          {
+            title: 'Ready-to-use prompt for your agent',
+            body: 'Copy and paste into Antigravity, Claude Code, Cursor or Codex: “Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with `npx skills add cesaroeduardo/icon-library-visualization` (create-icons + catalog-icons). Then use the create-icons skill to analyze my project\'s design system (tokens, fonts and current icons), generate a set of original 24×24 SVG icons in the same style, and build catalog.json with the catalog-icons skill. Finally, give me the SVGs + catalog.json in a folder (or .zip) so I can import them at https://icons.cesaroeduardo.com/studio/#create-own.”'
+          },
           {
             title: 'skills/create-icons — Original icon generation',
             body: 'Inspired by @banhosdev’s generate-icons skill (github.com/sergiobanhos/generate-icons). Scans your project’s CSS/Tailwind tokens, fonts, and current icons, writes an explicit style sheet (icon-style.json), proves the style on a 6–8 icon sample, and outputs the full set + validated catalog.json.'
