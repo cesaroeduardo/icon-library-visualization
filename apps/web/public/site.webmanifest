@@ -1,7 +1,7 @@
 {
   "name": "Icon Library Studio",
   "short_name": "Icon Library",
-  "description": "Open-source icon visualization library — browse, search, compile, and export webfonts.",
+  "description": "Open-source icon visualization library: browse, search, compile, and export webfonts.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0c0c0c",

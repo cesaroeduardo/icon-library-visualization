@@ -20,7 +20,7 @@ export function toggleLang() {
 export const messages = {
   pt: {
     appName: 'Icon Library Studio',
-    tagline: 'Monte, compile e crie bibliotecas de ícones direto no navegador — 100% estático.',
+    tagline: 'Monte, compile e crie bibliotecas de ícones direto no navegador. 100% estático.',
     backHome: 'Início',
     docsNav: 'Docs',
     switchMode: 'Trocar modo',
@@ -35,7 +35,7 @@ export const messages = {
       bannerDesc:
         'Explore uma webfont de demonstração com 332 ícones: teste a busca instantânea, troca de cor, redimensionamento, cópia de HTML e download em SVG/PNG.',
       cta: 'Abrir Demo da Galeria',
-      loading: 'Carregando demo...'
+      loading: 'Carregando demo.'
     },
     cards: {
       webfont: {
@@ -71,7 +71,7 @@ export const messages = {
       cssDetected: 'CSS detectado: nomes de classes serão preservados.',
       noCssNote: 'Sem arquivo CSS: os nomes dos glifos serão lidos diretamente da fonte.',
       loadBtn: 'Montar Icon Library',
-      loading: 'Lendo glifos da fonte...',
+      loading: 'Lendo glifos da fonte.',
       errorNoFont: 'Nenhum arquivo de fonte (.ttf, .otf, .woff, .woff2) foi encontrado.',
       errorWoff2Notice:
         'Arquivo .woff2 carregado via FontFace API. Para extrair nomes e paths vetoriais de .woff2 sem CSS, envie também o .css ou a versão .ttf/.woff.',
@@ -96,7 +96,7 @@ export const messages = {
       coloredCount: 'Coloridos',
       monoCount: 'Para webfont',
       buildBtn: 'Compilar Webfont',
-      building: 'Compilando webfont e gerando CSS...',
+      building: 'Compilando webfont e gerando CSS.',
       addMore: 'Adicionar mais SVGs',
       clearAll: 'Limpar lista',
       noSvgs: 'Nenhum arquivo .svg encontrado.'
@@ -133,7 +133,7 @@ export const messages = {
       copy: 'Copiar'
     },
     gallery: {
-      searchPlaceholder: 'Buscar por nome ou palavra-chave em {count} ícones...',
+      searchPlaceholder: 'Buscar por nome ou palavra-chave em {count} ícones.',
       notFound: 'Não encontrou seu ícone? Tente outra palavra-chave.',
       size: 'Tamanho',
       color: 'Cor',
@@ -155,7 +155,7 @@ export const messages = {
   },
   en: {
     appName: 'Icon Library Studio',
-    tagline: 'Inspect, compile, and create icon libraries right in the browser — 100% static.',
+    tagline: 'Inspect, compile, and create icon libraries right in the browser. 100% static.',
     backHome: 'Home',
     docsNav: 'Docs',
     switchMode: 'Switch mode',
@@ -170,7 +170,7 @@ export const messages = {
       bannerDesc:
         'Explore a built-in demo webfont with 332 icons: test instant search, live recoloring, resizing, HTML copy, and SVG/PNG downloads.',
       cta: 'Open Gallery Demo',
-      loading: 'Loading demo...'
+      loading: 'Loading demo.'
     },
     cards: {
       webfont: {
@@ -206,7 +206,7 @@ export const messages = {
       cssDetected: 'CSS detected: exact class names will be preserved.',
       noCssNote: 'No CSS file: glyph names will be extracted directly from the font.',
       loadBtn: 'Build Icon Library',
-      loading: 'Reading font glyphs...',
+      loading: 'Reading font glyphs.',
       errorNoFont: 'No font file (.ttf, .otf, .woff, .woff2) was found.',
       errorWoff2Notice:
         '.woff2 loaded via FontFace API. To inspect glyph names and vector paths from .woff2 without CSS, also include the .css or a .ttf/.woff file.',
@@ -231,7 +231,7 @@ export const messages = {
       coloredCount: 'Colored',
       monoCount: 'For webfont',
       buildBtn: 'Compile Webfont',
-      building: 'Compiling webfont & generating CSS...',
+      building: 'Compiling webfont & generating CSS.',
       addMore: 'Add more SVGs',
       clearAll: 'Clear list',
       noSvgs: 'No .svg files found.'
@@ -254,7 +254,7 @@ export const messages = {
       step3Items: [
         'Scans your CSS tokens, Tailwind config, fonts, and existing icons (scripts/scan_design_system.py).',
         'Writes an explicit style sheet (icon-style.json) documenting every design decision.',
-        'Draws a 6–8 icon sample for your approval before drawing the full set.',
+        'Draws a 6-8 icon sample for your approval before drawing the full set.',
         'Validates every SVG (scripts/validate.py) and outputs framework components + svg/ + sprite + catalog.html.'
       ],
       step4Title: '4. Preview & compile to Webfont here',
@@ -268,7 +268,7 @@ export const messages = {
       copy: 'Copy'
     },
     gallery: {
-      searchPlaceholder: 'Search by name or keyword across {count} icons...',
+      searchPlaceholder: 'Search by name or keyword across {count} icons.',
       notFound: 'Didn’t find your icon? Try another keyword.',
       size: 'Size',
       color: 'Color',

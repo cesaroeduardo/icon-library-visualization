@@ -3,15 +3,15 @@ export const CLONE_CMD = 'git clone https://github.com/cesaroeduardo/icon-librar
 export const STUDIO_URL = '/studio/'
 
 export const AGENT_PROMPT = {
-  pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Depois use a skill create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais), gerar um set de ícones SVG originais 24×24 no mesmo estilo e criar o catalog.json com a skill catalog-icons. No final, me entregue os SVGs + catalog.json em uma pasta (ou .zip) para eu importar em https://icons.cesaroeduardo.com/studio/#create-own.`,
-  en: `Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Then use the create-icons skill to analyze my project's design system (tokens, fonts and current icons), generate a set of original 24×24 SVG icons in the same style, and build catalog.json with the catalog-icons skill. Finally, give me the SVGs + catalog.json in a folder (or .zip) so I can import them at https://icons.cesaroeduardo.com/studio/#create-own.`
+  pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Use create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais) e gerar SVGs originais 24×24 no mesmo estilo; use catalog-icons para o catalog.json. Coloque os SVGs + catalog.json em apps/selfhost/icons/, ajuste selfhost.config.json e brand/logo.svg com o nome/logo do meu produto, rode \`pnpm --filter @icon-library/selfhost build\` e me diga como publicar apps/selfhost/dist/ (galeria self-hosted só da minha library, sem demos).`,
+  en: `Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Use create-icons to analyze my project's design system (tokens, fonts and current icons) and generate original 24×24 SVGs in the same style; use catalog-icons for catalog.json. Put the SVGs + catalog.json into apps/selfhost/icons/, update selfhost.config.json and brand/logo.svg with my product name/logo, run \`pnpm --filter @icon-library/selfhost build\`, and tell me how to publish apps/selfhost/dist/ (a self-hosted gallery of only my library, no demos).`
 }
 
 export type Lang = 'pt' | 'en'
 
 export const copy = {
   pt: {
-    announcement: '100% Open Source · Licença MIT — Suba webfonts, compile SVGs ou gere ícones com IA',
+    announcement: '100% Open Source · Licença MIT. Suba webfonts, compile SVGs ou gere ícones com IA',
     announcementCta: 'Ver no GitHub',
     nav: {
       explorer: 'Explorer',
@@ -24,10 +24,10 @@ export const copy = {
     },
     hero: {
       pill: 'Open Source · Licença MIT',
-      titleLine1: 'Sua icon library.',
-      titleLine2: 'Pronta direto no navegador.',
+      titleLine1: 'Seus ícones merecem',
+      titleLine2: 'uma visualização organizada.',
       subtitle:
-        'Inspecione webfonts existentes, valide e compile SVGs em WOFF/TTF + CSS, ou crie um conjunto original de ícones com uma skill de IA — tudo estático, sem servidor.',
+        'Suba seus ícones para ter uma visualização de library profissional para compartilhar. Ou crie seu próprio conjunto original de ícones com uma skill de IA.',
       ctaPrimary: 'Ver no GitHub',
       ctaSecondary: 'Abrir Studio',
       checks: ['100% Open Source (MIT)', 'Zero backend · Privado', 'Webfont + SVG + Skill de IA'],
@@ -37,8 +37,7 @@ export const copy = {
       copied: 'Copiado!',
       quickLinks: [
         { label: 'Abrir Icon Library', href: '/studio/' },
-        { label: 'Subir Webfont', href: '/studio/#webfont' },
-        { label: 'Compilar SVGs', href: '/studio/#svg' },
+        { label: 'Webfont / SVG → Compilar', href: '/studio/#create-own' },
         { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
         { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
         { label: 'Self-host da library', href: '#docs-selfhost', docs: true },
@@ -46,13 +45,13 @@ export const copy = {
       ]
     },
     explorer: {
-      heading1: 'Três fluxos.',
-      heading2: 'Um único estúdio.',
-      desc: 'Teste a busca instantânea com a webfont de demonstração (332 ícones). Clique em qualquer ícone para copiar o HTML ou abra o Studio completo para subir seus próprios arquivos.',
-      searchPlaceholder: 'Buscar em {count} ícones da demo...',
+      heading1: '',
+      heading2: 'Clique e explore.',
+      desc: 'Bibliotecas open source de exemplo. Use os botões de set, a busca e o hover nos ícones, ou clique em Abrir no Studio / Enviar meus ícones.',
+      searchPlaceholder: 'Buscar em {count} ícones da demo.',
       openFull: 'Abrir no Studio',
       copiedToast: 'Copiado: {snippet}',
-      showing: '{from}–{to} de {total} ícones',
+      showing: '{from}-{to} de {total} ícones',
       prev: 'Anterior',
       next: 'Próxima',
       empty: 'Nenhum ícone encontrado para essa busca.'
@@ -61,21 +60,21 @@ export const copy = {
       heading1: 'Um espaço para',
       heading2: 'compartilhar seus ícones.',
       subtitle:
-        'Visualize bibliotecas, busque, inspecione e exporte — um lugar para organizar o set de ícones do seu produto, do upload à webfont pronta para usar.',
+        'Visualize bibliotecas, busque, inspecione e exporte: um lugar para organizar o set de ícones do seu produto, do upload à webfont pronta para usar.',
       items: [
         {
           id: 'studio',
           tag: 'WEBFONT · SVG → WOFF/TTF',
           title: 'Inspector & Compiler no Studio',
-          desc: 'Suba uma webfont pronta (com ou sem CSS) para inspecionar glifos, ou arraste SVGs/.zip para validar, compilar em WOFF/TTF + CSS + catalog.json e exportar o pacote completo — tudo no navegador.',
+          desc: 'Suba uma webfont pronta (com ou sem CSS) para inspecionar glifos, ou arraste SVGs/.zip para validar, compilar em WOFF/TTF + CSS + catalog.json e exportar o pacote completo, tudo no navegador.',
           cta: 'Abrir Studio',
           href: '/studio/#create-own'
         },
         {
           id: 'selfhost',
           tag: 'APPS/SELFHOST · PASTA ICONS/',
-          title: 'Self-host só da sua library',
-          desc: 'Publique uma galeria só com os seus ícones: pasta icons/ como fonte da verdade, logo própria, build estático e catalog.json opcional — sem demos e sem landing.',
+          title: 'Hospede a galeria só com os seus ícones',
+          desc: 'Um site só da sua library, sem demos. Coloque os SVGs em icons/, troque a logo, rode o build e publique. O catalog.json é opcional e só melhora a busca.',
           cta: 'Guia de self-host',
           href: '#docs-selfhost',
           docs: true
@@ -106,7 +105,7 @@ export const copy = {
       items: [
         {
           q: 'O projeto é realmente 100% gratuito e open source?',
-          a: 'Sim. Todo o código-fonte (landing page, Studio, engine de compilação e skill de IA) é distribuído sob licença MIT no GitHub. Você pode usar, modificar e hospedar onde quiser — inclusive em projetos comerciais.'
+          a: 'Sim. Todo o código-fonte (landing page, Studio, engine de compilação e skill de IA) é distribuído sob licença MIT no GitHub. Você pode usar, modificar e hospedar onde quiser, inclusive em projetos comerciais.'
         },
         {
           q: 'Meus arquivos SVG ou webfonts são enviados para algum servidor?',
@@ -143,7 +142,7 @@ export const copy = {
     }
   },
   en: {
-    announcement: '100% Open Source · MIT License — Inspect webfonts, compile SVGs, or generate icons with AI',
+    announcement: '100% Open Source · MIT License. Inspect webfonts, compile SVGs, or generate icons with AI',
     announcementCta: 'View on GitHub',
     nav: {
       explorer: 'Explorer',
@@ -156,10 +155,10 @@ export const copy = {
     },
     hero: {
       pill: 'Open Source · MIT License',
-      titleLine1: 'Your icon library.',
-      titleLine2: 'Built right in the browser.',
+      titleLine1: 'Your icons deserve',
+      titleLine2: 'an organized view.',
       subtitle:
-        'Inspect existing webfonts, validate and compile SVGs into WOFF/TTF + CSS, or generate an original icon set with an AI agent skill — 100% static, zero backend.',
+        'Upload your icons for a professional library view you can share. Or create your own original icon set with an AI skill.',
       ctaPrimary: 'View on GitHub',
       ctaSecondary: 'Open Studio',
       checks: ['100% Open Source (MIT)', 'Zero backend · Private', 'Webfont + SVG + AI Skill'],
@@ -169,8 +168,7 @@ export const copy = {
       copied: 'Copied!',
       quickLinks: [
         { label: 'Open Icon Library', href: '/studio/' },
-        { label: 'Upload Webfont', href: '/studio/#webfont' },
-        { label: 'Compile SVGs', href: '/studio/#svg' },
+        { label: 'Webfont / SVG → Compile', href: '/studio/#create-own' },
         { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
         { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
         { label: 'Self-host your library', href: '#docs-selfhost', docs: true },
@@ -178,13 +176,13 @@ export const copy = {
       ]
     },
     explorer: {
-      heading1: 'Three workflows.',
-      heading2: 'One focused studio.',
-      desc: 'Try instant search across the built-in 332-icon demo webfont. Click any icon to copy its HTML snippet, or launch the full Studio to upload your own files.',
-      searchPlaceholder: 'Search {count} demo icons...',
+      heading1: '',
+      heading2: 'Click and explore.',
+      desc: 'Sample open-source libraries. Use the set buttons, search, and icon hover actions, or click Open in Studio / Upload my own icons.',
+      searchPlaceholder: 'Search {count} demo icons.',
       openFull: 'Open in Studio',
       copiedToast: 'Copied: {snippet}',
-      showing: '{from}–{to} of {total} icons',
+      showing: '{from}-{to} of {total} icons',
       prev: 'Prev',
       next: 'Next',
       empty: 'No icons match that query.'
@@ -193,21 +191,21 @@ export const copy = {
       heading1: 'A space to',
       heading2: 'share your icons.',
       subtitle:
-        'Browse libraries, search, inspect, and export — a place to organize your product’s icon set, from upload to a production-ready webfont.',
+        'Browse libraries, search, inspect, and export: a place to organize your product’s icon set, from upload to a production-ready webfont.',
       items: [
         {
           id: 'studio',
           tag: 'WEBFONT · SVG → WOFF/TTF',
           title: 'Studio Inspector & Compiler',
-          desc: 'Upload a ready webfont (with or without CSS) to inspect glyphs, or drop SVGs/.zip to validate, compile into WOFF/TTF + CSS + catalog.json, and export the full bundle — all in the browser.',
+          desc: 'Upload a ready webfont (with or without CSS) to inspect glyphs, or drop SVGs/.zip to validate, compile into WOFF/TTF + CSS + catalog.json, and export the full bundle, all in the browser.',
           cta: 'Open Studio',
           href: '/studio/#create-own'
         },
         {
           id: 'selfhost',
           tag: 'APPS/SELFHOST · ICONS/ FOLDER',
-          title: 'Self-host only your library',
-          desc: 'Ship a gallery with just your icons: icons/ as the source of truth, your logo, a static build, and optional catalog.json — no demos and no landing page.',
+          title: 'Host a gallery with only your icons',
+          desc: 'A site for just your library, with no demos. Drop SVGs in icons/, swap the logo, run the build, and publish. Catalog.json is optional and only improves search.',
           cta: 'Self-host guide',
           href: '#docs-selfhost',
           docs: true

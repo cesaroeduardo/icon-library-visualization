@@ -216,8 +216,8 @@ onMounted(async () => {
           <p class="text-sm" style="color: var(--muted-foreground);">
             {{
               isPt
-                ? 'O upload fica só neste navegador. Ele não altera a pasta icons/ — pra publicar um ícone novo, coloque o SVG lá e rode o build de novo.'
-                : 'Uploads stay in this browser only. They do not change the icons/ folder — to publish a new icon, add the SVG there and rebuild.'
+                ? 'O upload fica só neste navegador. Ele não altera a pasta icons/. Pra publicar um ícone novo, coloque o SVG lá e rode o build de novo.'
+                : 'Uploads stay in this browser only. They do not change the icons/ folder. To publish a new icon, add the SVG there and rebuild.'
             }}
           </p>
         </div>
@@ -268,7 +268,7 @@ onMounted(async () => {
         style="color: var(--muted-foreground);"
       >
         <Loader2 class="w-4 h-4 animate-spin" />
-        <span>{{ isPt ? 'Carregando biblioteca...' : 'Loading library...' }}</span>
+        <span>{{ isPt ? 'Carregando biblioteca.' : 'Loading library.' }}</span>
       </div>
 
       <div v-else-if="loadError && !activeLibrary" class="w-full max-w-xl mx-auto px-4 py-16 text-sm">
@@ -277,7 +277,7 @@ onMounted(async () => {
           {{
             isPt
               ? 'Rode o build com SVGs em icons/. O catalog.json nessa pasta é opcional.'
-              : 'Run the build with SVGs in icons/. catalog.json in that folder is optional.'
+              : 'Run the build with SVGs in icons/. Catalog.json in that folder is optional.'
           }}
         </p>
       </div>
@@ -295,8 +295,8 @@ onMounted(async () => {
               <FlaskConical class="w-3.5 h-3.5" />
               {{
                 isPt
-                  ? 'Sandbox local — não entra no deploy. A fonte da verdade continua sendo icons/.'
-                  : 'Local sandbox — not part of the deploy. icons/ is still the source of truth.'
+                  ? 'Sandbox local: não entra no deploy. A fonte da verdade continua sendo icons/.'
+                  : 'Local sandbox: not part of the deploy. icons/ is still the source of truth.'
               }}
             </span>
             <button type="button" class="tuff-btn-quiet !h-7 text-xs" @click="showBuilt">

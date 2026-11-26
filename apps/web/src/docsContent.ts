@@ -67,7 +67,7 @@ export const docsContent: Record<Lang, DocsLocale> = {
         lead: 'Uma Icon Library centraliza todos os ícones de um produto ou design system em um único catálogo pesquisável, padronizado e pronto para designers e desenvolvedores.',
         paragraphs: [
           'Sem uma biblioteca centralizada, equipes duplicam SVGs espalhados pelo código, misturam espessuras de traço diferentes e perdem tempo no handoff procurando qual ícone usar em cada tela.',
-          'O Icon Library Studio resolve esse fluxo 100% no navegador — sem servidor ou pipeline complexo. Você pode inspecionar webfonts existentes, compilar seus próprios SVGs em webfont + CSS + catalog.json, ou gerar um conjunto original com a skill de IA.'
+          'O Icon Library Studio resolve esse fluxo 100% no navegador, sem servidor ou pipeline complexo. Você pode inspecionar webfonts existentes, compilar seus próprios SVGs em webfont + CSS + catalog.json, ou gerar um conjunto original com a skill de IA.'
         ],
         callout: {
           type: 'tip',
@@ -92,7 +92,7 @@ export const docsContent: Record<Lang, DocsLocale> = {
             title: 'Subir Webfont',
             body: 'Ideal quando você já possui uma icon font pronta e quer visualizá-la, buscar glifos ou extrair SVGs/PNGs.',
             bullets: [
-              'Arraste arquivos .ttf, .otf, .woff ou .woff2 — opcionalmente junto com .css e/ou catalog.json, ou envie um .zip.',
+              'Arraste arquivos .ttf, .otf, .woff ou .woff2, opcionalmente junto com .css e/ou catalog.json, ou envie um .zip.',
               'Com .css junto, o sistema preserva exatamente os nomes das classes e o prefixo original.',
               'Sem .css (.ttf, .otf ou .woff), os nomes dos glifos e os vetores são lidos direto das tabelas internas da fonte.'
             ]
@@ -119,12 +119,12 @@ export const docsContent: Record<Lang, DocsLocale> = {
           },
           {
             title: 'Self-host só da sua library (apps/selfhost)',
-            body: 'Quando você quer publicar a galeria da empresa — sem demos Phosphor/Lucide e sem a landing — use o pacote apps/selfhost: pasta icons/ como fonte da verdade, logo própria e build estático.',
+            body: 'Quando você quer publicar a galeria da empresa (sem demos Phosphor/Lucide e sem a landing), use o pacote apps/selfhost: pasta icons/ como fonte da verdade, logo própria e build estático.',
             bullets: [
               'Coloque os SVGs em icons/ (catalog.json é opcional e melhora a busca com labels e keywords).',
               'Configure title, fontName, prefix e logo em selfhost.config.json.',
               'Rode pnpm --filter @icon-library/selfhost build e publique apps/selfhost/dist/.',
-              'Upload no browser continua disponível só como sandbox local — o deploy sempre reflete a pasta icons/.'
+              'Upload no browser continua disponível só como sandbox local. O deploy sempre reflete a pasta icons/.'
             ]
           }
         ]
@@ -134,7 +134,7 @@ export const docsContent: Record<Lang, DocsLocale> = {
         group: 'gettingStarted',
         nav: 'Self-host da sua library',
         title: 'Self-host facilitado: só a sua Icon Library',
-        lead: 'apps/selfhost é um app estático separado do Studio público. A galeria abre apenas a biblioteca gerada a partir da pasta icons/ — sem demos de terceiros e sem landing page.',
+        lead: 'apps/selfhost é um app estático separado do Studio público. A galeria abre apenas a biblioteca gerada a partir da pasta icons/, sem demos de terceiros e sem landing page.',
         paragraphs: [
           'Use este fluxo quando a Icon Library for um produto interno (design system da empresa): a pasta de SVGs é a fonte da verdade, o build gera webfont + CSS + manifest, e você sobe o dist/ em qualquer host estático.',
           'O catalog.json dentro de icons/ é opcional. Sem ele a busca usa o nome do arquivo; com ele labels, grupos e keywords bilíngues enriquecem a galeria.'
@@ -142,7 +142,7 @@ export const docsContent: Record<Lang, DocsLocale> = {
         callout: {
           type: 'tip',
           title: 'Não misture com o monorepo do seu app',
-          body: 'Trate apps/selfhost como um deploy separado (ou copie só essa pasta). Seu produto consome o .css/.woff gerados — não precisa embutir landing, demos ou skills no repositório da aplicação.'
+          body: 'Trate apps/selfhost como um deploy separado (ou copie só essa pasta). Seu produto consome o .css/.woff gerados e não precisa embutir landing, demos ou skills no repositório da aplicação.'
         },
         bullets: [
           'Fonte da verdade: icons/*.svg (+ catalog.json opcional).',
@@ -189,14 +189,14 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
         subsections: [
           {
             title: 'Prompt pronto para o seu agente',
-            body: 'Copie e cole no Antigravity, Claude Code, Cursor ou Codex: «Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com `npx skills add cesaroeduardo/icon-library-visualization` (create-icons + catalog-icons). Depois use a skill create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais), gerar um set de ícones SVG originais 24×24 no mesmo estilo e criar o catalog.json com a skill catalog-icons. No final, me entregue os SVGs + catalog.json em uma pasta (ou .zip) para eu importar em https://icons.cesaroeduardo.com/studio/#create-own.»'
+            body: 'Copie e cole no Antigravity, Claude Code, Cursor ou Codex: «Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com `npx skills add cesaroeduardo/icon-library-visualization` (create-icons + catalog-icons). Use create-icons para analisar o design system do meu projeto e gerar SVGs 24×24; use catalog-icons para o catalog.json. Coloque tudo em apps/selfhost/icons/, ajuste selfhost.config.json e brand/logo.svg, rode `pnpm --filter @icon-library/selfhost build` e me diga como publicar apps/selfhost/dist/ (galeria só da minha library).»'
           },
           {
-            title: 'skills/create-icons — Geração de ícones originais',
-            body: 'Inspirada na skill generate-icons de @banhosdev (github.com/sergiobanhos/generate-icons). Lê os tokens CSS/Tailwind, fontes e ícones atuais do seu projeto, gera um style sheet explícito (icon-style.json), prova o estilo em uma amostra de 6–8 ícones e depois desenha o set completo + catalog.json validado.'
+            title: 'skills/create-icons: Geração de ícones originais',
+            body: 'Inspirada na skill generate-icons de @banhosdev (github.com/sergiobanhos/generate-icons). Lê os tokens CSS/Tailwind, fontes e ícones atuais do seu projeto, gera um style sheet explícito (icon-style.json), prova o estilo em uma amostra de 6-8 ícones e depois desenha o set completo + catalog.json validado.'
           },
           {
-            title: 'skills/catalog-icons — Catalogação e keywords bilíngues',
+            title: 'skills/catalog-icons: Catalogação e keywords bilíngues',
             body: 'Escaneia qualquer pasta de SVGs ou .css de webfont, gera catalog.json com nomes legíveis, categorias e sinônimos bilíngues (PT/EN), suporta --merge para preservar edições manuais e --validate para checar o schema.'
           }
         ],
@@ -255,12 +255,12 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
           'Payload mínimo: uma biblioteca com 300+ ícones em WOFF2 pesa entre 20 KB e 65 KB.',
           'Uma única requisição HTTP: o navegador baixa e faz cache imutável de 1 único arquivo.',
           'Estilização nativa via CSS: font-size, color, hover, transições e alinhamento funcionam como texto.',
-          'DOM mais leve: renderizar 500 ícones em tabelas usa simples tags <i class="ic ..."></i>.'
+          'DOM mais leve: renderizar 500 ícones em tabelas usa simples tags <i class="ic ."></i>.'
         ],
         callout: {
           type: 'info',
-          title: 'WOFF2 vs. SVG Inline — quando escolher cada um?',
-          body: 'Use WOFF2 para bibliotecas grandes (100+ ícones), ícones monocromáticos de UI e múltiplos projetos consumindo via CSS. Prefira SVG Inline/Sprite para ícones multicoloridos (duotone/gradientes), animações por camada ou sets pequenos (5–15 ícones).'
+          title: 'WOFF2 vs. SVG Inline: quando escolher cada um?',
+          body: 'Use WOFF2 para bibliotecas grandes (100+ ícones), ícones monocromáticos de UI e múltiplos projetos consumindo via CSS. Prefira SVG Inline/Sprite para ícones multicoloridos (duotone/gradientes), animações por camada ou sets pequenos (5-15 ícones).'
         },
         codeTitle: 'fonts.css',
         codeLang: 'css',
@@ -377,7 +377,7 @@ export function SaveButton() {
         lead: 'An Icon Library centralizes every icon in your product or design system into a single searchable, consistent catalog ready for both designers and engineers.',
         paragraphs: [
           'Without a centralized library, teams duplicate raw SVGs across repositories, mix stroke weights, and waste time during handoff hunting for the right icon.',
-          'Icon Library Studio solves this workflow 100% in the browser — no backend or complex pipeline required. Inspect existing webfonts, compile SVGs into a webfont + CSS + catalog.json, or generate an original set with the AI skill.'
+          'Icon Library Studio solves this workflow 100% in the browser, with no backend or complex pipeline required. Inspect existing webfonts, compile SVGs into a webfont + CSS + catalog.json, or generate an original set with the AI skill.'
         ],
         callout: {
           type: 'tip',
@@ -402,7 +402,7 @@ export function SaveButton() {
             title: 'Upload Webfont',
             body: 'Best when you already have a compiled icon font and want to browse, search, or extract SVGs/PNGs.',
             bullets: [
-              'Drop .ttf, .otf, .woff, or .woff2 — optionally paired with .css and/or catalog.json, or upload a .zip.',
+              'Drop .ttf, .otf, .woff, or .woff2, optionally paired with .css and/or catalog.json, or upload a .zip.',
               'With .css included, exact class names and the original prefix are preserved.',
               'Without .css (.ttf, .otf, or .woff), glyph names and vector outlines are extracted directly from the font tables.'
             ]
@@ -429,12 +429,12 @@ export function SaveButton() {
           },
           {
             title: 'Self-host only your library (apps/selfhost)',
-            body: 'When you want to publish your company gallery — without Phosphor/Lucide demos and without the landing page — use apps/selfhost: icons/ as the source of truth, your logo, and a static build.',
+            body: 'When you want to publish your company gallery (without Phosphor/Lucide demos and without the landing page), use apps/selfhost: icons/ as the source of truth, your logo, and a static build.',
             bullets: [
               'Put SVGs in icons/ (catalog.json is optional and improves search with labels and keywords).',
               'Configure title, fontName, prefix, and logo in selfhost.config.json.',
               'Run pnpm --filter @icon-library/selfhost build and publish apps/selfhost/dist/.',
-              'Browser upload remains available only as a local sandbox — the deploy always mirrors the icons/ folder.'
+              'Browser upload remains available only as a local sandbox. The deploy always mirrors the icons/ folder.'
             ]
           }
         ]
@@ -444,7 +444,7 @@ export function SaveButton() {
         group: 'gettingStarted',
         nav: 'Self-host your library',
         title: 'Facilitated self-host: only your Icon Library',
-        lead: 'apps/selfhost is a separate static app from the public Studio. The gallery opens only the library built from icons/ — no third-party demos and no landing page.',
+        lead: 'apps/selfhost is a separate static app from the public Studio. The gallery opens only the library built from icons/, with no third-party demos and no landing page.',
         paragraphs: [
           'Use this flow when the Icon Library is an internal product (your company design system): the SVG folder is the source of truth, the build emits webfont + CSS + manifest, and you ship dist/ to any static host.',
           'catalog.json inside icons/ is optional. Without it, search uses the filename; with it, labels, groups, and bilingual keywords enrich the gallery.'
@@ -452,7 +452,7 @@ export function SaveButton() {
         callout: {
           type: 'tip',
           title: 'Do not mix this into your app monorepo',
-          body: 'Treat apps/selfhost as a separate deploy (or copy only that folder). Your product consumes the generated .css/.woff — you do not need the landing page, demos, or skills inside the application repository.'
+          body: 'Treat apps/selfhost as a separate deploy (or copy only that folder). Your product consumes the generated .css/.woff, and you do not need the landing page, demos, or skills inside the application repository.'
         },
         bullets: [
           'Source of truth: icons/*.svg (+ optional catalog.json).',
@@ -499,14 +499,14 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
         subsections: [
           {
             title: 'Ready-to-use prompt for your agent',
-            body: 'Copy and paste into Antigravity, Claude Code, Cursor or Codex: “Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with `npx skills add cesaroeduardo/icon-library-visualization` (create-icons + catalog-icons). Then use the create-icons skill to analyze my project\'s design system (tokens, fonts and current icons), generate a set of original 24×24 SVG icons in the same style, and build catalog.json with the catalog-icons skill. Finally, give me the SVGs + catalog.json in a folder (or .zip) so I can import them at https://icons.cesaroeduardo.com/studio/#create-own.”'
+            body: 'Copy and paste into Antigravity, Claude Code, Cursor or Codex: “Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with `npx skills add cesaroeduardo/icon-library-visualization` (create-icons + catalog-icons). Use create-icons to analyze my project\'s design system and generate 24×24 SVGs; use catalog-icons for catalog.json. Put everything in apps/selfhost/icons/, update selfhost.config.json and brand/logo.svg, run `pnpm --filter @icon-library/selfhost build`, and tell me how to publish apps/selfhost/dist/ (gallery of only my library).”'
           },
           {
-            title: 'skills/create-icons — Original icon generation',
-            body: 'Inspired by @banhosdev’s generate-icons skill (github.com/sergiobanhos/generate-icons). Scans your project’s CSS/Tailwind tokens, fonts, and current icons, writes an explicit style sheet (icon-style.json), proves the style on a 6–8 icon sample, and outputs the full set + validated catalog.json.'
+            title: 'skills/create-icons: Original icon generation',
+            body: 'Inspired by @banhosdev’s generate-icons skill (github.com/sergiobanhos/generate-icons). Scans your project’s CSS/Tailwind tokens, fonts, and current icons, writes an explicit style sheet (icon-style.json), proves the style on a 6-8 icon sample, and outputs the full set + validated catalog.json.'
           },
           {
-            title: 'skills/catalog-icons — Cataloging & bilingual keywords',
+            title: 'skills/catalog-icons: Cataloging & bilingual keywords',
             body: 'Scans any SVG folder or webfont .css, produces catalog.json with human labels, groups, and bilingual synonyms, supports --merge to preserve manual curation, and --validate to check the schema.'
           }
         ],
@@ -562,15 +562,15 @@ npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons`,
           ]
         },
         bullets: [
-          'Minimal payload: a 300+ icon library in WOFF2 typically weighs 20 KB–65 KB.',
+          'Minimal payload: a 300+ icon library in WOFF2 typically weighs 20 KB-65 KB.',
           'Single HTTP request: the browser downloads and immutably caches 1 file.',
           'Native CSS styling: font-size, color, hover states, and vertical alignment work like text.',
-          'Lighter DOM: rendering 500 icons in data tables uses simple <i class="ic ..."></i> tags.'
+          'Lighter DOM: rendering 500 icons in data tables uses simple <i class="ic ."></i> tags.'
         ],
         callout: {
           type: 'info',
-          title: 'WOFF2 vs. Inline SVG — when to pick each?',
-          body: 'Choose WOFF2 for large libraries (100+ icons), monochrome UI icons, and multi-framework sharing via CSS. Choose Inline SVG / Sprite for multicolor icons (duotone/gradients), per-path animations, or small sets (5–15 icons).'
+          title: 'WOFF2 vs. Inline SVG: when to pick each?',
+          body: 'Choose WOFF2 for large libraries (100+ icons), monochrome UI icons, and multi-framework sharing via CSS. Choose Inline SVG / Sprite for multicolor icons (duotone/gradients), per-path animations, or small sets (5-15 icons).'
         },
         codeTitle: 'fonts.css',
         codeLang: 'css',

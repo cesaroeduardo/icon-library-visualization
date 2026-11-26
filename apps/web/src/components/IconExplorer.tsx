@@ -232,9 +232,11 @@ export function IconExplorer({ lang }: IconExplorerProps) {
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
         <div>
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.08]">
-            <span className="font-mono font-normal text-muted-foreground block sm:inline">
-              {t.heading1}{' '}
-            </span>
+            {t.heading1 ? (
+              <span className="font-mono font-normal text-muted-foreground block sm:inline">
+                {t.heading1}{' '}
+              </span>
+            ) : null}
             <span>{t.heading2}</span>
           </h2>
         </div>
@@ -267,9 +269,13 @@ export function IconExplorer({ lang }: IconExplorerProps) {
             })}
           </div>
 
-          <ActionLink href="/studio/#create-own" variant="primary" size="sm">
-            <Upload className="w-3.5 h-3.5" />
-            <span>{lang === 'pt' ? 'Enviar meus ícones' : 'Upload my own icons'}</span>
+          <ActionLink
+            href={`/studio/${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}#lib-${selectedLibId}`}
+            variant="primary"
+            size="sm"
+          >
+            <span>{t.openFull}</span>
+            <ArrowUpRight className="w-3.5 h-3.5" />
           </ActionLink>
         </div>
 
@@ -322,13 +328,9 @@ export function IconExplorer({ lang }: IconExplorerProps) {
               </span>
             </div>
 
-            <ActionLink
-              href={`/studio/${query.trim() ? `?q=${encodeURIComponent(query.trim())}` : ''}#lib-${selectedLibId}`}
-              variant="secondary"
-              size="sm"
-            >
-              <span>{t.openFull}</span>
-              <ArrowUpRight className="w-3.5 h-3.5" />
+            <ActionLink href="/studio/#create-own" variant="secondary" size="sm">
+              <Upload className="w-3.5 h-3.5" />
+              <span>{lang === 'pt' ? 'Enviar meus ícones' : 'Upload my own icons'}</span>
             </ActionLink>
           </div>
         </div>

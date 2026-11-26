@@ -75,7 +75,7 @@ function copyLogo(logoRel) {
   if (!logoRel) return
   const source = join(ROOT, logoRel)
   if (!existsSync(source)) {
-    console.warn(`Logo not found at ${logoRel} — header will fall back to the title.`)
+    console.warn(`Logo not found at ${logoRel}: header will fall back to the title.`)
     return
   }
   copyFileSync(source, join(brandOut, 'logo.svg'))

@@ -306,14 +306,14 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
             <div className="min-w-0 space-y-1">
               <div className="flex flex-wrap items-center gap-2">
                 <p className="text-sm font-semibold tracking-[-0.015em]">
-                  {isPt ? 'Self-host só da sua library' : 'Self-host only your library'}
+                  {isPt ? 'Hospede a galeria só com os seus ícones' : 'Host a gallery with only your icons'}
                 </p>
                 <Tag>apps/selfhost</Tag>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
                 {isPt
-                  ? 'Depois de gerar ou catalogar os ícones, publique apps/selfhost: pasta icons/ como fonte da verdade, logo própria e build estático — sem demos e sem landing. catalog.json é opcional.'
-                  : 'After generating or cataloging icons, publish apps/selfhost: icons/ as the source of truth, your logo, and a static build — no demos and no landing. catalog.json is optional.'}
+                  ? 'Quer um site só da sua library, sem demos de terceiros? Coloque os SVGs na pasta icons/, troque a logo, rode o build e publique. O arquivo catalog.json é opcional: melhora a busca, mas não é obrigatório.'
+                  : 'Want a site with only your library, with no third-party demos? Drop SVGs in the icons/ folder, swap the logo, run the build, and publish. catalog.json is optional: it improves search, but you can skip it.'}
               </p>
             </div>
           </div>

@@ -91,8 +91,8 @@ async function copyInstall() {
 
 const copiedPrompt = ref(false)
 const AGENT_PROMPT = {
-  pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Depois use a skill create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais), gerar um set de ícones SVG originais 24×24 no mesmo estilo e criar o catalog.json com a skill catalog-icons. No final, me entregue os SVGs + catalog.json em uma pasta (ou .zip) para eu importar em https://icons.cesaroeduardo.com/studio/#create-own.`,
-  en: `Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Then use the create-icons skill to analyze my project's design system (tokens, fonts and current icons), generate a set of original 24×24 SVG icons in the same style, and build catalog.json with the catalog-icons skill. Finally, give me the SVGs + catalog.json in a folder (or .zip) so I can import them at https://icons.cesaroeduardo.com/studio/#create-own.`
+  pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Use create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais) e gerar SVGs originais 24×24 no mesmo estilo; use catalog-icons para o catalog.json. Coloque os SVGs + catalog.json em apps/selfhost/icons/, ajuste selfhost.config.json e brand/logo.svg com o nome/logo do meu produto, rode \`pnpm --filter @icon-library/selfhost build\` e me diga como publicar apps/selfhost/dist/ (galeria self-hosted só da minha library, sem demos).`,
+  en: `Clone the repository https://github.com/cesaroeduardo/icon-library-visualization and install the icon skills into my agent with \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Use create-icons to analyze my project's design system (tokens, fonts and current icons) and generate original 24×24 SVGs in the same style; use catalog-icons for catalog.json. Put the SVGs + catalog.json into apps/selfhost/icons/, update selfhost.config.json and brand/logo.svg with my product name/logo, run \`pnpm --filter @icon-library/selfhost build\`, and tell me how to publish apps/selfhost/dist/ (a self-hosted gallery of only my library, no demos).`
 }
 
 async function copyPrompt() {
@@ -173,7 +173,7 @@ async function buildSvgPayload(fileList) {
   return svgs.map((item) => {
     const base = item.fileName.replace(/\.svg$/i, '').toLowerCase()
     const meta = metaMap.get(base)
-    return meta ? { ...item, keywords: meta.keywords, label: meta.label, group: meta.group } : item
+    return meta ? { .item, keywords: meta.keywords, label: meta.label, group: meta.group } : item
   })
 }
 
@@ -248,8 +248,8 @@ async function handleImportFiles(fileList) {
             <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
               {{
                 lang === 'pt'
-                  ? 'SVG, .zip ou webfont (.ttf / .otf / .woff / .woff2 / .css) — avançamos automático para a compilação.'
-                  : 'SVG, .zip, or webfont (.ttf / .otf / .woff / .woff2 / .css) — we route you straight to compilation.'
+                  ? 'SVG, .zip ou webfont (.ttf / .otf / .woff / .woff2 / .css). Avançamos automático para a compilação.'
+                  : 'SVG, .zip, or webfont (.ttf / .otf / .woff / .woff2 / .css). We route you straight to compilation.'
               }}
             </p>
           </div>
@@ -269,8 +269,8 @@ async function handleImportFiles(fileList) {
       <p class="text-sm leading-relaxed" style="color: var(--muted-foreground);">
         {{
           lang === 'pt'
-            ? 'Arraste .svg, .zip ou webfont em qualquer lugar desta página — reconhecemos o tipo e avançamos para a compilação. Ou escolha uma opção abaixo.'
-            : 'Drop .svg, .zip, or a webfont anywhere on this page — we detect the type and advance to compilation. Or pick an option below.'
+            ? 'Arraste .svg, .zip ou webfont em qualquer lugar desta página. Reconhecemos o tipo e avançamos para a compilação. Ou escolha uma opção abaixo.'
+            : 'Drop .svg, .zip, or a webfont anywhere on this page. We detect the type and advance to compilation. Or pick an option below.'
         }}
       </p>
       <p
@@ -357,15 +357,15 @@ async function handleImportFiles(fileList) {
           <h2 class="text-xl md:text-2xl font-semibold tracking-[-0.025em]">
             {{
               lang === 'pt'
-                ? 'Publique só a sua Icon Library — sem demos e sem landing'
-                : 'Publish only your Icon Library — no demos, no landing'
+                ? 'Hospede a galeria só com os seus ícones'
+                : 'Host a gallery with only your icons'
             }}
           </h2>
           <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--muted-foreground);">
             {{
               lang === 'pt'
-                ? 'O pacote apps/selfhost usa a pasta icons/ como fonte da verdade, gera a webfont no build, aplica a sua logo e sobe um site estático com a galeria da empresa. catalog.json é opcional e melhora a busca.'
-                : 'The apps/selfhost package uses the icons/ folder as the source of truth, builds the webfont at compile time, applies your logo, and ships a static site with your company gallery. catalog.json is optional and improves search.'
+                ? 'Quer um site só da sua library, sem demos de terceiros? Coloque os SVGs na pasta icons/, troque a logo, rode o build e publique. catalog.json é opcional: melhora a busca, mas não é obrigatório.'
+                : 'Want a site with only your library, with no third-party demos? Drop SVGs in the icons/ folder, swap the logo, run the build, and publish. catalog.json is optional: it improves search, but you can skip it.'
             }}
           </p>
         </div>
@@ -373,19 +373,19 @@ async function handleImportFiles(fileList) {
         <ul class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs" style="color: var(--muted-foreground);">
           <li class="tuff-inset px-3 py-2.5">
             <strong class="block font-medium mb-0.5" style="color: var(--foreground);">
-              {{ lang === 'pt' ? 'Pasta = verdade' : 'Folder = truth' }}
+              {{ lang === 'pt' ? '1. Coloque os SVGs' : '1. Add your SVGs' }}
             </strong>
-            icons/*.svg · catalog.json {{ lang === 'pt' ? 'opcional' : 'optional' }}
+            icons/ · catalog.json {{ lang === 'pt' ? 'opcional' : 'optional' }}
           </li>
           <li class="tuff-inset px-3 py-2.5">
             <strong class="block font-medium mb-0.5" style="color: var(--foreground);">
-              {{ lang === 'pt' ? 'Logo & config' : 'Logo & config' }}
+              {{ lang === 'pt' ? '2. Troque a logo' : '2. Swap the logo' }}
             </strong>
             brand/logo.svg · selfhost.config.json
           </li>
           <li class="tuff-inset px-3 py-2.5">
             <strong class="block font-medium mb-0.5" style="color: var(--foreground);">
-              {{ lang === 'pt' ? 'Build estático' : 'Static build' }}
+              {{ lang === 'pt' ? '3. Build e publique' : '3. Build & publish' }}
             </strong>
             pnpm --filter @icon-library/selfhost build
           </li>
@@ -534,8 +534,8 @@ async function handleImportFiles(fileList) {
                 <p class="text-xs" style="color: var(--muted-foreground);">
                   {{
                     lang === 'pt'
-                      ? 'Copie o prompt: ele baixa o projeto, instala as skills e gera seus ícones + catalog.json.'
-                      : 'Copy the prompt: it downloads the project, installs the skills and generates your icons + catalog.json.'
+                      ? 'Copie o prompt: ele gera os ícones, coloca em apps/selfhost/icons/ e prepara o build self-hosted.'
+                      : 'Copy the prompt: it generates icons, puts them in apps/selfhost/icons/, and prepares the self-hosted build.'
                   }}
                 </p>
               </div>
@@ -585,8 +585,8 @@ async function handleImportFiles(fileList) {
                 <p class="text-xs" style="color: var(--muted-foreground);">
                   {{
                     lang === 'pt'
-                      ? 'Solte em qualquer lugar desta página (ou clique aqui) — reconhecemos e avançamos para a compilação.'
-                      : 'Drop anywhere on this page (or click here) — we detect the type and advance to compilation.'
+                      ? 'Solte em qualquer lugar desta página (ou clique aqui). Reconhecemos e avançamos para a compilação.'
+                      : 'Drop anywhere on this page (or click here). We detect the type and advance to compilation.'
                   }}
                 </p>
               </div>

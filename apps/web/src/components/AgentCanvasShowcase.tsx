@@ -406,13 +406,13 @@ export function AgentCanvasShowcase({
                   />
                 </svg>
 
-                {/* Animated agent cursor — tip aligned precisely to (x, y) */}
+                {/* Animated agent cursor: tip aligned precisely to (x, y) */}
                 <div
                   ref={cursorRef}
                   className="absolute top-0 left-0 pointer-events-none z-20 will-change-transform"
                   style={{ transform: 'translate3d(36px, 116px, 0)' }}
                 >
-                  {/* Cursor pointer — tip at (4,3) of 24x24 */}
+                  {/* Cursor pointer: tip at (4,3) of 24x24 */}
                   <svg
                     width="22"
                     height="22"
