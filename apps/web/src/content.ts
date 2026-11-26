@@ -34,8 +34,8 @@ export const copy = {
         { label: 'Abrir Icon Library', href: './studio/' },
         { label: 'Subir Webfont', href: './studio/#webfont' },
         { label: 'Compilar SVGs', href: './studio/#svg' },
-        { label: 'Skill: Criar Ícones (.zip)', href: './skills/create-icons.zip', download: true },
-        { label: 'Skill: Catalogar Ícones (.zip)', href: './skills/catalog-icons.zip', download: true },
+        { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
+        { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
         { label: 'Ler Documentação', href: '#docs', docs: true }
       ]
     },
@@ -162,8 +162,8 @@ export const copy = {
         { label: 'Open Icon Library', href: './studio/' },
         { label: 'Upload Webfont', href: './studio/#webfont' },
         { label: 'Compile SVGs', href: './studio/#svg' },
-        { label: 'Skill: Create Icons (.zip)', href: './skills/create-icons.zip', download: true },
-        { label: 'Skill: Catalog Icons (.zip)', href: './skills/catalog-icons.zip', download: true },
+        { label: 'Skill: create-icons', href: `${GITHUB_URL}/tree/main/skills/create-icons`, external: true },
+        { label: 'Skill: catalog-icons', href: `${GITHUB_URL}/tree/main/skills/catalog-icons`, external: true },
         { label: 'Read Docs', href: '#docs', docs: true }
       ]
     },

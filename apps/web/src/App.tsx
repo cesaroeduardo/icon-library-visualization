@@ -570,13 +570,23 @@ export function App() {
                     </button>
                   </li>
                   <li>
-                    <a href="./skills/create-icons.zip" download="create-icons.zip" className="hover:text-foreground">
-                      skills/create-icons.zip
+                    <a
+                      href={`${GITHUB_URL}/tree/main/skills/create-icons`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-foreground"
+                    >
+                      skills/create-icons
                     </a>
                   </li>
                   <li>
-                    <a href="./skills/catalog-icons.zip" download="catalog-icons.zip" className="hover:text-foreground">
-                      skills/catalog-icons.zip
+                    <a
+                      href={`${GITHUB_URL}/tree/main/skills/catalog-icons`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="hover:text-foreground"
+                    >
+                      skills/catalog-icons
                     </a>
                   </li>
                   <li>

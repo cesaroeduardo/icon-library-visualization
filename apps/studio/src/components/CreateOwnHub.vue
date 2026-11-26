@@ -24,7 +24,8 @@ const copied = ref(false)
 const isDragging = ref(false)
 const fileInput = ref(null)
 
-const installCmd = 'unzip create-icons.zip -d .agents/skills/ && unzip catalog-icons.zip -d .agents/skills/'
+const installCmd = 'npx skills add cesaroeduardo/icon-library-visualization'
+const GITHUB_URL = 'https://github.com/cesaroeduardo/icon-library-visualization'
 
 async function copyInstall() {
   try {
@@ -190,31 +191,16 @@ async function handleImportFiles(fileList) {
               <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--muted-foreground);">
                 {{
                   lang === 'pt'
-                    ? 'Baixe nossas duas skills (create-icons + catalog-icons), rode no Antigravity, Claude Code, Cursor ou Codex para desenhar SVGs alinhados ao seu design system e gerar o catalog.json com keywords.'
-                    : 'Download our two skills (create-icons + catalog-icons), run them in Antigravity, Claude Code, Cursor, or Codex to draw SVGs matched to your design system and build catalog.json with keywords.'
+                    ? 'Instale nossas duas skills (create-icons + catalog-icons) direto do GitHub no Antigravity, Claude Code, Cursor ou Codex para desenhar SVGs alinhados ao seu design system e gerar o catalog.json com keywords.'
+                    : 'Install our two skills (create-icons + catalog-icons) straight from GitHub into Antigravity, Claude Code, Cursor, or Codex to draw SVGs matched to your design system and build catalog.json with keywords.'
                 }}
               </p>
-            </div>
-
-            <div class="flex flex-wrap items-center gap-2">
-              <a href="./skills/create-icons.zip" download="create-icons.zip" class="tuff-btn-primary">
-                <Download class="w-3.5 h-3.5" />
-                <span>create-icons.zip</span>
-              </a>
-              <a href="./skills/catalog-icons.zip" download="catalog-icons.zip" class="tuff-btn-secondary">
-                <Download class="w-3.5 h-3.5" />
-                <span>catalog-icons.zip</span>
-              </a>
-              <a href="./style-gallery.html" target="_blank" rel="noopener" class="tuff-btn-quiet">
-                <span>{{ lang === 'pt' ? 'Preview dos 8 estilos' : 'Preview 8 styles' }}</span>
-                <ExternalLink class="w-3.5 h-3.5" />
-              </a>
             </div>
 
             <div class="tuff-inset px-3.5 py-2.5 flex items-center justify-between gap-2">
               <div class="flex items-center gap-2 min-w-0">
                 <Terminal class="w-3.5 h-3.5 shrink-0" style="color: var(--muted-foreground);" />
-                <code class="font-mono text-xs truncate">{{ installCmd }}</code>
+                <code class="font-mono text-xs truncate">$ {{ installCmd }}</code>
               </div>
               <button @click="copyInstall" class="tuff-btn-quiet !h-7 shrink-0">
                 <Check v-if="copied" class="w-3.5 h-3.5" style="color: var(--positive);" />
@@ -223,6 +209,31 @@ async function handleImportFiles(fileList) {
                   {{ copied ? (lang === 'pt' ? 'Copiado' : 'Copied') : (lang === 'pt' ? 'Copiar' : 'Copy') }}
                 </span>
               </button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <a
+                :href="`${GITHUB_URL}/tree/main/skills/create-icons`"
+                target="_blank"
+                rel="noopener"
+                class="tuff-btn-secondary"
+              >
+                <span>skills/create-icons</span>
+                <ExternalLink class="w-3.5 h-3.5" />
+              </a>
+              <a
+                :href="`${GITHUB_URL}/tree/main/skills/catalog-icons`"
+                target="_blank"
+                rel="noopener"
+                class="tuff-btn-secondary"
+              >
+                <span>skills/catalog-icons</span>
+                <ExternalLink class="w-3.5 h-3.5" />
+              </a>
+              <a href="./style-gallery.html" target="_blank" rel="noopener" class="tuff-btn-quiet">
+                <span>{{ lang === 'pt' ? 'Preview dos 8 estilos' : 'Preview 8 styles' }}</span>
+                <ExternalLink class="w-3.5 h-3.5" />
+              </a>
             </div>
           </div>
 
