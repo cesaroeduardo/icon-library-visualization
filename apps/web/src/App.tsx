@@ -28,6 +28,7 @@ import {
 import { IconExplorer } from '@/components/IconExplorer'
 import { SkillsSection } from '@/components/SkillsSection'
 import { DocsView } from '@/components/DocsView'
+import { NotFoundView } from '@/components/NotFoundView'
 import { BrandLogo } from '@/components/BrandLogo'
 import { GithubStars } from '@/components/GithubStars'
 import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, AGENT_PROMPT, type Lang } from '@/content'
@@ -35,6 +36,30 @@ import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, AGENT_PROMPT, type Lang } from
 const DOCS_SECTION_BY_HASH: Record<string, string> = {
   'docs-skills': 'ai-skills',
   'docs-selfhost': 'selfhost'
+}
+
+type Page = 'landing' | 'docs' | 'notfound'
+
+function normalizePath(pathname: string): string {
+  const trimmed = pathname.replace(/\/+$/, '')
+  return trimmed === '' ? '/' : trimmed
+}
+
+function isUnknownPath(pathname: string): boolean {
+  const path = normalizePath(pathname)
+  return path !== '/' && path !== '/index.html'
+}
+
+function resolvePage(): { page: Page; docsSection?: string } {
+  const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
+  if (h === '404' || h === 'not-found' || isUnknownPath(window.location.pathname)) {
+    return { page: 'notfound' }
+  }
+  if (h in DOCS_SECTION_BY_HASH) {
+    return { page: 'docs', docsSection: DOCS_SECTION_BY_HASH[h] }
+  }
+  if (h === 'docs') return { page: 'docs' }
+  return { page: 'landing' }
 }
 
 export function App() {
@@ -51,37 +76,29 @@ export function App() {
 
   const [copiedCmd, setCopiedCmd] = useState(false)
   const [copiedPrompt, setCopiedPrompt] = useState(false)
-  const [docsSection, setDocsSection] = useState<string | undefined>(() => {
-    const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
-    return DOCS_SECTION_BY_HASH[h]
-  })
-  const [page, setPage] = useState<'landing' | 'docs'>(() => {
-    const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
-    return h === 'docs' || h in DOCS_SECTION_BY_HASH ? 'docs' : 'landing'
-  })
+  const initial = resolvePage()
+  const [docsSection, setDocsSection] = useState<string | undefined>(() => initial.docsSection)
+  const [page, setPage] = useState<Page>(() => initial.page)
 
   useEffect(() => {
-    const onHash = () => {
-      const h = window.location.hash.replace(/^#\/?/, '').toLowerCase()
-      if (h in DOCS_SECTION_BY_HASH) {
-        setDocsSection(DOCS_SECTION_BY_HASH[h])
-        setPage('docs')
-      } else if (h === 'docs') {
-        setDocsSection(undefined)
-        setPage('docs')
-      } else if (h === '' || h === 'home') {
-        setPage('landing')
-      }
+    const syncRoute = () => {
+      const next = resolvePage()
+      setPage(next.page)
+      setDocsSection(next.docsSection)
     }
-    window.addEventListener('hashchange', onHash)
-    return () => window.removeEventListener('hashchange', onHash)
+    window.addEventListener('hashchange', syncRoute)
+    window.addEventListener('popstate', syncRoute)
+    return () => {
+      window.removeEventListener('hashchange', syncRoute)
+      window.removeEventListener('popstate', syncRoute)
+    }
   }, [])
 
   function openDocs(section?: string) {
     setDocsSection(section)
-    if (section === 'ai-skills') window.location.hash = 'docs-skills'
-    else if (section === 'selfhost') window.location.hash = 'docs-selfhost'
-    else window.location.hash = 'docs'
+    const hash =
+      section === 'ai-skills' ? 'docs-skills' : section === 'selfhost' ? 'docs-selfhost' : 'docs'
+    history.replaceState(null, '', `/#${hash}`)
     setPage('docs')
     if (!section) window.scrollTo({ top: 0, behavior: 'smooth' })
   }
@@ -89,12 +106,12 @@ export function App() {
   function openLanding(sectionHash = '') {
     setPage('landing')
     if (sectionHash) {
-      window.location.hash = sectionHash
+      history.replaceState(null, '', `/#${sectionHash}`)
       setTimeout(() => {
         document.getElementById(sectionHash)?.scrollIntoView({ behavior: 'smooth' })
       }, 40)
     } else {
-      history.replaceState(null, '', window.location.pathname)
+      history.replaceState(null, '', '/')
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }
@@ -140,6 +157,21 @@ export function App() {
     if (href === '#docs-selfhost') openDocs('selfhost')
     else if (href === '#docs-skills') openDocs('ai-skills')
     else openDocs()
+  }
+
+  if (page === 'notfound') {
+    return (
+      <MotionConfig reducedMotion="user">
+        <div
+          aria-hidden="true"
+          className="site-noise pointer-events-none fixed inset-0 z-40 opacity-[0.04] mix-blend-overlay motion-reduce:hidden"
+          style={{ backgroundImage: "url('/noise.webp')" }}
+        />
+        <div className="min-h-screen flex flex-col bg-background text-foreground">
+          <NotFoundView lang={lang} onHome={() => openLanding()} />
+        </div>
+      </MotionConfig>
+    )
   }
 
   return (
@@ -253,7 +285,7 @@ export function App() {
           </div>
         </header>
 
-        {/* Main View: TUFFUI Docs OR Open Source Landing Page */}
+        {/* Main View: Docs or Open Source Landing */}
         {page === 'docs' ? (
           <DocsView lang={lang} initialSection={docsSection} onBack={() => openLanding()} />
         ) : (
