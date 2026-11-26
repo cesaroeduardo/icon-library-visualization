@@ -20,7 +20,6 @@ import { parseCatalogJson } from '@icon-library/core'
 const { lang, t } = useI18n()
 const emit = defineEmits(['back', 'select', 'import-svgs'])
 
-const showSkillPanel = ref(false)
 const copied = ref(false)
 const isDragging = ref(false)
 const fileInput = ref(null)
@@ -88,14 +87,14 @@ async function handleImportFiles(fileList) {
       <p class="text-sm leading-relaxed" style="color: var(--muted-foreground);">
         {{
           lang === 'pt'
-            ? 'Escolha como deseja começar: suba arquivos SVG para compilar uma webfont, inspecione uma webfont existente ou use nossas skills de IA para desenhar e catalogar seus próprios ícones.'
-            : 'Choose how to get started: upload SVG files to compile a webfont, inspect an existing webfont, or use our AI skills to draw and catalog your own icons.'
+            ? 'Suba seus arquivos SVG para compilar uma webfont ou inspecione uma webfont que você já possui.'
+            : 'Upload your SVG files to compile a webfont or inspect a webfont you already have.'
         }}
       </p>
     </div>
 
-    <!-- 3 Studio Options -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <!-- Row 1: Two Primary Options Side by Side -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <!-- Option 1: Upload SVGs -->
       <div class="tuff-shell flex flex-col">
         <div class="flex items-center justify-between px-3 py-2">
@@ -107,16 +106,16 @@ async function handleImportFiles(fileList) {
           </span>
           <span class="tuff-tag">SVG → WOFF/TTF</span>
         </div>
-        <div class="tuff-panel flex-1 p-5 flex flex-col justify-between gap-6">
+        <div class="tuff-panel flex-1 p-6 flex flex-col justify-between gap-6">
           <div class="space-y-2">
-            <h2 class="text-base font-semibold tracking-[-0.02em]">{{ t.cards.svg.title }}</h2>
-            <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
+            <h2 class="text-lg font-semibold tracking-[-0.02em]">{{ t.cards.svg.title }}</h2>
+            <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--muted-foreground);">
               {{ t.cards.svg.description }}
             </p>
           </div>
-          <button @click="emit('select', 'svg')" class="tuff-btn-primary w-full">
+          <button @click="emit('select', 'svg')" class="tuff-btn-primary w-full !h-10">
             <span>{{ t.cards.svg.cta }}</span>
-            <ArrowRight class="w-3.5 h-3.5" />
+            <ArrowRight class="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -132,115 +131,143 @@ async function handleImportFiles(fileList) {
           </span>
           <span class="tuff-tag">WOFF2 · TTF · CSS</span>
         </div>
-        <div class="tuff-panel flex-1 p-5 flex flex-col justify-between gap-6">
+        <div class="tuff-panel flex-1 p-6 flex flex-col justify-between gap-6">
           <div class="space-y-2">
-            <h2 class="text-base font-semibold tracking-[-0.02em]">{{ t.cards.webfont.title }}</h2>
-            <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
+            <h2 class="text-lg font-semibold tracking-[-0.02em]">{{ t.cards.webfont.title }}</h2>
+            <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--muted-foreground);">
               {{ t.cards.webfont.description }}
             </p>
           </div>
-          <button @click="emit('select', 'webfont')" class="tuff-btn-secondary w-full">
+          <button @click="emit('select', 'webfont')" class="tuff-btn-secondary w-full !h-10">
             <span>{{ t.cards.webfont.cta }}</span>
-            <ArrowRight class="w-3.5 h-3.5" />
-          </button>
-        </div>
-      </div>
-
-      <!-- Option 3: Create with AI Skill -->
-      <div class="tuff-shell flex flex-col">
-        <div class="flex items-center justify-between px-3 py-2">
-          <span
-            class="h-9 w-9 rounded-xl flex items-center justify-center"
-            style="background-color: var(--fg-tint-6);"
-          >
-            <Sparkles class="w-4 h-4" />
-          </span>
-          <span class="tuff-tag">CREATE + CATALOG</span>
-        </div>
-        <div class="tuff-panel flex-1 p-5 flex flex-col justify-between gap-6">
-          <div class="space-y-2">
-            <h2 class="text-base font-semibold tracking-[-0.02em]">{{ t.cards.create.title }}</h2>
-            <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
-              {{ t.cards.create.description }}
-            </p>
-          </div>
-          <button @click="showSkillPanel = !showSkillPanel" class="tuff-btn-secondary w-full">
-            <span>{{ lang === 'pt' ? 'Usar Skills de IA' : 'Use AI Skills' }}</span>
-            <ArrowRight class="w-3.5 h-3.5" />
+            <ArrowRight class="w-4 h-4" />
           </button>
         </div>
       </div>
     </div>
 
-    <!-- Expanded AI Skill Instructions & Direct SVG Import -->
-    <div v-if="showSkillPanel" class="tuff-shell">
-      <div class="tuff-panel p-6 space-y-5">
-        <div class="flex flex-wrap items-center justify-between gap-3">
-          <div>
-            <h3 class="text-base font-semibold tracking-[-0.02em]">
-              {{ lang === 'pt' ? 'Skills de Criação & Catalogação' : 'Icon Creation & Cataloging Skills' }}
-            </h3>
-            <p class="text-xs mt-0.5" style="color: var(--muted-foreground);">
-              {{
-                lang === 'pt'
-                  ? 'Baixe as skills, gere os SVGs + catalog.json no seu agente e importe direto aqui.'
-                  : 'Download the skills, generate SVGs + catalog.json in your agent, and import them right here.'
-              }}
-            </p>
-          </div>
+    <!-- Divider: "Ainda não tem seus ícones?" -->
+    <div class="flex items-center gap-4 py-2">
+      <div class="h-px flex-1" style="background-color: var(--border);"></div>
+      <span
+        class="text-xs font-medium tracking-wide px-3 py-1 rounded-full"
+        style="background-color: var(--fg-tint-4); color: var(--muted-foreground);"
+      >
+        {{ lang === 'pt' ? 'Ainda não tem seus ícones?' : "Don't have your icons yet?" }}
+      </span>
+      <div class="h-px flex-1" style="background-color: var(--border);"></div>
+    </div>
 
-          <div class="flex flex-wrap items-center gap-2">
-            <a href="./skills/create-icons.zip" download="create-icons.zip" class="tuff-btn-primary">
-              <Download class="w-3.5 h-3.5" />
-              <span>create-icons.zip</span>
-            </a>
-            <a href="./skills/catalog-icons.zip" download="catalog-icons.zip" class="tuff-btn-secondary">
-              <Download class="w-3.5 h-3.5" />
-              <span>catalog-icons.zip</span>
-            </a>
-            <a href="./style-gallery.html" target="_blank" rel="noopener" class="tuff-btn-quiet">
-              <span>{{ lang === 'pt' ? '8 estilos' : '8 styles' }}</span>
-              <ExternalLink class="w-3.5 h-3.5" />
-            </a>
-          </div>
+    <!-- Row 2: Full-Width Featured Horizontal Layout for Create My Own Icons -->
+    <div class="tuff-shell">
+      <div class="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="h-8 w-8 rounded-xl flex items-center justify-center"
+            style="background-color: color-mix(in srgb, var(--brand) 16%, transparent); color: var(--brand);"
+          >
+            <Sparkles class="w-4 h-4" />
+          </span>
+          <span class="text-xs font-semibold tracking-[-0.01em]">
+            {{ t.cards.create.title }}
+          </span>
         </div>
+        <span class="tuff-tag">AI SKILLS · CREATE + CATALOG · 8 STYLES</span>
+      </div>
 
-        <div class="tuff-inset p-3 flex items-center justify-between gap-2">
-          <div class="flex items-center gap-2 min-w-0">
-            <Terminal class="w-3.5 h-3.5 shrink-0" style="color: var(--muted-foreground);" />
-            <code class="font-mono text-xs truncate">{{ installCmd }}</code>
+      <div class="tuff-panel p-6 md:p-7">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+          <!-- Left: Description, Skill Downloads & Install Command -->
+          <div class="lg:col-span-7 space-y-5">
+            <div class="space-y-2">
+              <h2 class="text-xl md:text-2xl font-semibold tracking-[-0.025em]">
+                {{
+                  lang === 'pt'
+                    ? 'Gere e catalogue ícones originais com seu agente de IA'
+                    : 'Generate & catalog original icons with your AI agent'
+                }}
+              </h2>
+              <p class="text-xs sm:text-sm leading-relaxed" style="color: var(--muted-foreground);">
+                {{
+                  lang === 'pt'
+                    ? 'Baixe nossas duas skills (create-icons + catalog-icons), rode no Antigravity, Claude Code, Cursor ou Codex para desenhar SVGs alinhados ao seu design system e gerar o catalog.json com keywords.'
+                    : 'Download our two skills (create-icons + catalog-icons), run them in Antigravity, Claude Code, Cursor, or Codex to draw SVGs matched to your design system and build catalog.json with keywords.'
+                }}
+              </p>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-2">
+              <a href="./skills/create-icons.zip" download="create-icons.zip" class="tuff-btn-primary">
+                <Download class="w-3.5 h-3.5" />
+                <span>create-icons.zip</span>
+              </a>
+              <a href="./skills/catalog-icons.zip" download="catalog-icons.zip" class="tuff-btn-secondary">
+                <Download class="w-3.5 h-3.5" />
+                <span>catalog-icons.zip</span>
+              </a>
+              <a href="./style-gallery.html" target="_blank" rel="noopener" class="tuff-btn-quiet">
+                <span>{{ lang === 'pt' ? 'Preview dos 8 estilos' : 'Preview 8 styles' }}</span>
+                <ExternalLink class="w-3.5 h-3.5" />
+              </a>
+            </div>
+
+            <div class="tuff-inset px-3.5 py-2.5 flex items-center justify-between gap-2">
+              <div class="flex items-center gap-2 min-w-0">
+                <Terminal class="w-3.5 h-3.5 shrink-0" style="color: var(--muted-foreground);" />
+                <code class="font-mono text-xs truncate">{{ installCmd }}</code>
+              </div>
+              <button @click="copyInstall" class="tuff-btn-quiet !h-7 shrink-0">
+                <Check v-if="copied" class="w-3.5 h-3.5" style="color: var(--positive);" />
+                <Copy v-else class="w-3.5 h-3.5" />
+                <span class="text-xs">
+                  {{ copied ? (lang === 'pt' ? 'Copiado' : 'Copied') : (lang === 'pt' ? 'Copiar' : 'Copy') }}
+                </span>
+              </button>
+            </div>
           </div>
-          <button @click="copyInstall" class="tuff-btn-quiet !h-7 shrink-0">
-            <Check v-if="copied" class="w-3.5 h-3.5" style="color: var(--positive);" />
-            <Copy v-else class="w-3.5 h-3.5" />
-            <span class="text-xs">{{ copied ? (lang === 'pt' ? 'Copiado' : 'Copied') : (lang === 'pt' ? 'Copiar' : 'Copy') }}</span>
-          </button>
-        </div>
 
-        <div
-          @dragover.prevent="isDragging = true"
-          @dragleave.prevent="isDragging = false"
-          @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
-          @click="fileInput?.click()"
-          class="tuff-inset p-6 text-center cursor-pointer transition-colors"
-          :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
-        >
-          <input
-            ref="fileInput"
-            type="file"
-            multiple
-            accept=".svg,.zip,.json"
-            class="hidden"
-            @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
-          />
-          <UploadCloud class="w-7 h-7 mx-auto mb-2" style="color: var(--muted-foreground);" />
-          <p class="text-xs font-medium">
-            {{
-              lang === 'pt'
-                ? 'Já gerou seus ícones? Arraste os SVGs + catalog.json (ou .zip) aqui para compilar'
-                : 'Already generated your icons? Drop SVGs + catalog.json (or .zip) here to compile'
-            }}
-          </p>
+          <!-- Right: Direct Dropzone for Skill-Generated SVGs -->
+          <div class="lg:col-span-5">
+            <div
+              @dragover.prevent="isDragging = true"
+              @dragleave.prevent="isDragging = false"
+              @drop.prevent="(e) => { isDragging = false; handleImportFiles(e.dataTransfer?.files) }"
+              @click="fileInput?.click()"
+              class="tuff-inset p-7 text-center cursor-pointer transition-colors h-full min-h-[210px] flex flex-col items-center justify-center gap-3"
+              :style="isDragging ? 'background-color: var(--surface-raised);' : ''"
+            >
+              <input
+                ref="fileInput"
+                type="file"
+                multiple
+                accept=".svg,.zip,.json"
+                class="hidden"
+                @change="(e) => { handleImportFiles(e.target.files); e.target.value = '' }"
+              />
+              <span
+                class="h-11 w-11 rounded-2xl flex items-center justify-center"
+                style="background-color: var(--fg-tint-6);"
+              >
+                <UploadCloud class="w-5 h-5" style="color: var(--brand);" />
+              </span>
+              <div class="space-y-1">
+                <p class="text-xs sm:text-sm font-medium">
+                  {{
+                    lang === 'pt'
+                      ? 'Já gerou seus ícones com a skill?'
+                      : 'Already generated icons with the skill?'
+                  }}
+                </p>
+                <p class="text-xs leading-relaxed" style="color: var(--muted-foreground);">
+                  {{
+                    lang === 'pt'
+                      ? 'Arraste os SVGs + catalog.json (ou .zip) aqui para compilar direto na library.'
+                      : 'Drop your SVGs + catalog.json (or .zip) here to compile straight into the library.'
+                  }}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
