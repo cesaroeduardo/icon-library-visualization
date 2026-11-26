@@ -1,18 +1,21 @@
 # Icon Library Studio
 
-Open-source monorepo for inspecting webfonts, compiling SVGs into webfonts, and generating original icon libraries with AI coding agents — 100% static in the browser.
+Open-source monorepo for inspecting webfonts, compiling SVGs into webfonts, and generating/cataloging icon libraries with AI coding agents — 100% static in the browser.
 
-## Monorepo Structure
+## Repository Structure
 
 ```text
 ├── apps/
-│   ├── web/            # Open-source Landing Page (React 19 + Tailwind CSS v4 + TUFFUI)
-│   └── studio/         # Icon Library Studio app (Vue 3 + Tailwind CSS + Docs)
+│   ├── web/            # Open-source Landing Page & TUFFUI Docs (React 19 + Tailwind CSS v4)
+│   └── studio/         # Focused Icon Library app (Vue 3 + Tailwind CSS)
 ├── packages/
 │   ├── core/           # Shared browser engine (SVG validator, SVG→TTF/WOFF compiler, Webfont & catalog.json parser)
-│   └── skill/          # AI agent skill (create-icons + pack-skill.mjs)
+│   └── skill/          # Skill packaging scripts (pack-skill.mjs)
+├── skills/
+│   ├── create-icons/   # AI skill for generating original icon libraries (8 starter styles + catalog.json)
+│   └── catalog-icons/  # AI skill for cataloging SVGs/webfont CSS into validated catalog.json with keywords
 └── scripts/
-    └── build-all.mjs   # Unified static build -> dist/ (web) + dist/studio/ (studio)
+    └── build-all.mjs   # Unified static build -> dist/ (web + docs) + dist/studio/ (library app)
 ```
 
 ## Development
@@ -20,22 +23,22 @@ Open-source monorepo for inspecting webfonts, compiling SVGs into webfonts, and 
 ```bash
 pnpm install
 
-# Run Landing Page (http://localhost:5173)
+# Run Website & Docs (http://localhost:5173)
 pnpm run dev:web
 
-# Run Icon Library Studio (http://localhost:5174)
+# Run Icon Library App (http://localhost:5174)
 pnpm run dev:studio
 ```
 
-## Production Build (Static Deploy)
+## Production Build
 
 ```bash
 pnpm run build
 ```
 
 Outputs a unified static site in `dist/`:
-- `dist/` → Landing Page (`apps/web`)
-- `dist/studio/` → Icon Library Studio (`apps/studio`)
+- `dist/` → Landing Page & Documentation (`apps/web`)
+- `dist/studio/` → Icon Library App (`apps/studio`)
 
 ## License
 

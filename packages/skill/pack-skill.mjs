@@ -5,11 +5,12 @@ import JSZip from 'jszip'
 
 const HERE = dirname(fileURLToPath(import.meta.url))
 const ROOT = resolve(HERE, '..', '..')
-const SKILL_DIR = join(HERE, 'create-icons')
+const SKILLS_ROOT = join(ROOT, 'skills')
+const SKILL_NAMES = ['create-icons', 'catalog-icons']
 
 const TARGET_PUBLIC_DIRS = [
-  join(ROOT, 'apps', 'studio', 'public'),
-  join(ROOT, 'apps', 'web', 'public')
+  join(ROOT, 'apps', 'web', 'public'),
+  join(ROOT, 'apps', 'studio', 'public')
 ]
 
 function addFolderToZip(zip, folderPath, basePath) {
@@ -27,15 +28,16 @@ function addFolderToZip(zip, folderPath, basePath) {
   }
 }
 
-async function main() {
-  if (!existsSync(SKILL_DIR)) {
-    console.error(`Skill directory not found: ${SKILL_DIR}`)
+async function packOne(skillName) {
+  const skillDir = join(SKILLS_ROOT, skillName)
+  if (!existsSync(skillDir)) {
+    console.error(`Skill directory not found: ${skillDir}`)
     process.exit(1)
   }
 
   const zip = new JSZip()
-  const rootFolder = zip.folder('create-icons')
-  addFolderToZip(rootFolder, SKILL_DIR, SKILL_DIR)
+  const rootFolder = zip.folder(skillName)
+  addFolderToZip(rootFolder, skillDir, skillDir)
 
   const buffer = await zip.generateAsync({
     type: 'nodebuffer',
@@ -43,18 +45,26 @@ async function main() {
     compressionOptions: { level: 9 }
   })
 
-  const styleGallerySrc = join(SKILL_DIR, 'assets', 'style-gallery.html')
-
   for (const pubDir of TARGET_PUBLIC_DIRS) {
     const outSkillsDir = join(pubDir, 'skills')
     mkdirSync(outSkillsDir, { recursive: true })
-    const outZip = join(outSkillsDir, 'create-icons.zip')
+    const outZip = join(outSkillsDir, `${skillName}.zip`)
     writeFileSync(outZip, buffer)
-    console.log(`✔ Packed skill -> ${relative(ROOT, outZip)} (${(buffer.length / 1024).toFixed(1)} KB)`)
+    console.log(`✔ Packed ${skillName} -> ${relative(ROOT, outZip)} (${(buffer.length / 1024).toFixed(1)} KB)`)
+  }
+}
 
-    if (existsSync(styleGallerySrc)) {
+async function main() {
+  for (const name of SKILL_NAMES) {
+    await packOne(name)
+  }
+
+  const styleGallerySrc = join(SKILLS_ROOT, 'create-icons', 'assets', 'style-gallery.html')
+  if (existsSync(styleGallerySrc)) {
+    for (const pubDir of TARGET_PUBLIC_DIRS) {
       copyFileSync(styleGallerySrc, join(pubDir, 'style-gallery.html'))
     }
+    console.log('✔ Copied style-gallery.html to public folders')
   }
 }
 

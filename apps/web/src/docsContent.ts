@@ -108,12 +108,12 @@ export const docsContent: Record<Lang, DocsLocale> = {
             ]
           },
           {
-            title: 'Criar meus próprios ícones (Skill de IA)',
-            body: 'Para criar um conjunto 100% original alinhado ao design system do seu projeto.',
+            title: 'Skills de IA: Criação (create-icons) & Catalogação (catalog-icons)',
+            body: 'O repositório traz duas skills prontas na pasta skills/ para usar em Antigravity, Claude Code ou Cursor:',
             bullets: [
-              'Baixe create-icons.zip e extraia na pasta de skills do seu agente (Antigravity, Claude Code ou Cursor).',
-              'A skill lê seus tokens CSS/Tailwind, propõe um style sheet (icon-style.json), valida uma amostra e gera os SVGs + catalog.json com keywords.',
-              'Arraste os arquivos gerados para o Studio para visualizar na galeria e compilar em webfont.'
+              'skills/create-icons (create-icons.zip): escaneia seus tokens CSS/Tailwind, propõe um style sheet (icon-style.json), valida uma amostra em 8 estilos e gera SVGs originais + catalog.json.',
+              'skills/catalog-icons (catalog-icons.zip): escaneia qualquer pasta de SVGs ou .css de webfont, enriquece com nomes legíveis, grupos e keywords bilíngues (PT/EN), mescla com catálogos existentes (--merge) e valida o schema (--validate).',
+              'Arraste os SVGs + catalog.json gerados direto para a Icon Library para buscar, visualizar e compilar em webfont.'
             ]
           }
         ]
@@ -335,12 +335,12 @@ export function SaveButton() {
             ]
           },
           {
-            title: 'Create My Own Icons (AI Skill)',
-            body: 'For teams wanting an original icon set tailored to their design system.',
+            title: 'AI Skills: Creation (create-icons) & Cataloging (catalog-icons)',
+            body: 'The repository ships two ready-to-use agent skills inside skills/ for Antigravity, Claude Code, or Cursor:',
             bullets: [
-              'Download create-icons.zip and extract it into your agent’s skills folder (Antigravity, Claude Code, or Cursor).',
-              'The skill scans CSS/Tailwind tokens, writes icon-style.json, validates a sample, and outputs SVGs + catalog.json with keywords.',
-              'Drop the generated files into the Studio to preview them and compile a webfont.'
+              'skills/create-icons (create-icons.zip): scans your CSS/Tailwind tokens, writes icon-style.json, proves a sample across 8 styles, and generates original SVGs + catalog.json.',
+              'skills/catalog-icons (catalog-icons.zip): scans any SVG folder or webfont .css, enriches entries with labels, groups, and bilingual keywords, merges with existing catalogs (--merge), and validates the schema (--validate).',
+              'Drop the generated SVGs + catalog.json into the Icon Library app to browse, search, and compile into a webfont.'
             ]
           }
         ]

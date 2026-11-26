@@ -489,10 +489,22 @@ export function App() {
                       </p>
                     </div>
                     <div>
-                      <ActionLink href={item.href} variant="secondary" size="sm" className="w-full">
-                        <span>{item.cta}</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </ActionLink>
+                      {'docs' in item && item.docs ? (
+                        <ActionButton
+                          onClick={openDocs}
+                          variant="secondary"
+                          size="sm"
+                          className="w-full"
+                        >
+                          <span>{item.cta}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </ActionButton>
+                      ) : (
+                        <ActionLink href={item.href} variant="secondary" size="sm" className="w-full">
+                          <span>{item.cta}</span>
+                          <ArrowRight className="w-3.5 h-3.5" />
+                        </ActionLink>
+                      )}
                     </div>
                   </Panel>
                 </Shell>
@@ -629,6 +641,11 @@ export function App() {
                 </div>
                 <ul className="space-y-2 text-muted-foreground">
                   <li>
+                    <a href="./studio/" className="hover:text-foreground">
+                      Icon Library
+                    </a>
+                  </li>
+                  <li>
                     <a href="./studio/#webfont" className="hover:text-foreground">
                       Webfont Inspector
                     </a>
@@ -636,16 +653,6 @@ export function App() {
                   <li>
                     <a href="./studio/#svg" className="hover:text-foreground">
                       SVG → Webfont
-                    </a>
-                  </li>
-                  <li>
-                    <a href="./studio/#create" className="hover:text-foreground">
-                      AI Skill
-                    </a>
-                  </li>
-                  <li>
-                    <a href="./studio/#demo" className="hover:text-foreground">
-                      Live Demo
                     </a>
                   </li>
                 </ul>
@@ -667,7 +674,12 @@ export function App() {
                   </li>
                   <li>
                     <a href="./skills/create-icons.zip" download="create-icons.zip" className="hover:text-foreground">
-                      create-icons.zip
+                      skills/create-icons.zip
+                    </a>
+                  </li>
+                  <li>
+                    <a href="./skills/catalog-icons.zip" download="catalog-icons.zip" className="hover:text-foreground">
+                      skills/catalog-icons.zip
                     </a>
                   </li>
                   <li>

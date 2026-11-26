@@ -32,12 +32,12 @@ export const copy = {
       copy: 'Copiar',
       copied: 'Copiado!',
       quickLinks: [
-        { label: 'Abrir Studio', href: './studio/' },
+        { label: 'Abrir Icon Library', href: './studio/' },
         { label: 'Subir Webfont', href: './studio/#webfont' },
         { label: 'Compilar SVGs', href: './studio/#svg' },
-        { label: 'Baixar Skill IA (.zip)', href: './skills/create-icons.zip', download: true },
-        { label: 'Ler Documentação', href: '#docs', docs: true },
-        { label: 'Repositório GitHub', href: GITHUB_URL, external: true }
+        { label: 'Skill: Criar Ícones (.zip)', href: './skills/create-icons.zip', download: true },
+        { label: 'Skill: Catalogar Ícones (.zip)', href: './skills/catalog-icons.zip', download: true },
+        { label: 'Ler Documentação', href: '#docs', docs: true }
       ]
     },
     explorer: {
@@ -78,11 +78,12 @@ export const copy = {
         },
         {
           id: 'skill',
-          tag: 'SKILL.MD · 8 ESTILOS',
-          title: 'AI Icon Generator Skill',
-          desc: 'Baixe a skill create-icons para Antigravity, Claude Code ou Cursor. Ela lê seus tokens, gera SVGs originais + catalog.json com keywords e integra direto na galeria.',
-          cta: 'Ver Skill & Estilos',
-          href: './studio/#create'
+          tag: '2 SKILLS · CREATE + CATALOG',
+          title: 'Skills de Criação & Catalogação',
+          desc: 'Duas skills prontas no repositório: create-icons (desenha SVGs originais em 8 estilos) e catalog-icons (gera e valida catalog.json com nomes, grupos e keywords bilíngues).',
+          cta: 'Ver Guia das Skills',
+          href: '#docs',
+          docs: true
         }
       ]
     },
@@ -117,7 +118,7 @@ export const copy = {
         },
         {
           q: 'Como funciona a arquitetura em monorepo?',
-          a: 'O repositório separa apps/web (esta landing page em React 19 + Tailwind v4 + TUFFUI), apps/studio (o Icon Library Studio completo em Vue 3), packages/core (motor compartilhado de fontes e SVGs) e packages/skill (skill create-icons).'
+          a: 'O repositório separa apps/web (site + documentação em React 19 + Tailwind v4 + TUFFUI), apps/studio (o app focado apenas na Icon Library em Vue 3), packages/core (motor compartilhado de fontes e SVGs) e skills/ (create-icons e catalog-icons).'
         }
       ]
     },
@@ -160,12 +161,12 @@ export const copy = {
       copy: 'Copy',
       copied: 'Copied!',
       quickLinks: [
-        { label: 'Open Studio', href: './studio/' },
+        { label: 'Open Icon Library', href: './studio/' },
         { label: 'Upload Webfont', href: './studio/#webfont' },
         { label: 'Compile SVGs', href: './studio/#svg' },
-        { label: 'Download AI Skill (.zip)', href: './skills/create-icons.zip', download: true },
-        { label: 'Read Docs', href: '#docs', docs: true },
-        { label: 'GitHub Repository', href: GITHUB_URL, external: true }
+        { label: 'Skill: Create Icons (.zip)', href: './skills/create-icons.zip', download: true },
+        { label: 'Skill: Catalog Icons (.zip)', href: './skills/catalog-icons.zip', download: true },
+        { label: 'Read Docs', href: '#docs', docs: true }
       ]
     },
     explorer: {
@@ -206,11 +207,12 @@ export const copy = {
         },
         {
           id: 'skill',
-          tag: 'SKILL.MD · 8 STYLES',
-          title: 'AI Icon Generator Skill',
-          desc: 'Download the create-icons skill for Antigravity, Claude Code, or Cursor. It scans your tokens, draws original SVGs + catalog.json keywords, and imports straight into the gallery.',
-          cta: 'Explore Skill & Styles',
-          href: './studio/#create'
+          tag: '2 SKILLS · CREATE + CATALOG',
+          title: 'Icon Creation & Cataloging Skills',
+          desc: 'Two agent skills included in the repo: create-icons (draws original SVGs in 8 styles) and catalog-icons (generates and validates catalog.json with bilingual keywords and groups).',
+          cta: 'Read Skills Guide',
+          href: '#docs',
+          docs: true
         }
       ]
     },
@@ -245,7 +247,7 @@ export const copy = {
         },
         {
           q: 'How is the monorepo organized?',
-          a: 'apps/web hosts this open-source landing page (React 19 + Tailwind v4 + TUFFUI), apps/studio hosts the full Icon Library Studio (Vue 3), packages/core shares the font/SVG engine, and packages/skill houses the create-icons skill.'
+          a: 'apps/web hosts the site & TUFFUI documentation (React 19 + Tailwind v4), apps/studio hosts the focused Icon Library app (Vue 3), packages/core shares the font/SVG engine, and skills/ holds create-icons and catalog-icons.'
         }
       ]
     },
