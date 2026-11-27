@@ -229,19 +229,25 @@ export function IconExplorer({ lang }: IconExplorerProps) {
 
   return (
     <section id="explorer" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-20">
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
-        <div>
-          <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.08]">
-            {t.heading1 ? (
-              <span className="font-mono font-normal text-muted-foreground block sm:inline">
-                {t.heading1}{' '}
-              </span>
-            ) : null}
-            <span>{t.heading2}</span>
-          </h2>
+      {(t.heading1 || t.heading2 || t.desc) && (
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8">
+          {(t.heading1 || t.heading2) && (
+            <div>
+              <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.08]">
+                {t.heading1 ? (
+                  <span className="font-mono font-normal text-muted-foreground block sm:inline">
+                    {t.heading1}{' '}
+                  </span>
+                ) : null}
+                {t.heading2 ? <span>{t.heading2}</span> : null}
+              </h2>
+            </div>
+          )}
+          {t.desc ? (
+            <p className="text-sm text-muted-foreground max-w-md leading-relaxed">{t.desc}</p>
+          ) : null}
         </div>
-        <p className="text-sm text-muted-foreground max-w-md leading-relaxed">{t.desc}</p>
-      </div>
+      )}
 
       {/* TUFFUI Layered Shell -> Panel Explorer */}
       <Shell>

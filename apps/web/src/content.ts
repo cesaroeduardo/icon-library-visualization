@@ -46,8 +46,8 @@ export const copy = {
     },
     explorer: {
       heading1: '',
-      heading2: 'Clique e explore.',
-      desc: 'Bibliotecas open source de exemplo. Use os botões de set, a busca e o hover nos ícones, ou clique em Abrir no Studio / Enviar meus ícones.',
+      heading2: '',
+      desc: '',
       searchPlaceholder: 'Buscar em {count} ícones da demo.',
       openFull: 'Abrir no Studio',
       copiedToast: 'Copiado: {snippet}',
@@ -177,8 +177,8 @@ export const copy = {
     },
     explorer: {
       heading1: '',
-      heading2: 'Click and explore.',
-      desc: 'Sample open-source libraries. Use the set buttons, search, and icon hover actions, or click Open in Studio / Upload my own icons.',
+      heading2: '',
+      desc: '',
       searchPlaceholder: 'Search {count} demo icons.',
       openFull: 'Open in Studio',
       copiedToast: 'Copied: {snippet}',

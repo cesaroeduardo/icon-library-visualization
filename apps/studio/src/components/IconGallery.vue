@@ -288,7 +288,7 @@ async function downloadBundle() {
           @click="downloadBundle"
           :disabled="exporting"
           :title="t.gallery.downloadBundleHint"
-          class="tuff-btn-primary shrink-0"
+          class="tuff-btn-secondary shrink-0"
         >
           <Package class="w-3.5 h-3.5" />
           <span class="hidden sm:inline">{{ t.gallery.downloadBundle }}</span>
