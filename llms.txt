@@ -1,0 +1,211 @@
+# Icon Library Studio
+
+> Open-source, 100% browser-based monorepo to inspect webfonts, compile SVGs into production icon fonts (`.woff` / `.ttf` / `.css` / `catalog.json`), browse demo icon sets, and generate or catalog original icons with AI coding agents.
+
+Live site: https://icons.cesaroeduardo.com  
+Studio: https://icons.cesaroeduardo.com/studio/  
+Self-host guide: https://icons.cesaroeduardo.com/#docs-selfhost  
+GitHub: https://github.com/cesaroeduardo/icon-library-visualization  
+Author: https://cesaroeduardo.com/  
+Resources: https://resources.cesaroeduardo.com/  
+License: MIT
+
+This file is the map for LLMs and coding agents. Prefer reading the linked paths before inventing structure.
+
+## What this project is
+
+- **Landing + docs** (`apps/web`): React 19 marketing site and documentation at `/` and `#docs*`.
+- **Studio** (`apps/studio`): Vue 3 app at `/studio/` — gallery of demo libraries, webfont inspector, SVG → webfont compiler, upload flow.
+- **Self-host** (`apps/selfhost`): separate static gallery of **only** the user’s icons from `icons/` (no demos, no landing).
+- **Core** (`packages/core`): shared browser engine (SVG validate/prepare, SVG → TTF/WOFF, webfont + catalog parsers).
+- **AI skills** (`skills/`): installable `SKILL.md` packages for agents (create-icons, catalog-icons).
+
+Everything runs in the browser for Studio uploads; self-host builds fonts at build time from the `icons/` folder.
+
+## Install AI skills
+
+```bash
+npx skills add cesaroeduardo/icon-library-visualization
+```
+
+Individual skills:
+
+```bash
+npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
+npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons
+```
+
+Zips also ship on the site: `/skills/create-icons.zip`, `/skills/catalog-icons.zip`.
+
+## Monorepo map
+
+```text
+apps/
+  web/                 # Landing page + docs (React 19 + Tailwind v4) → dist/
+  studio/              # Icon Library Studio (Vue 3) → dist/studio/
+  selfhost/            # Own-library-only gallery + webfont build
+packages/
+  core/                # Shared SVG/webfont/catalog engine (@icon-library/core)
+  skill/               # Skill packaging helpers
+skills/
+  create-icons/        # Generate original 24×24 SVG icon libraries
+  catalog-icons/       # Build/validate searchable catalog.json
+scripts/
+  build-all.mjs        # Unified production build (web + studio)
+  fetch-demo-libraries.mjs
+  dev.mjs
+branding/              # Shared brand / favicon assets
+```
+
+## Apps — where to change what
+
+### `apps/web` — landing & docs
+
+| Path | Role |
+|------|------|
+| `apps/web/src/App.tsx` | Landing layout, hero, footer, docs routing |
+| `apps/web/src/content.ts` | PT/EN copy, URLs, agent prompt |
+| `apps/web/src/docsContent.ts` | Documentation sections |
+| `apps/web/src/components/IconExplorer.tsx` | Demo icon explorer on the LP |
+| `apps/web/src/components/SkillsSection.tsx` | Skills + agent canvas section |
+| `apps/web/src/components/AgentCanvasShowcase.tsx` | Animated agent-drawing showcase |
+| `apps/web/src/components/DocsView.tsx` | Docs UI |
+| `apps/web/public/` | Static assets (favicons, og.png, skill zips, this llms.txt) |
+
+Dev: `pnpm run dev:web` → http://localhost:5173
+
+### `apps/studio` — public Studio
+
+| Path | Role |
+|------|------|
+| `apps/studio/src/App.vue` | Shell, header, view switching (gallery / create-own / upload) |
+| `apps/studio/src/components/IconGallery.vue` | Searchable gallery, export zip |
+| `apps/studio/src/components/CreateOwnHub.vue` | Entry hub: SVG compile, webfont upload, self-host CTA, skills |
+| `apps/studio/src/components/SvgUpload.vue` | SVG → webfont compiler UI |
+| `apps/studio/src/components/WebfontUpload.vue` | Webfont inspector UI |
+| `apps/studio/src/i18n.js` | PT/EN strings |
+| `apps/studio/src/main.css` | TUFFUI button/surface tokens |
+
+Dev: `pnpm run dev:studio` → http://localhost:5174  
+Prod URL path: `/studio/`
+
+### `apps/selfhost` — own library only
+
+| Path | Role |
+|------|------|
+| `apps/selfhost/icons/` | **Source of truth** — put SVGs here (subfolders OK) |
+| `apps/selfhost/icons/catalog.json` | Optional searchable metadata |
+| `apps/selfhost/selfhost.config.json` | title, fontName, prefix, logo, base, allowUpload |
+| `apps/selfhost/brand/logo.svg` | Product logo in the gallery header |
+| `apps/selfhost/src/App.vue` | Self-host gallery UI |
+| `apps/selfhost/README.md` | Human + agent guide |
+
+```bash
+pnpm --filter @icon-library/selfhost build   # → apps/selfhost/dist/
+pnpm --filter @icon-library/selfhost dev     # → http://127.0.0.1:5175
+```
+
+Publish **only** `apps/selfhost/dist/` when the user wants a company gallery without demos.
+
+## Packages
+
+### `packages/core` (`@icon-library/core`)
+
+Shared browser logic used by Studio and self-host builds:
+
+- SVG prepare / validate
+- SVG → TTF / WOFF compilation
+- Webfont + CSS parsing
+- `catalog.json` parsing helpers
+
+Entry: `packages/core/src/index.js`
+
+### `packages/skill`
+
+Packaging utilities for shipping skill zips (`pnpm run pack:skill`).
+
+## AI skills — paths agents should open first
+
+### `skills/create-icons`
+
+Generates an **original** icon library matched to a project’s design system (never copy Lucide/Phosphor/etc. paths).
+
+| Start here | Why |
+|------------|-----|
+| `skills/create-icons/SKILL.md` | Full workflow |
+| `skills/create-icons/references/drawing-guide.md` | Grid, stroke, path craft |
+| `skills/create-icons/references/styles/` | 8 starter styles |
+| `skills/create-icons/scripts/validate.py` | Must pass before shipping |
+| `skills/create-icons/scripts/build.py` | Package / catalog / gallery |
+
+Typical outputs: SVGs, framework components, `catalog.json`, review catalog.
+
+### `skills/catalog-icons`
+
+Builds or merges a searchable `catalog.json` from an SVG folder or webfont CSS.
+
+| Start here | Why |
+|------------|-----|
+| `skills/catalog-icons/SKILL.md` | Workflow |
+| `skills/catalog-icons/references/catalog-schema.md` | Schema + keyword rules |
+| `skills/catalog-icons/scripts/catalog_icons.py` | Scan / merge / validate |
+
+Schema shape:
+
+```json
+[
+  {
+    "name": "home",
+    "icon": "ic home",
+    "label": "Home",
+    "group": "navigation",
+    "keywords": "house start dashboard inicio casa"
+  }
+]
+```
+
+## Recommended agent workflows
+
+### A. Generate icons and self-host them
+
+1. Install skills (`npx skills add cesaroeduardo/icon-library-visualization`).
+2. Run **create-icons** against the user’s design system → original SVGs + optional catalog.
+3. Run **catalog-icons** if catalog enrichment is needed.
+4. Copy SVGs (+ `catalog.json`) into `apps/selfhost/icons/`.
+5. Edit `apps/selfhost/selfhost.config.json` and `apps/selfhost/brand/logo.svg`.
+6. `pnpm --filter @icon-library/selfhost build` and publish `apps/selfhost/dist/`.
+
+### B. One-off experiment in the browser
+
+1. Open https://icons.cesaroeduardo.com/studio/#create-own
+2. Upload SVGs or a webfont — compilation stays local in the browser.
+3. Export a `.zip` bundle from the gallery when ready.
+
+### C. Change the marketing site / Studio UI
+
+- Copy: `apps/web/src/content.ts`, `apps/studio/src/i18n.js`
+- LP sections: `apps/web/src/App.tsx`, `components/*`
+- Studio chrome: `apps/studio/src/App.vue`
+- Unified deploy: `pnpm run build` → `dist/` (web) + `dist/studio/`
+
+## Commands cheat sheet
+
+```bash
+pnpm install
+pnpm run dev:web          # LP + docs :5173
+pnpm run dev:studio       # Studio :5174
+pnpm run dev:selfhost     # Self-host gallery :5175
+pnpm run build            # Unified static site → dist/
+pnpm run build:selfhost   # Self-host only → apps/selfhost/dist/
+pnpm run pack:skill       # Repack skill zips
+```
+
+## Demo libraries (Studio / LP explorer)
+
+Phosphor (multiple weights), Feather, Pixelarticons, Hugeicons — MIT demos only. They are **not** part of a self-host deploy.
+
+## Optional
+
+- Shorter pointer file: [llm.txt](./llm.txt)
+- Human README: [README.md](./README.md)
+- Self-host README: [apps/selfhost/README.md](./apps/selfhost/README.md)

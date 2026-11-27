@@ -326,22 +326,22 @@ export function App() {
                 </p>
 
                 <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <ActionLink href={STUDIO_URL} variant="primary" size="md">
+                    <span>{t.hero.ctaPrimary}</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </ActionLink>
+
                   <ActionLink
                     href={GITHUB_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    variant="primary"
+                    variant="secondary"
                     size="md"
                     className="items-stretch"
                   >
                     <Github className="w-4 h-4 self-center" />
-                    <span className="self-center">{t.hero.ctaPrimary}</span>
+                    <span className="self-center">{t.hero.ctaSecondary}</span>
                     <GithubStars />
-                  </ActionLink>
-
-                  <ActionLink href={STUDIO_URL} variant="secondary" size="md">
-                    <span>{t.hero.ctaSecondary}</span>
-                    <ArrowRight className="w-4 h-4" />
                   </ActionLink>
                 </div>
 
@@ -591,7 +591,7 @@ export function App() {
                   <GithubStars />
                 </ActionLink>
                 <ActionLink href={STUDIO_URL} variant="secondary" size="md">
-                  <span>{t.hero.ctaSecondary}</span>
+                  <span>{t.nav.studio}</span>
                   <ArrowRight className="w-4 h-4" />
                 </ActionLink>
               </div>
@@ -715,25 +715,25 @@ export function App() {
             </div>
 
             <div className="pt-6 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs text-muted-foreground">
+              <a
+                href={AUTHOR_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 hover:text-foreground"
+              >
+                <span>{t.footer.madeBy}</span>
+                <img
+                  src={AUTHOR_AVATAR_URL}
+                  alt=""
+                  width={16}
+                  height={16}
+                  className="h-4 w-4 rounded-sm"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span className="text-foreground font-medium">@cesaroeduardo</span>
+              </a>
               <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <a
-                  href={AUTHOR_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-foreground"
-                >
-                  <span>{t.footer.madeBy}</span>
-                  <img
-                    src={AUTHOR_AVATAR_URL}
-                    alt=""
-                    width={16}
-                    height={16}
-                    className="h-4 w-4 rounded-full"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <span className="text-foreground font-medium">@cesaroeduardo</span>
-                </a>
                 <a
                   href={BUY_ME_A_COFFEE_URL}
                   target="_blank"
@@ -743,18 +743,6 @@ export function App() {
                   <Coffee className="w-3.5 h-3.5" />
                   <span>{t.footer.buyMeACoffee}</span>
                 </a>
-                <a
-                  href={RESOURCES_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 hover:text-foreground"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>{t.footer.resourcesSite}</span>
-                </a>
-              </div>
-              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
-                <span>{t.footer.bottomLeft}</span>
                 <a
                   href={GITHUB_URL}
                   target="_blank"

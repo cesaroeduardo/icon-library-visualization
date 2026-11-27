@@ -1,8 +1,8 @@
 export const GITHUB_URL = 'https://github.com/cesaroeduardo/icon-library-visualization'
 export const CLONE_CMD = 'git clone https://github.com/cesaroeduardo/icon-library-visualization.git'
 export const STUDIO_URL = '/studio/'
-export const AUTHOR_URL = 'https://github.com/cesaroeduardo'
-export const AUTHOR_AVATAR_URL = 'https://github.com/cesaroeduardo.png?size=64'
+export const AUTHOR_URL = 'https://cesaroeduardo.com/'
+export const AUTHOR_AVATAR_URL = 'https://cesaroeduardo.com/favicon.ico'
 export const BUY_ME_A_COFFEE_URL = 'https://buymeacoffee.com/reidophotoshops'
 export const RESOURCES_URL = 'https://resources.cesaroeduardo.com/'
 
@@ -32,8 +32,8 @@ export const copy = {
       titleLine2: 'uma visualização organizada.',
       subtitle:
         'Suba seus ícones para ter uma visualização de library profissional para compartilhar. Ou crie seu próprio conjunto original de ícones com uma skill de IA.',
-      ctaPrimary: 'Ver no GitHub',
-      ctaSecondary: 'Abrir Studio',
+      ctaPrimary: 'Abrir Studio',
+      ctaSecondary: 'Ver no GitHub',
       checks: ['100% Open Source (MIT)', 'Zero backend · Privado', 'Webfont + SVG + Skill de IA'],
       quickTitle: 'Comece agora',
       quickMeta: 'Open Source · MIT',
@@ -142,10 +142,8 @@ export const copy = {
       colProject: 'Projeto',
       colStudio: 'Studio',
       colResources: 'Recursos',
-      bottomLeft: 'Icon Library Studio · Open Source sob licença MIT',
-      madeBy: 'Feito by',
-      buyMeACoffee: 'Buy me a coffee',
-      resourcesSite: 'Resources'
+      madeBy: 'By',
+      buyMeACoffee: 'Buy me a coffee'
     }
   },
   en: {
@@ -166,8 +164,8 @@ export const copy = {
       titleLine2: 'an organized view.',
       subtitle:
         'Upload your icons for a professional library view you can share. Or create your own original icon set with an AI skill.',
-      ctaPrimary: 'View on GitHub',
-      ctaSecondary: 'Open Studio',
+      ctaPrimary: 'Open Studio',
+      ctaSecondary: 'View on GitHub',
       checks: ['100% Open Source (MIT)', 'Zero backend · Private', 'Webfont + SVG + AI Skill'],
       quickTitle: 'Quick start',
       quickMeta: 'Open Source · MIT',
@@ -276,10 +274,8 @@ export const copy = {
       colProject: 'Project',
       colStudio: 'Studio',
       colResources: 'Resources',
-      bottomLeft: 'Icon Library Studio · Open Source under MIT License',
-      madeBy: 'Made by',
-      buyMeACoffee: 'Buy me a coffee',
-      resourcesSite: 'Resources'
+      madeBy: 'By',
+      buyMeACoffee: 'Buy me a coffee'
     }
   }
 } as const

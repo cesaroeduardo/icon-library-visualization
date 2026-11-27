@@ -1,0 +1,52 @@
+# Icon Library Studio — LLM brief
+
+> Browser-only open-source toolkit: inspect webfonts, compile SVGs → WOFF/TTF/CSS/catalog.json, browse demo icon sets, generate/catalog icons with AI skills. MIT.
+
+**Site:** https://icons.cesaroeduardo.com  
+**Studio:** https://icons.cesaroeduardo.com/studio/  
+**Repo:** https://github.com/cesaroeduardo/icon-library-visualization  
+**Full map:** see [llms.txt](./llms.txt)
+
+## One-line roles
+
+| Path | What |
+|------|------|
+| `apps/web` | Landing page + docs (React) → `/` |
+| `apps/studio` | Public Studio gallery + upload/compile (Vue) → `/studio/` |
+| `apps/selfhost` | Deploy **only your** icons from `icons/` (no demos) |
+| `packages/core` | Shared SVG/webfont/catalog engine |
+| `skills/create-icons` | AI skill: draw original icon libraries |
+| `skills/catalog-icons` | AI skill: searchable `catalog.json` |
+
+## Skills install
+
+```bash
+npx skills add cesaroeduardo/icon-library-visualization
+# or:
+npx skills add cesaroeduardo/icon-library-visualization --skill create-icons
+npx skills add cesaroeduardo/icon-library-visualization --skill catalog-icons
+```
+
+Read first: `skills/create-icons/SKILL.md`, `skills/catalog-icons/SKILL.md`.
+
+## Self-host (company gallery)
+
+1. Put SVGs in `apps/selfhost/icons/` (`catalog.json` optional).
+2. Set `apps/selfhost/selfhost.config.json` + `apps/selfhost/brand/logo.svg`.
+3. `pnpm --filter @icon-library/selfhost build` → publish `apps/selfhost/dist/`.
+
+## Dev / build
+
+```bash
+pnpm install
+pnpm run dev:web        # :5173
+pnpm run dev:studio     # :5174
+pnpm run dev:selfhost   # :5175
+pnpm run build          # dist/ + dist/studio/
+```
+
+## Do not confuse
+
+- **Studio** (`apps/studio`) = public demos + browser upload playground.
+- **Self-host** (`apps/selfhost`) = production gallery of the user’s own set only.
+- Never copy paths from Lucide/Phosphor/etc. when using **create-icons** — draw original SVGs.

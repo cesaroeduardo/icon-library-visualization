@@ -3,7 +3,7 @@ import {
   Search,
   X,
   Check,
-  ArrowUpRight,
+  ArrowRight,
   Code2,
   Copy,
   Download,
@@ -281,7 +281,7 @@ export function IconExplorer({ lang }: IconExplorerProps) {
             size="sm"
           >
             <span>{t.openFull}</span>
-            <ArrowUpRight className="w-3.5 h-3.5" />
+            <ArrowRight className="w-3.5 h-3.5" />
           </ActionLink>
         </div>
 

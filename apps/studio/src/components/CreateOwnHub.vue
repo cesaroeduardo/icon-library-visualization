@@ -302,7 +302,7 @@ async function handleImportFiles(fileList) {
               {{ t.cards.svg.description }}
             </p>
           </div>
-          <button @click="emit('select', 'svg')" class="tuff-btn-primary w-full !h-10">
+          <button @click="emit('select', 'svg')" class="tuff-btn-secondary w-full !h-10">
             <span>{{ t.cards.svg.cta }}</span>
             <ArrowRight class="w-4 h-4" />
           </button>
@@ -396,7 +396,7 @@ async function handleImportFiles(fileList) {
             :href="`${GITHUB_URL}/tree/main/apps/selfhost`"
             target="_blank"
             rel="noopener"
-            class="tuff-btn-primary !h-10"
+            class="tuff-btn-secondary !h-10"
           >
             <span>{{ lang === 'pt' ? 'Abrir apps/selfhost' : 'Open apps/selfhost' }}</span>
             <ExternalLink class="w-3.5 h-3.5" />

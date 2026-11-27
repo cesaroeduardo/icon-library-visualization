@@ -7,7 +7,6 @@ import {
   Layers,
   BookOpen,
   Upload,
-  ArrowLeft,
   Loader2
 } from 'lucide-vue-next'
 import CreateOwnHub from './components/CreateOwnHub.vue'
@@ -299,24 +298,13 @@ onMounted(async () => {
       style="background-color: color-mix(in srgb, var(--background) 85%, transparent); border-bottom: 1px solid var(--border);"
     >
       <div class="max-w-[1472px] w-full flex items-center justify-between gap-3">
-        <div class="flex items-center gap-2">
-          <a
-            href="/"
-            class="tuff-btn-quiet"
-            :title="lang === 'pt' ? 'Voltar ao site' : 'Back to site'"
-          >
-            <ArrowLeft class="w-3.5 h-3.5" />
-            <span class="hidden sm:inline">{{ lang === 'pt' ? 'Site' : 'Home' }}</span>
-          </a>
-
-          <button
-            @click="activeView = 'gallery'"
-            class="inline-flex items-center hover:opacity-90 transition-opacity"
-            aria-label="Icon Library Studio"
-          >
-            <BrandLogo class="h-[19px] w-auto" />
-          </button>
-        </div>
+        <a
+          href="/"
+          class="inline-flex items-center hover:opacity-90 transition-opacity"
+          :aria-label="lang === 'pt' ? 'Voltar ao site' : 'Back to site'"
+        >
+          <BrandLogo class="h-[19px] w-auto" />
+        </a>
 
         <div class="flex items-center gap-1.5">
           <button
