@@ -1,8 +1,12 @@
 # Icon Library Studio
 
-**Live site & docs:** [https://icons.cesaroeduardo.com](https://icons.cesaroeduardo.com) · **Studio app:** [https://icons.cesaroeduardo.com/studio/](https://icons.cesaroeduardo.com/studio/)
+**Live site & docs:** [https://icons.cesaroeduardo.com](https://icons.cesaroeduardo.com) · **Studio app:** [https://icons.cesaroeduardo.com/studio/](https://icons.cesaroeduardo.com/studio/) · **Resources:** [https://resources.cesaroeduardo.com](https://resources.cesaroeduardo.com/)
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/reidophotoshops)
 
 Open-source, 100% browser-based monorepo for inspecting webfonts, compiling SVGs into production webfonts (`.woff`, `.ttf`, `.css`, `catalog.json`), browsing popular open-source icon sets, and generating/cataloging original icons with AI coding agents.
+
+Made by [@cesaroeduardo](https://github.com/cesaroeduardo) · [Buy me a coffee](https://buymeacoffee.com/reidophotoshops)
 
 <img width="1200" height="630" alt="image" src="https://github.com/user-attachments/assets/fff2a2e5-58d2-4eee-b064-61a514293016" />
 

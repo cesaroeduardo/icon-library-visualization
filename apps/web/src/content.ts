@@ -1,6 +1,10 @@
 export const GITHUB_URL = 'https://github.com/cesaroeduardo/icon-library-visualization'
 export const CLONE_CMD = 'git clone https://github.com/cesaroeduardo/icon-library-visualization.git'
 export const STUDIO_URL = '/studio/'
+export const AUTHOR_URL = 'https://github.com/cesaroeduardo'
+export const AUTHOR_AVATAR_URL = 'https://github.com/cesaroeduardo.png?size=64'
+export const BUY_ME_A_COFFEE_URL = 'https://buymeacoffee.com/reidophotoshops'
+export const RESOURCES_URL = 'https://resources.cesaroeduardo.com/'
 
 export const AGENT_PROMPT = {
   pt: `Clone o repositório https://github.com/cesaroeduardo/icon-library-visualization e instale as skills de ícones no meu agente com \`npx skills add cesaroeduardo/icon-library-visualization\` (create-icons + catalog-icons). Use create-icons para analisar o design system do meu projeto (tokens, fontes e ícones atuais) e gerar SVGs originais 24×24 no mesmo estilo; use catalog-icons para o catalog.json. Coloque os SVGs + catalog.json em apps/selfhost/icons/, ajuste selfhost.config.json e brand/logo.svg com o nome/logo do meu produto, rode \`pnpm --filter @icon-library/selfhost build\` e me diga como publicar apps/selfhost/dist/ (galeria self-hosted só da minha library, sem demos).`,
@@ -138,7 +142,10 @@ export const copy = {
       colProject: 'Projeto',
       colStudio: 'Studio',
       colResources: 'Recursos',
-      bottomLeft: 'Icon Library Studio · Open Source sob licença MIT'
+      bottomLeft: 'Icon Library Studio · Open Source sob licença MIT',
+      madeBy: 'Feito by',
+      buyMeACoffee: 'Buy me a coffee',
+      resourcesSite: 'Resources'
     }
   },
   en: {
@@ -269,7 +276,10 @@ export const copy = {
       colProject: 'Project',
       colStudio: 'Studio',
       colResources: 'Resources',
-      bottomLeft: 'Icon Library Studio · Open Source under MIT License'
+      bottomLeft: 'Icon Library Studio · Open Source under MIT License',
+      madeBy: 'Made by',
+      buyMeACoffee: 'Buy me a coffee',
+      resourcesSite: 'Resources'
     }
   }
 } as const

@@ -274,12 +274,12 @@ export function AgentCanvasShowcase({
   }, [])
 
   return (
-    <Shell className="mb-4">
+    <Shell className="mb-4 max-w-full overflow-hidden">
       {/* Top Canvas Header */}
-      <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2">
-        <div className="flex items-center gap-2">
+      <div className="flex flex-wrap items-center justify-between gap-2 px-3 py-2 min-w-0">
+        <div className="flex flex-wrap items-center gap-2 min-w-0">
           <span
-            className="h-2.5 w-2.5 rounded-full animate-pulse transition-colors duration-300"
+            className="h-2.5 w-2.5 shrink-0 rounded-full animate-pulse transition-colors duration-300"
             style={{ backgroundColor: agent.color }}
           />
           <span className="text-xs font-medium text-foreground">
@@ -287,17 +287,19 @@ export function AgentCanvasShowcase({
           </span>
           <Tag>24×24 grid</Tag>
         </div>
-        <StatusPill tone="positive" size="sm">
-          <Check className="w-3 h-3" />
-          <span>{isPt ? 'SVG + catalog.json validados' : 'SVG + catalog.json validated'}</span>
+        <StatusPill tone="positive" size="sm" className="max-w-full min-w-0">
+          <Check className="w-3 h-3 shrink-0" />
+          <span className="truncate">
+            {isPt ? 'SVG + catalog.json validados' : 'SVG + catalog.json validated'}
+          </span>
         </StatusPill>
       </div>
 
-      <Panel className="p-4 sm:p-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <Panel className="p-3 sm:p-6 min-w-0 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 sm:gap-6 items-center min-w-0">
           {/* Left: Animated 24x24 Vector Canvas */}
-          <div className="lg:col-span-7 flex items-center justify-center">
-            <div className="relative w-full max-w-[340px] aspect-square rounded-2xl bg-foreground/[0.03] overflow-hidden flex items-center justify-center p-6">
+          <div className="lg:col-span-7 flex items-center justify-center min-w-0">
+            <div className="relative w-full max-w-[min(100%,340px)] aspect-square rounded-2xl bg-foreground/[0.03] overflow-hidden flex items-center justify-center p-3 sm:p-6">
               {/* 24x24 Pixel Grid Overlay */}
               <div
                 className="absolute inset-0 opacity-45 pointer-events-none"
@@ -310,21 +312,21 @@ export function AgentCanvasShowcase({
 
               {/* Live Area Safe Guide (20x20 inside 24x24) */}
               <div
-                className="absolute inset-7 rounded-lg pointer-events-none transition-[border-color] duration-300"
+                className="absolute inset-5 sm:inset-7 rounded-lg pointer-events-none transition-[border-color] duration-300"
                 style={{ border: `1px dashed ${agent.color}59` }}
               />
-              <span className="absolute top-2.5 left-3 font-mono text-[10px] text-muted-foreground/70">
+              <span className="absolute top-2 left-2.5 sm:top-2.5 sm:left-3 font-mono text-[10px] text-muted-foreground/70">
                 viewBox=&quot;0 0 24 24&quot;
               </span>
-              <span className="absolute bottom-2.5 right-3 font-mono text-[10px] text-muted-foreground/70">
+              <span className="absolute bottom-2 right-2.5 sm:bottom-2.5 sm:right-3 font-mono text-[10px] text-muted-foreground/70">
                 live: 20×20
               </span>
 
-              {/* Drawing SVG Canvas (240x240 coordinate space) */}
-              <div ref={stageRef} className="relative w-[240px] h-[240px]">
+              {/* Drawing SVG Canvas (240x240 coordinate space, scales with container) */}
+              <div ref={stageRef} className="relative w-full max-w-[240px] aspect-square">
                 <svg
                   viewBox="0 0 240 240"
-                  className="w-full h-full overflow-visible"
+                  className="w-full h-full"
                   fill="none"
                 >
                   {/* Soft duotone body fill that fades in after outline is traced */}
@@ -432,7 +434,7 @@ export function AgentCanvasShowcase({
 
                   {/* Agent badge attached to cursor */}
                   <div
-                    className="ml-3.5 -mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-white shadow-lg transition-colors duration-300"
+                    className="ml-3.5 -mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-medium text-white shadow-lg transition-colors duration-300 whitespace-nowrap"
                     style={{ backgroundColor: agent.color }}
                   >
                     <AgentMark className={`w-3 h-3 ${agent.markClassName}`.trim()} />
@@ -444,13 +446,13 @@ export function AgentCanvasShowcase({
           </div>
 
           {/* Right: Live Output Preview (icons.json + catalog.json) */}
-          <div className="lg:col-span-5 space-y-3">
-            <Inset className="p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-foreground">home.svg</span>
-                <Tag>stroke: 1.75px</Tag>
+          <div className="lg:col-span-5 space-y-3 min-w-0">
+            <Inset className="p-3 sm:p-4 space-y-2 min-w-0 overflow-hidden">
+              <div className="flex items-center justify-between gap-2 min-w-0">
+                <span className="font-mono text-xs text-foreground truncate">home.svg</span>
+                <Tag className="shrink-0">stroke: 1.75px</Tag>
               </div>
-              <pre className="font-mono text-[11px] leading-5 text-muted-foreground overflow-x-auto">
+              <pre className="font-mono text-[11px] leading-5 text-muted-foreground overflow-x-auto max-w-full">
                 <code>{`<svg viewBox="0 0 24 24">
   <path d="M3 11.6L12 4l9 7.6" />
   <path d="M5 10.6V19a2 2 0 0 0 2 2h10" />
@@ -459,15 +461,15 @@ export function AgentCanvasShowcase({
               </pre>
             </Inset>
 
-            <Inset className="p-4 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-xs text-foreground">catalog.json</span>
-                <span className="inline-flex items-center gap-1 text-[11px] text-positive font-medium">
+            <Inset className="p-3 sm:p-4 space-y-2 min-w-0 overflow-hidden">
+              <div className="flex items-center justify-between gap-2 min-w-0">
+                <span className="font-mono text-xs text-foreground truncate">catalog.json</span>
+                <span className="inline-flex items-center gap-1 text-[11px] text-positive font-medium shrink-0">
                   <Sparkles className="w-3 h-3" />
                   <span>{isPt ? 'Auto-catalogado' : 'Auto-cataloged'}</span>
                 </span>
               </div>
-              <pre className="font-mono text-[11px] leading-5 text-muted-foreground overflow-x-auto">
+              <pre className="font-mono text-[11px] leading-5 text-muted-foreground overflow-x-auto max-w-full">
                 <code>{`{
   "name": "home",
   "icon": "ic home",

@@ -13,7 +13,9 @@ import {
   Sparkles,
   Terminal,
   BookOpen,
-  Server
+  Server,
+  Coffee,
+  ExternalLink
 } from 'lucide-react'
 import {
   Shell,
@@ -31,7 +33,18 @@ import { DocsView } from '@/components/DocsView'
 import { NotFoundView } from '@/components/NotFoundView'
 import { BrandLogo } from '@/components/BrandLogo'
 import { GithubStars } from '@/components/GithubStars'
-import { copy, GITHUB_URL, CLONE_CMD, STUDIO_URL, AGENT_PROMPT, type Lang } from '@/content'
+import {
+  copy,
+  GITHUB_URL,
+  CLONE_CMD,
+  STUDIO_URL,
+  AGENT_PROMPT,
+  AUTHOR_URL,
+  AUTHOR_AVATAR_URL,
+  BUY_ME_A_COFFEE_URL,
+  RESOURCES_URL,
+  type Lang
+} from '@/content'
 
 const DOCS_SECTION_BY_HASH: Record<string, string> = {
   'docs-skills': 'ai-skills',
@@ -660,6 +673,17 @@ export function App() {
                   </li>
                   <li>
                     <a
+                      href={RESOURCES_URL}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 hover:text-foreground"
+                    >
+                      <ExternalLink className="w-3 h-3" />
+                      <span>resources.cesaroeduardo.com</span>
+                    </a>
+                  </li>
+                  <li>
+                    <a
                       href={`${GITHUB_URL}/tree/main/skills/create-icons`}
                       target="_blank"
                       rel="noopener noreferrer"
@@ -690,17 +714,57 @@ export function App() {
               </div>
             </div>
 
-            <div className="pt-6 border-t border-border flex flex-wrap items-center justify-between gap-3 text-xs text-muted-foreground">
-              <span>{t.footer.bottomLeft}</span>
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 hover:text-foreground"
-              >
-                <Github className="w-3.5 h-3.5" />
-                <span>cesaroeduardo/icon-library-visualization</span>
-              </a>
+            <div className="pt-6 border-t border-border flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 text-xs text-muted-foreground">
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <a
+                  href={AUTHOR_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-foreground"
+                >
+                  <span>{t.footer.madeBy}</span>
+                  <img
+                    src={AUTHOR_AVATAR_URL}
+                    alt=""
+                    width={16}
+                    height={16}
+                    className="h-4 w-4 rounded-full"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="text-foreground font-medium">@cesaroeduardo</span>
+                </a>
+                <a
+                  href={BUY_ME_A_COFFEE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-foreground"
+                >
+                  <Coffee className="w-3.5 h-3.5" />
+                  <span>{t.footer.buyMeACoffee}</span>
+                </a>
+                <a
+                  href={RESOURCES_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-foreground"
+                >
+                  <ExternalLink className="w-3.5 h-3.5" />
+                  <span>{t.footer.resourcesSite}</span>
+                </a>
+              </div>
+              <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
+                <span>{t.footer.bottomLeft}</span>
+                <a
+                  href={GITHUB_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-foreground"
+                >
+                  <Github className="w-3.5 h-3.5" />
+                  <span>cesaroeduardo/icon-library-visualization</span>
+                </a>
+              </div>
             </div>
           </div>
         </footer>

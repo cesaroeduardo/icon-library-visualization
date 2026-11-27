@@ -56,7 +56,7 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
   }
 
   return (
-    <section id="skills" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16">
+    <section id="skills" className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-16 overflow-x-clip">
       <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
         <div className="space-y-3">
           <h2 className="text-3xl sm:text-4xl font-semibold tracking-[-0.03em] leading-[1.08]">
@@ -77,9 +77,9 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
       <AgentCanvasShowcase lang={lang} activeAgent={activeAgent} />
 
       {/* Works With Any Model + Copyable npx skills add Command Strip */}
-      <Shell className="mb-4">
-        <Panel className="px-5 py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-wrap items-center justify-center gap-3.5">
+      <Shell className="mb-4 max-w-full overflow-hidden">
+        <Panel className="px-4 sm:px-5 py-4 flex flex-col md:flex-row items-center justify-between gap-4 min-w-0">
+          <div className="flex flex-wrap items-center justify-center gap-3.5 min-w-0 w-full md:w-auto">
             <span className="text-sm text-muted-foreground font-medium">
               {isPt ? 'Funciona com' : 'Works with'}
             </span>
@@ -121,8 +121,8 @@ export function SkillsSection({ lang, onOpenDocs }: SkillsSectionProps) {
             </div>
 
             {/* Dark Pill Command Box with Copy */}
-            <div className="inline-flex items-center gap-3 rounded-2xl bg-foreground/[0.05] px-4 py-2.5 max-w-full">
-              <code className="font-mono text-xs sm:text-[0.8125rem] text-foreground truncate">
+            <div className="inline-flex items-center gap-3 rounded-2xl bg-foreground/[0.05] px-3 sm:px-4 py-2.5 max-w-full min-w-0">
+              <code className="font-mono text-xs sm:text-[0.8125rem] text-foreground truncate min-w-0">
                 <span className="text-muted-foreground select-none">$ </span>
                 {CMD_ALL}
               </code>
